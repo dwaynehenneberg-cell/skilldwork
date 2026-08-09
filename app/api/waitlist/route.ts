@@ -47,8 +47,13 @@ export async function POST(req: Request) {
 
   if (!alreadyListed) {
     entries.push({ name: cleanName, company: cleanCompany, createdAt: new Date().toISOString() });
-    await mkdir(DATA_DIR, { recursive: true });
-    await writeFile(DATA_FILE, JSON.stringify(entries, null, 2));
+    try {
+      await mkdir(DATA_DIR, { recursive: true });
+      await writeFile(DATA_FILE, JSON.stringify(entries, null, 2));
+    } catch (err) {
+      // Serverless filesystems are read-only; bookings still land in Calendly.
+      console.warn("waitlist: could not persist entry", err);
+    }
   }
 
   return NextResponse.json({ ok: true });
