@@ -1,18 +1,58 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-display: var(--font-anton);
   --font-sans: var(--font-geist-sans);
 }
 
+:root {
+  color-scheme: light;
+  --page-bg: #f4f4f3;
+  --vignette: rgb(0 0 0 / 0.05);
+  --dot: rgb(0 0 0 / 0.16);
+  --card-bg: #ffffff;
+  --card-border: rgb(0 0 0 / 0.08);
+  --text: #0a0a0a;
+  --field-bg: rgb(0 0 0 / 0.04);
+  --field-border: rgb(0 0 0 / 0.1);
+  --field-border-focus: rgb(0 0 0 / 0.35);
+  --placeholder: rgb(0 0 0 / 0.4);
+  --btn-bg: #0a0a0a;
+  --btn-text: #ffffff;
+  --btn-hover: rgb(0 0 0 / 0.75);
+  --muted-text: rgb(0 0 0 / 0.65);
+  --logo-ring: rgb(0 0 0 / 0.08);
+}
+
+.dark {
+  color-scheme: dark;
+  --page-bg: #000000;
+  --vignette: rgb(0 0 0 / 0.45);
+  --dot: rgb(255 255 255 / 0.22);
+  --card-bg: #1a1a19;
+  --card-border: rgb(255 255 255 / 0.1);
+  --text: #ffffff;
+  --field-bg: rgb(0 0 0 / 0.4);
+  --field-border: rgb(255 255 255 / 0.1);
+  --field-border-focus: rgb(255 255 255 / 0.3);
+  --placeholder: rgb(255 255 255 / 0.35);
+  --btn-bg: #ffffff;
+  --btn-text: #000000;
+  --btn-hover: rgb(255 255 255 / 0.85);
+  --muted-text: rgb(255 255 255 / 0.7);
+  --logo-ring: rgb(255 255 255 / 0.1);
+}
+
 body {
-  background-color: #000;
+  background-color: var(--page-bg);
   background-image:
-    radial-gradient(ellipse 90% 70% at 50% 45%, transparent 0%, rgb(0 0 0 / 0.45) 100%),
-    radial-gradient(circle, rgb(255 255 255 / 0.22) 1.5px, transparent 2px);
+    radial-gradient(ellipse 90% 70% at 50% 45%, transparent 0%, var(--vignette) 100%),
+    radial-gradient(circle, var(--dot) 1.5px, transparent 2px);
   background-size:
     100% 100%,
     22px 22px;
-  color: #fff;
+  color: var(--text);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
