@@ -34,3 +34,9 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Deployment
+
+Deploy on Vercel. Set `NEXT_PUBLIC_CALENDLY_URL` in the project's environment variables (see `.env.example`) — it powers the booking widget shown after signup.
+
+Note: the waitlist API's JSON file persistence (`data/waitlist.json`) only works outside serverless. On Vercel the filesystem is read-only, so name/company entries are logged instead of persisted; bookings are recorded in Calendly.
