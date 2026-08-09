@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import ThemeToggle from "./theme-toggle";
 import WaitlistForm from "./waitlist-form";
 
@@ -37,6 +38,13 @@ export default function Home() {
         </h1>
         <WaitlistForm />
       </section>
+
+      <Link
+        href="/privacy"
+        className="text-sm text-[var(--muted-text)] underline decoration-[var(--field-border)] underline-offset-4 transition-opacity hover:opacity-65"
+      >
+        Datenschutz
+      </Link>
     </main>
   );
 }
