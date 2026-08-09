@@ -56,3 +56,11 @@ body {
   color: var(--text);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
+
+@media (max-width: 639px) {
+  main:has(.booking-open) header img {
+    height: 2.75rem;
+    width: 2.75rem;
+    border-radius: 0.75rem;
+  }
+}
