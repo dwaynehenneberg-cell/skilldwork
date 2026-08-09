@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-anton);
+  --font-sans: var(--font-geist-sans);
+}
+
+body {
+  background-color: #000;
+  background-image:
+    radial-gradient(ellipse 90% 70% at 50% 45%, transparent 0%, rgb(0 0 0 / 0.45) 100%),
+    radial-gradient(circle, rgb(255 255 255 / 0.22) 1.5px, transparent 2px);
+  background-size:
+    100% 100%,
+    22px 22px;
+  color: #fff;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
