@@ -118,7 +118,7 @@ export default function WaitlistForm() {
 
   if (step === "book") {
     return (
-      <div className="mt-8">
+      <div className="mt-8 booking-open">
         <p className="mb-3 text-sm text-[var(--muted-text)]">
           Pick a time that works for you:
         </p>

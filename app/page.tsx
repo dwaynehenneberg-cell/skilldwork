@@ -7,8 +7,8 @@ const logoClass =
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center px-4 py-16">
-      <header className="absolute left-6 top-6 sm:left-10 sm:top-8">
+    <main className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-6 sm:py-16">
+      <header className="self-start sm:absolute sm:left-10 sm:top-8 sm:self-auto">
         <Image
           src="/logo-light.png"
           alt="skilld logo"
