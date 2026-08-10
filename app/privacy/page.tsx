@@ -4,11 +4,13 @@ import ThemeToggle from "../theme-toggle";
 
 export const metadata: Metadata = {
   title: "Privacy | Skilldwork",
-  description: "Privacy notice for Skilldwork Meta lead forms.",
+  description: "Privacy notice for Skilldwork contact requests and bookings.",
 };
 
 const sectionClass = "space-y-3";
 const headingClass = "text-xl font-semibold tracking-tight text-[var(--text)]";
+const linkClass =
+  "text-[var(--text)] underline decoration-[var(--field-border-focus)] underline-offset-4 transition-opacity hover:opacity-65";
 
 export default function PrivacyPage() {
   return (
@@ -30,8 +32,8 @@ export default function PrivacyPage() {
             Privacy
           </h1>
           <p className="max-w-2xl leading-7">
-            This notice applies to contact details you submit through a lead form on Facebook or
-            Instagram.
+            This notice explains how Skilldwork handles personal data you provide through our
+            website, a lead form on Facebook, Instagram or Reddit, or our Calendly booking link.
           </p>
         </header>
 
@@ -43,7 +45,7 @@ export default function PrivacyPage() {
             Email:{" "}
             <a
               href="mailto:hello@skilldwork.com"
-              className="text-[var(--text)] underline decoration-[var(--field-border-focus)] underline-offset-4 hover:opacity-65"
+              className={linkClass}
             >
               hello@skilldwork.com
             </a>
@@ -53,42 +55,83 @@ export default function PrivacyPage() {
         <section className={sectionClass}>
           <h2 className={headingClass}>2. Data we process</h2>
           <p className="leading-7">
-            When you submit our Meta lead form, we receive and process the phone number you
-            provide. Meta also processes data under its own{" "}
+            Depending on how you contact us, we may process your name, email address, phone
+            number, company or role, message, appointment details, and any other information you
+            choose to provide. When you visit our website, limited technical data such as your IP
+            address, browser or device information, requested page, and date and time may also be
+            processed to deliver the site securely.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>3. How and why we use your data</h2>
+          <p className="leading-7">
+            We use your data to respond to your inquiry, contact you about the offer you requested,
+            schedule and manage a call, and prepare any requested services. Processing is based on
+            steps you ask us to take before entering into a contract (Art. 6(1)(b) GDPR), or on
+            your consent where a form specifically requests it (Art. 6(1)(a) GDPR). We process
+            limited technical website data based on our legitimate interest in providing a secure
+            and reliable website (Art. 6(1)(f) GDPR). You may withdraw consent at any time with
+            effect for the future by emailing us.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>4. Platforms and service providers</h2>
+          <p className="leading-7">
+            The provider of the channel you use may process your data to operate its service. This
+            may include{" "}
             <a
               href="https://www.facebook.com/privacy/policy/"
               target="_blank"
               rel="noreferrer"
-              className="text-[var(--text)] underline decoration-[var(--field-border-focus)] underline-offset-4 hover:opacity-65"
+              className={linkClass}
             >
-              Privacy Policy
+              Meta
             </a>
-            .
+            ,{" "}
+            <a
+              href="https://www.reddit.com/policies/privacy-policy"
+              target="_blank"
+              rel="noreferrer"
+              className={linkClass}
+            >
+              Reddit
+            </a>
+            ,{" "}
+            <a
+              href="https://calendly.com/legal/privacy-notice"
+              target="_blank"
+              rel="noreferrer"
+              className={linkClass}
+            >
+              Calendly
+            </a>{" "}
+            for scheduling, and{" "}
+            <a
+              href="https://vercel.com/legal/privacy-notice"
+              target="_blank"
+              rel="noreferrer"
+              className={linkClass}
+            >
+              Vercel
+            </a>{" "}
+            for website hosting. Their own privacy notices provide details about their processing.
+            Skilldwork does not sell your personal data.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>3. Purpose and legal basis</h2>
+          <h2 className={headingClass}>5. Retention</h2>
           <p className="leading-7">
-            We use your phone number only to contact you about the offer described in the ad and
-            to respond to your request. Processing is based on your voluntary consent under Art.
-            6(1)(a) GDPR. You may withdraw your consent at any time with effect for the future by
-            emailing us.
+            We retain personal data only for as long as necessary to handle your inquiry, booking,
+            or resulting business relationship. We delete it when the purpose no longer applies or
+            you withdraw consent, unless a legal retention obligation requires otherwise.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>4. Recipients and retention</h2>
-          <p className="leading-7">
-            We do not share your phone number with third parties for advertising purposes. We
-            retain it only for as long as necessary to contact you and handle your request. We
-            delete it when you withdraw your consent or the purpose no longer applies, unless a
-            legal retention obligation requires otherwise.
-          </p>
-        </section>
-
-        <section className={sectionClass}>
-          <h2 className={headingClass}>5. Your rights</h2>
+          <h2 className={headingClass}>6. Your rights</h2>
           <p className="leading-7">
             Subject to the legal requirements, you have the right to access, correct, erase,
             restrict the processing of, and receive a copy of your data. You may also withdraw
@@ -98,10 +141,11 @@ export default function PrivacyPage() {
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>6. Voluntary submission</h2>
+          <h2 className={headingClass}>7. Voluntary submission</h2>
           <p className="leading-7">
-            Providing your phone number is voluntary. Without it, we cannot contact you by phone.
-            Skilldwork does not use automated decision-making or profiling for this purpose.
+            Providing personal data is voluntary. Without the details needed to respond or arrange
+            a meeting, we may be unable to handle your request. Skilldwork does not use automated
+            decision-making or profiling for these purposes.
           </p>
         </section>
 
