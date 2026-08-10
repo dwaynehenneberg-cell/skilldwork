@@ -37,8 +37,8 @@ The recurring cycle in which Service Provider marketing brings a Client into Dig
 _Avoid_: Single order flow, funnel, Growth Loop
 
 **Improvement Loop**:
-The feedback cycle in which revisions from a Service Run produce a suggested workflow version, the Service Provider approves it, and the approved version returns to Digital Service Execution.
-_Avoid_: Automatic live modification, Service Loop
+The built-in feedback cycle in which Revision Intelligence identifies patterns from Service Runs, suggests a workflow version in the Provider Workspace, and returns an approved version to Digital Service Execution.
+_Avoid_: Automatic live modification, separate agent setup, Service Loop
 
 **Sales Page**:
 The result-based landing page where a Client understands the service, chooses an Offer, and starts the purchase flow. It is created as part of the Workflow Build.
@@ -56,6 +56,6 @@ _Avoid_: Client Portal, admin page
 One Client's execution of the digital service from purchase and onboarding through processing, revisions, and completion.
 _Avoid_: Workflow Build, client session
 
-**Self-Improvement Agent**:
-The workflow component that uses revision feedback from completed Service Runs to suggest a new workflow version that can reduce future revisions. A suggestion does not change the active workflow until the Service Provider approves it.
-_Avoid_: Revision Agent, HITL
+**Revision Intelligence**:
+The integrated Skilldwork Platform capability that captures revision feedback, identifies recurring patterns, and suggests workflow improvements in the Provider Workspace. It requires no separate agent setup, and a suggestion does not change the active workflow until the Service Provider approves it.
+_Avoid_: Self-Improvement Agent, Revision Agent, standalone tool, HITL
