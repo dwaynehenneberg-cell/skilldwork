@@ -32,9 +32,13 @@ _Avoid_: Bounty Agent, service execution
 The repeatable Client flow from landing page and purchase through onboarding, workflow processing, optional HITL, revisions, and result delivery.
 _Avoid_: Workflow Build, manual fulfillment
 
-**Growth Loop**:
-The recurring cycle in which Service Provider marketing brings Clients into the Digital Service Execution, creating results and capacity that support further marketing and revenue.
-_Avoid_: Single order flow, funnel
+**Service Loop**:
+The recurring cycle in which Service Provider marketing brings a Client into Digital Service Execution, the Result is delivered, and the released capacity returns to marketing for the next Client.
+_Avoid_: Single order flow, funnel, Growth Loop
+
+**Improvement Loop**:
+The feedback cycle in which revisions from a Service Run produce a suggested workflow version, the Service Provider approves it, and the approved version returns to Digital Service Execution.
+_Avoid_: Automatic live modification, Service Loop
 
 **Sales Page**:
 The result-based landing page where a Client understands the service, chooses an Offer, and starts the purchase flow. It is created as part of the Workflow Build.
