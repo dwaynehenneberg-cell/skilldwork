@@ -24,6 +24,7 @@
   --btn-hover: rgb(0 0 0 / 0.75);
   --muted-text: rgb(0 0 0 / 0.65);
   --logo-ring: rgb(0 0 0 / 0.08);
+  --workflow-accent: #f2c744;
 }
 
 .dark {
@@ -43,6 +44,7 @@
   --btn-hover: rgb(255 255 255 / 0.85);
   --muted-text: rgb(255 255 255 / 0.7);
   --logo-ring: rgb(255 255 255 / 0.1);
+  --workflow-accent: #f2c744;
 }
 
 body {
