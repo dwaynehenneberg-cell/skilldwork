@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import BookingWidget from "./booking-widget";
 import ThemeToggle from "./theme-toggle";
-import WaitlistForm from "./waitlist-form";
 
 const logoClass =
   "h-28 w-28 rounded-3xl ring-1 ring-[var(--logo-ring)] sm:h-32 sm:w-32";
@@ -36,14 +36,14 @@ export default function Home() {
         <h1 className="font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] sm:text-5xl">
           Create workflows, automate work, get paid.
         </h1>
-        <WaitlistForm />
+        <BookingWidget />
       </section>
 
       <Link
         href="/privacy"
-        className="text-sm text-[var(--muted-text)] underline decoration-[var(--field-border)] underline-offset-4 transition-opacity hover:opacity-65"
+        className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
       >
-        Datenschutz
+        Privacy
       </Link>
     </main>
   );

@@ -3,8 +3,8 @@ import Link from "next/link";
 import ThemeToggle from "../theme-toggle";
 
 export const metadata: Metadata = {
-  title: "Datenschutz | Skilldwork",
-  description: "Datenschutzhinweise für Meta-Lead-Formulare von Skilldwork.",
+  title: "Privacy | Skilldwork",
+  description: "Privacy notice for Skilldwork Meta lead forms.",
 };
 
 const sectionClass = "space-y-3";
@@ -12,7 +12,7 @@ const headingClass = "text-xl font-semibold tracking-tight text-[var(--text)]";
 
 export default function PrivacyPage() {
   return (
-    <main lang="de" className="relative min-h-screen px-4 py-6 sm:px-6 sm:py-12">
+    <main className="relative min-h-screen px-4 py-6 sm:px-6 sm:py-12">
       <div className="mx-auto flex w-full max-w-3xl items-center justify-between pb-6">
         <Link
           href="/"
@@ -27,20 +27,20 @@ export default function PrivacyPage() {
         <header className="space-y-3 border-b border-[var(--card-border)] pb-7">
           <p className="text-sm font-medium uppercase tracking-[0.16em]">Skilldwork</p>
           <h1 className="font-display text-4xl leading-tight tracking-tight text-[var(--text)] sm:text-5xl">
-            Datenschutz
+            Privacy
           </h1>
           <p className="max-w-2xl leading-7">
-            Diese Hinweise gelten für Kontaktdaten, die du uns über ein Lead-Formular auf
-            Facebook oder Instagram übermittelst.
+            This notice applies to contact details you submit through a lead form on Facebook or
+            Instagram.
           </p>
         </header>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>1. Verantwortlicher</h2>
+          <h2 className={headingClass}>1. Controller</h2>
           <address className="not-italic leading-7">
             Dwayne Henneberg (Skilldwork)
             <br />
-            E-Mail:{" "}
+            Email:{" "}
             <a
               href="mailto:hello@skilldwork.com"
               className="text-[var(--text)] underline decoration-[var(--field-border-focus)] underline-offset-4 hover:opacity-65"
@@ -51,65 +51,62 @@ export default function PrivacyPage() {
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>2. Welche Daten wir verarbeiten</h2>
+          <h2 className={headingClass}>2. Data we process</h2>
           <p className="leading-7">
-            Wenn du unser Meta-Lead-Formular absendest, erhalten und verarbeiten wir die von dir
-            angegebene Telefonnummer. Meta verarbeitet Daten außerdem nach den eigenen{" "}
+            When you submit our Meta lead form, we receive and process the phone number you
+            provide. Meta also processes data under its own{" "}
             <a
               href="https://www.facebook.com/privacy/policy/"
               target="_blank"
               rel="noreferrer"
               className="text-[var(--text)] underline decoration-[var(--field-border-focus)] underline-offset-4 hover:opacity-65"
             >
-              Datenschutzbestimmungen
+              Privacy Policy
             </a>
             .
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>3. Zweck und Rechtsgrundlage</h2>
+          <h2 className={headingClass}>3. Purpose and legal basis</h2>
           <p className="leading-7">
-            Wir verwenden deine Telefonnummer ausschließlich, um dich zu dem in der Anzeige
-            beschriebenen Angebot zu kontaktieren und deine Anfrage zu beantworten. Die
-            Verarbeitung erfolgt auf Grundlage deiner freiwilligen Einwilligung nach Art. 6 Abs.
-            1 lit. a DSGVO. Du kannst deine Einwilligung jederzeit mit Wirkung für die Zukunft per
-            E-Mail an uns widerrufen.
+            We use your phone number only to contact you about the offer described in the ad and
+            to respond to your request. Processing is based on your voluntary consent under Art.
+            6(1)(a) GDPR. You may withdraw your consent at any time with effect for the future by
+            emailing us.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>4. Empfänger und Speicherdauer</h2>
+          <h2 className={headingClass}>4. Recipients and retention</h2>
           <p className="leading-7">
-            Wir geben deine Telefonnummer nicht zu Werbezwecken an Dritte weiter. Sie wird nur so
-            lange gespeichert, wie sie für die Kontaktaufnahme und Bearbeitung deiner Anfrage
-            erforderlich ist. Nach einem Widerruf oder wenn der Zweck entfällt, löschen wir sie,
-            sofern keine gesetzliche Aufbewahrungspflicht entgegensteht.
+            We do not share your phone number with third parties for advertising purposes. We
+            retain it only for as long as necessary to contact you and handle your request. We
+            delete it when you withdraw your consent or the purpose no longer applies, unless a
+            legal retention obligation requires otherwise.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>5. Deine Rechte</h2>
+          <h2 className={headingClass}>5. Your rights</h2>
           <p className="leading-7">
-            Du hast im Rahmen der gesetzlichen Voraussetzungen das Recht auf Auskunft,
-            Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit. Du
-            kannst außerdem deine Einwilligung widerrufen und dich bei einer zuständigen
-            Datenschutzaufsichtsbehörde beschweren. Zur Ausübung deiner Rechte genügt eine E-Mail
-            an die oben genannte Adresse.
+            Subject to the legal requirements, you have the right to access, correct, erase,
+            restrict the processing of, and receive a copy of your data. You may also withdraw
+            your consent and lodge a complaint with a competent data protection authority. To
+            exercise your rights, email the address above.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>6. Freiwilligkeit</h2>
+          <h2 className={headingClass}>6. Voluntary submission</h2>
           <p className="leading-7">
-            Die Angabe deiner Telefonnummer ist freiwillig. Ohne sie können wir dich nicht
-            telefonisch kontaktieren. Eine automatisierte Entscheidungsfindung oder ein
-            Profiling durch Skilldwork findet dabei nicht statt.
+            Providing your phone number is voluntary. Without it, we cannot contact you by phone.
+            Skilldwork does not use automated decision-making or profiling for this purpose.
           </p>
         </section>
 
         <p className="border-t border-[var(--card-border)] pt-7 text-sm">
-          Stand: 10. August 2026
+          Last updated: August 10, 2026
         </p>
       </article>
     </main>

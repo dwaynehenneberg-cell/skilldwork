@@ -15,7 +15,7 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: "skilld — Create workflows, automate work, get paid.",
-  description: "Join the skilld waitlist. Create workflows, automate work, get paid.",
+  description: "Book a call with skilld. Create workflows, automate work, get paid.",
 };
 
 export const viewport: Viewport = {
