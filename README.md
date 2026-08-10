@@ -37,6 +37,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Deployment
 
-Deploy on Vercel. Set `NEXT_PUBLIC_CALENDLY_URL` in the project's environment variables (see `.env.example`) — it powers the booking widget shown after signup.
-
-Note: the waitlist API's JSON file persistence (`data/waitlist.json`) only works outside serverless. On Vercel the filesystem is read-only, so name/company entries are logged instead of persisted; bookings are recorded in Calendly.
+Deploy on Vercel. Set `NEXT_PUBLIC_CALENDLY_URL` in the project's environment variables (see `.env.example`) — it powers the inline booking widget. `NEXT_PUBLIC_*` variables are baked in at build time, so redeploy after changing them. Bookings are recorded in Calendly.
