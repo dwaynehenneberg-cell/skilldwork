@@ -1,14 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect } from "react";
+import { useConsent } from "./consent";
 
-const CONSENT_KEY = "skilldwork-ad-measurement-consent";
 const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID;
-
-type Consent = "accepted" | "declined";
-
-const consentChangeEvent = "skilldwork-consent-change";
 
 declare global {
   interface Window {
@@ -20,43 +15,28 @@ declare global {
   }
 }
 
-export function trackRedditLead() {
+function trackRedditEvent(event: "Lead" | "ViewContent") {
   if (
     typeof window !== "undefined" &&
     window.__skilldworkRedditPixelInitialized &&
     window.rdt
   ) {
-    window.rdt("track", "Lead");
+    window.rdt("track", event);
   }
 }
 
-function getConsentSnapshot(): Consent | "unset" {
-  const saved = localStorage.getItem(CONSENT_KEY);
-  return saved === "accepted" || saved === "declined" ? saved : "unset";
+/** A confirmed booking — the conversion campaigns optimise for. */
+export function trackRedditLead() {
+  trackRedditEvent("Lead");
 }
 
-function subscribeToConsent(onStoreChange: () => void) {
-  window.addEventListener("storage", onStoreChange);
-  window.addEventListener(consentChangeEvent, onStoreChange);
-  return () => {
-    window.removeEventListener("storage", onStoreChange);
-    window.removeEventListener(consentChangeEvent, onStoreChange);
-  };
-}
-
-function saveConsent(value: Consent) {
-  localStorage.setItem(CONSENT_KEY, value);
-  window.dispatchEvent(new Event(consentChangeEvent));
+/** The scheduler was opened, the step between a visit and a booking. */
+export function trackRedditBookingOpened() {
+  trackRedditEvent("ViewContent");
 }
 
 export default function RedditPixel() {
-  const consent = useSyncExternalStore(
-    subscribeToConsent,
-    getConsentSnapshot,
-    () => "unset",
-  );
-  const [isEditing, setIsEditing] = useState(false);
-  const isChoosing = consent === "unset" || isEditing;
+  const consent = useConsent();
 
   useEffect(() => {
     if (
@@ -92,54 +72,5 @@ export default function RedditPixel() {
     window.__skilldworkRedditPixelInitialized = true;
   }, [consent]);
 
-  function choose(value: Consent) {
-    saveConsent(value);
-    setIsEditing(false);
-  }
-
-  return (
-    <>
-      {isChoosing ? (
-        <aside
-          aria-label="Privacy choices"
-          className="fixed inset-x-3 bottom-3 z-50 rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] p-3 shadow-lg shadow-black/15 sm:left-3 sm:right-auto sm:w-[22rem]"
-        >
-          <p className="text-xs leading-5 text-[var(--muted-text)]">
-            Allow optional Reddit measurement for visits and completed bookings.{" "}
-            <Link
-              href="/privacy"
-              className="text-[var(--text)] underline underline-offset-4"
-            >
-              Learn more
-            </Link>
-            .
-          </p>
-          <div className="mt-2 flex gap-2">
-            <button
-              className="flex-1 rounded-full border border-[var(--field-border)] px-3 py-2 text-xs font-medium text-[var(--text)] transition hover:bg-[var(--field-bg)]"
-              onClick={() => choose("declined")}
-              type="button"
-            >
-              No thanks
-            </button>
-            <button
-              className="flex-1 rounded-full bg-[var(--btn-bg)] px-3 py-2 text-xs font-medium text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
-              onClick={() => choose("accepted")}
-              type="button"
-            >
-              Allow
-            </button>
-          </div>
-        </aside>
-      ) : (
-        <button
-          className="fixed bottom-3 left-3 z-40 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs text-[var(--muted-text)] shadow-lg transition hover:text-[var(--text)]"
-          onClick={() => setIsEditing(true)}
-          type="button"
-        >
-          Privacy choices
-        </button>
-      )}
-    </>
-  );
+  return null;
 }

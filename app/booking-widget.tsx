@@ -3,7 +3,10 @@
 import Script from "next/script";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { OPEN_BOOKING_EVENT, requestBookingOpen } from "./booking-intent";
-import { trackRedditLead } from "./reddit-pixel";
+import { getCalendlyUtmParams } from "./campaign";
+import { COPY, type Locale } from "./copy";
+import { trackMetaBookingOpened, trackMetaSchedule } from "./meta-pixel";
+import { trackRedditBookingOpened, trackRedditLead } from "./reddit-pixel";
 
 type Step = "idle" | "book" | "done";
 type CalendlyStatus = "idle" | "loading" | "ready" | "error";
@@ -22,12 +25,20 @@ declare global {
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL;
 const CALENDLY_STYLESHEET_ID = "calendly-widget-styles";
 
-export default function BookingWidget() {
+// Only used after mount, so reading the stored campaign cannot desync hydration.
+function schedulingPageUrl(baseUrl: string) {
+  const query = new URLSearchParams(getCalendlyUtmParams()).toString();
+  return query ? `${baseUrl}?${query}` : baseUrl;
+}
+
+export default function BookingWidget({ locale }: { locale: Locale }) {
+  const copy = COPY[locale].booking;
   const [step, setStep] = useState<Step>("idle");
   const [calendlyStatus, setCalendlyStatus] = useState<CalendlyStatus>("idle");
   const [bookingRequest, setBookingRequest] = useState(0);
   const embedRef = useRef<HTMLDivElement>(null);
   const leadTrackedRef = useRef(false);
+  const bookingOpenTrackedRef = useRef(false);
 
   function showHowItWorks() {
     document.getElementById("how-it-works")?.scrollIntoView({
@@ -41,6 +52,11 @@ export default function BookingWidget() {
       if (CALENDLY_URL) {
         setStep((current) => (current === "done" ? current : "book"));
         setCalendlyStatus((current) => (current === "ready" ? current : "loading"));
+        if (!bookingOpenTrackedRef.current) {
+          bookingOpenTrackedRef.current = true;
+          trackRedditBookingOpened();
+          trackMetaBookingOpened();
+        }
       }
       setBookingRequest((current) => current + 1);
     }
@@ -68,6 +84,7 @@ export default function BookingWidget() {
       ) {
         leadTrackedRef.current = true;
         trackRedditLead();
+        trackMetaSchedule();
         setStep("done");
       }
     }
@@ -109,6 +126,7 @@ export default function BookingWidget() {
       background_color: dark ? "1a1a19" : "ffffff",
       text_color: dark ? "ffffff" : "0a0a0a",
       primary_color: dark ? "ffffff" : "0a0a0a",
+      ...getCalendlyUtmParams(),
     });
 
     calendly.initInlineWidget({
@@ -120,7 +138,7 @@ export default function BookingWidget() {
   if (step === "done") {
     return (
       <div className="mt-8 rounded-2xl border border-[var(--card-border)] bg-[var(--field-bg)] px-5 py-4 text-sm text-[var(--muted-text)]">
-        Thanks — your call is booked. We look forward to talking to you.
+        {copy.done}
       </div>
     );
   }
@@ -135,8 +153,7 @@ export default function BookingWidget() {
           onReady={() => setCalendlyStatus(window.Calendly ? "ready" : "error")}
         />
         <p className="mb-3 text-sm text-[var(--muted-text)]">
-          Pick a time that works for you. It&rsquo;s a workflow fit call &mdash; bring one
-          repeatable service.
+          {copy.intro}
         </p>
         <div className="relative h-[620px] w-full min-w-0 overflow-hidden rounded-2xl bg-[var(--field-bg)] sm:h-[700px]">
           <div ref={embedRef} className="h-full w-full" />
@@ -145,7 +162,7 @@ export default function BookingWidget() {
               className="absolute inset-0 grid place-items-center px-6 text-center text-sm text-[var(--muted-text)]"
               role="status"
             >
-              Loading available times…
+              {copy.loading}
             </p>
           ) : null}
           {calendlyStatus === "error" && CALENDLY_URL ? (
@@ -155,15 +172,15 @@ export default function BookingWidget() {
             >
               <div>
                 <p className="text-sm text-[var(--muted-text)]">
-                  The scheduler did not load in this page.
+                  {copy.error}
                 </p>
                 <a
                   className="mt-4 inline-flex rounded-full bg-[var(--btn-bg)] px-5 py-3 font-display text-xs uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
-                  href={CALENDLY_URL}
+                  href={schedulingPageUrl(CALENDLY_URL)}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  Open scheduling page
+                  {copy.openScheduler}
                 </a>
               </div>
             </div>
@@ -181,16 +198,16 @@ export default function BookingWidget() {
         onClick={requestBookingOpen}
         type="button"
       >
-        <span className="block">Build your workflow</span>
+        <span className="block">{copy.primary}</span>
         {CALENDLY_URL ? (
           <span className="mt-0.5 block font-sans text-[0.68rem] normal-case tracking-normal opacity-70">
-            Starts with a 30-minute workflow fit call
+            {copy.primaryNote}
           </span>
         ) : null}
       </button>
       {!CALENDLY_URL && (
         <p className="mt-2 text-center text-sm text-[var(--muted-text)]" role="status">
-          Booking is temporarily unavailable.
+          {copy.unavailable}
         </p>
       )}
       <button
@@ -198,7 +215,7 @@ export default function BookingWidget() {
         onClick={showHowItWorks}
         type="button"
       >
-        See how it works
+        {copy.secondary}
       </button>
     </div>
   );

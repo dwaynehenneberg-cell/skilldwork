@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BookingWidget from "./booking-widget";
+import { COPY, PRIVACY_PATH, type Locale } from "./copy";
 import Mission from "./mission";
 import { revealOnLoad } from "./reveal";
 import ThemeToggle from "./theme-toggle";
@@ -9,7 +10,10 @@ import WorkflowMap from "./workflow-map";
 const logoClass =
   "h-28 w-28 rounded-3xl ring-1 ring-[var(--logo-ring)] sm:h-32 sm:w-32";
 
-export default function Home() {
+/** The landing page itself. Both locales render it; only the strings differ. */
+export default function Home({ locale }: { locale: Locale }) {
+  const copy = COPY[locale];
+
   return (
     <main className="relative min-h-screen">
       <header className="absolute left-4 top-4 z-10 sm:left-10 sm:top-8">
@@ -32,7 +36,7 @@ export default function Home() {
       </header>
 
       <div className="absolute right-6 top-6 z-10 sm:right-10 sm:top-8">
-        <ThemeToggle />
+        <ThemeToggle locale={locale} />
       </div>
 
       <section
@@ -43,29 +47,29 @@ export default function Home() {
           <p
             className={`${revealOnLoad} mb-3 text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]`}
           >
-            For freelancers, agencies, and expert service businesses
+            {copy.hero.eyebrow}
           </p>
           <h1
             className={`${revealOnLoad} font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] [animation-delay:100ms] sm:text-5xl`}
           >
-            Turn your service into an automatable workflow.
+            {copy.hero.title}
           </h1>
           <div className={`${revealOnLoad} [animation-delay:200ms]`}>
-            <BookingWidget />
+            <BookingWidget locale={locale} />
           </div>
         </div>
       </section>
 
-      <WorkflowMap />
+      <WorkflowMap locale={locale} />
 
-      <Mission />
+      <Mission locale={locale} />
 
       <footer className="px-4 pb-8 text-center sm:px-6">
         <Link
-          href="/privacy"
+          href={PRIVACY_PATH[locale]}
           className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
         >
-          Privacy
+          {copy.footer.privacy}
         </Link>
       </footer>
     </main>
