@@ -66,7 +66,7 @@ export default function RedditPixel() {
 
   const pixelCode = REDDIT_PIXEL_ID
     ? `if (!window.__skilldworkRedditPixelInitialized) {
-  !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(Array.prototype.slice.call(arguments))};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js";t.async=true;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+  !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(Array.prototype.slice.call(arguments))};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js?pixel_id=${encodeURIComponent(REDDIT_PIXEL_ID)}";t.async=true;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
   rdt("init", ${JSON.stringify(REDDIT_PIXEL_ID)}, {optOut:false,useDecimalCurrencyValues:true});
   rdt("track", "PageVisit");
   window.__skilldworkRedditPixelInitialized = true;
@@ -84,11 +84,10 @@ export default function RedditPixel() {
       {isChoosing ? (
         <aside
           aria-label="Privacy choices"
-          className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-xl rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] p-4 shadow-2xl shadow-black/20 sm:p-5"
+          className="fixed inset-x-3 bottom-3 z-50 rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] p-3 shadow-lg shadow-black/15 sm:left-3 sm:right-auto sm:w-[22rem]"
         >
-          <p className="text-sm leading-6 text-[var(--muted-text)]">
-            With your permission, we use the Reddit Pixel to measure page visits and completed
-            bookings from our ads.{" "}
+          <p className="text-xs leading-5 text-[var(--muted-text)]">
+            Allow optional Reddit measurement for visits and completed bookings.{" "}
             <Link
               href="/privacy"
               className="text-[var(--text)] underline underline-offset-4"
@@ -97,20 +96,20 @@ export default function RedditPixel() {
             </Link>
             .
           </p>
-          <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <div className="mt-2 flex gap-2">
             <button
-              className="rounded-full border border-[var(--field-border)] px-4 py-2.5 text-sm font-medium text-[var(--text)] transition hover:bg-[var(--field-bg)]"
+              className="flex-1 rounded-full border border-[var(--field-border)] px-3 py-2 text-xs font-medium text-[var(--text)] transition hover:bg-[var(--field-bg)]"
               onClick={() => choose("declined")}
               type="button"
             >
-              Decline
+              No thanks
             </button>
             <button
-              className="rounded-full bg-[var(--btn-bg)] px-4 py-2.5 text-sm font-medium text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
+              className="flex-1 rounded-full bg-[var(--btn-bg)] px-3 py-2 text-xs font-medium text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
               onClick={() => choose("accepted")}
               type="button"
             >
-              Allow measurement
+              Allow
             </button>
           </div>
         </aside>
