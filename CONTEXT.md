@@ -37,7 +37,7 @@ The recurring cycle in which Service Provider marketing brings a Client into Dig
 _Avoid_: Single order flow, funnel, Growth Loop
 
 **Improvement Loop**:
-The built-in feedback cycle in which the Improvement Agent identifies patterns from completed Service Runs, suggests a workflow version in the Provider Workspace, and returns an approved version to Digital Service Execution.
+The built-in feedback cycle in which the Revision Agent identifies patterns from Service Runs, suggests a workflow version in the Provider Workspace, and returns an approved version to Digital Service Execution.
 _Avoid_: Automatic live modification, separate agent setup, Service Loop
 
 **Sales Page**:
@@ -56,10 +56,6 @@ _Avoid_: Client Portal, admin page
 One Client's execution of the digital service from purchase and onboarding through processing, revisions, and completion.
 _Avoid_: Workflow Build, client session
 
-**Revision Flow**:
-A revision request remains part of the active Service Run and returns the Result directly to the Execution Workflow. It is not an improvement mechanism or a separate agent.
-_Avoid_: Revision Agent, Improvement Loop, separate setup
-
-**Improvement Agent**:
-The built-in Skilldwork Platform agent that finds reusable improvements across completed Service Runs. The Service Provider reviews a suggested workflow version before it affects future runs.
-_Avoid_: Revision Agent, automatic live modification, standalone tool
+**Revision Agent**:
+The built-in Skilldwork Platform agent that captures revision feedback, identifies recurring patterns, and suggests workflow improvements in the Provider Workspace. It requires no separate setup or operation, and a suggestion does not change the active workflow until the Service Provider approves it.
+_Avoid_: Self-Improvement Agent, Revision Intelligence, standalone tool, HITL

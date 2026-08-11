@@ -2,45 +2,78 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 
-const STEP_ORDER = ["build", "market", "fulfill", "improve"] as const;
-type StepId = (typeof STEP_ORDER)[number];
+type StepId = "build" | "market" | "fulfill" | "improve";
 
-const STEP_SUMMARY: Record<StepId, string> = {
-  build: "We connect your Sales Page, Client Portal, and repeatable delivery workflow.",
-  market: "You create demand and send clients to one result-based Sales Page.",
-  fulfill: "Each order moves from onboarding to execution, review, and delivery.",
-  improve: "Completed runs improve the workflow used for the next client.",
+type StepInfo = {
+  eyebrow: string;
+  title: string;
+  summary: string;
+  bullets: string[];
+};
+
+const STEP_INFO: Record<StepId, StepInfo> = {
+  build: {
+    eyebrow: "01 · Build",
+    title: "Build your workflow",
+    summary: "We turn your service into a connected sales and fulfillment system.",
+    bullets: [
+      "Map the result and repeatable service steps",
+      "Build the result-based Sales Page",
+      "Connect the Client Portal and Execution Workflow",
+    ],
+  },
+  market: {
+    eyebrow: "02 · Market · handled by you",
+    title: "Create demand and share one link",
+    summary: "You focus on marketing while the system handles what happens after purchase.",
+    bullets: [
+      "Content, outreach, and relationships stay with you",
+      "Clients choose a result-based Offer",
+      "A purchase starts fulfillment automatically",
+    ],
+  },
+  fulfill: {
+    eyebrow: "03 · Fulfill · automated",
+    title: "Deliver the result in one connected flow",
+    summary: "Onboarding, execution, results, and revisions remain connected to the same Service Run.",
+    bullets: [
+      "Client Portal Onboarding collects the required inputs",
+      "The Execution Workflow performs the repeatable work",
+      "Revise returns to Execution; Accept completes the result",
+    ],
+  },
+  improve: {
+    eyebrow: "04 · Improve · built into Skilldwork",
+    title: "The Revision Agent improves future runs",
+    summary: "The agent is part of the Skilldwork Platform—there is nothing separate to set up or operate.",
+    bullets: [
+      "Captures revision patterns across Service Runs",
+      "Suggests a safer workflow version inside the platform",
+      "You review and apply useful changes before they go live",
+    ],
+  },
+};
+
+const STEP_POSITION: Record<StepId, string> = {
+  build: "md:left-[13%]",
+  market: "md:left-[36%]",
+  fulfill: "md:right-[8%]",
+  improve: "md:right-[24%]",
 };
 
 const activeClass =
-  "transition duration-300 data-[active=true]:-translate-y-1 data-[active=true]:ring-2 data-[active=true]:ring-[var(--text)] data-[active=true]:shadow-lg motion-reduce:transition-none";
+  "transition duration-500 data-[active=true]:-translate-y-1 data-[active=true]:ring-2 data-[active=true]:ring-[var(--text)] data-[active=true]:shadow-lg motion-reduce:transition-none";
 const stageClass =
-  "relative -m-2 rounded-xl p-2 transition duration-300 data-[focused=true]:bg-[var(--field-bg)] data-[focused=true]:ring-1 data-[focused=true]:ring-[var(--field-border-focus)] md:data-[focused=true]:z-10 md:data-[focused=true]:scale-[1.025] motion-reduce:transition-none";
+  "relative -m-2 rounded-xl p-2 transition duration-500 data-[focused=true]:bg-[var(--field-bg)] data-[focused=true]:ring-1 data-[focused=true]:ring-[var(--field-border-focus)] md:data-[focused=true]:z-10 md:data-[focused=true]:scale-[1.025] motion-reduce:transition-none";
 
-function FlowArrow({ label }: { label?: string }) {
+function FlowArrow() {
   return (
     <div
       aria-hidden="true"
-      className="flex min-h-10 shrink-0 flex-col items-center justify-center gap-0.5 text-center text-[var(--muted-text)]"
+      className="flex min-h-8 shrink-0 flex-col items-center justify-center text-[var(--muted-text)]"
     >
-      {label ? (
-        <span className="max-w-20 text-[0.46rem] font-semibold uppercase tracking-[0.1em]">
-          {label}
-        </span>
-      ) : null}
       <span className="rotate-90 text-xl xl:rotate-0">→</span>
     </div>
-  );
-}
-
-function InnerArrow() {
-  return (
-    <span
-      className="rotate-90 text-center text-sm text-[var(--muted-text)] sm:rotate-0"
-      aria-hidden="true"
-    >
-      →
-    </span>
   );
 }
 
@@ -103,60 +136,54 @@ function StepLabel({ children }: { children: ReactNode }) {
   );
 }
 
-function ReturnRail({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return (
-    <div
-      className={`relative mt-2 flex h-11 items-end justify-center rounded-b-xl border-x border-b border-[var(--workflow-blue)] px-8 pb-1.5 text-center text-[0.5rem] font-semibold uppercase tracking-[0.08em] text-[var(--muted-text)] ${className}`}
-    >
-      <span
-        aria-hidden="true"
-        className="absolute -left-1 -top-2 text-lg leading-none text-[var(--workflow-blue)]"
-      >
-        ↑
-      </span>
-      {children}
-    </div>
-  );
-}
-
-type StepFooterProps = {
-  onNavigate: (step: StepId, direction: -1 | 1) => void;
+type StepPopoverProps = {
+  announce: boolean;
+  interactive: boolean;
+  onClose: () => void;
   step: StepId;
 };
 
-function StepFooter({ onNavigate, step }: StepFooterProps) {
-  const index = STEP_ORDER.indexOf(step);
+function StepPopover({ announce, interactive, onClose, step }: StepPopoverProps) {
+  const info = STEP_INFO[step];
 
   return (
-    <div className="mt-3 border-t border-[var(--card-border)] pt-3">
-      <p className="text-xs leading-5 text-[var(--muted-text)]">{STEP_SUMMARY[step]}</p>
-      <nav
-        aria-label={`${step} step navigation`}
-        className="mt-3 flex items-center justify-between md:hidden"
-      >
-        <button
-          type="button"
-          onClick={() => onNavigate(step, -1)}
-          disabled={index === 0}
-          aria-label="Previous step"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--field-border-focus)] text-lg text-[var(--text)] transition disabled:cursor-not-allowed disabled:opacity-25"
-        >
-          ←
-        </button>
-        <span className="text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)]">
-          {index + 1} / {STEP_ORDER.length}
-        </span>
-        <button
-          type="button"
-          onClick={() => onNavigate(step, 1)}
-          disabled={index === STEP_ORDER.length - 1}
-          aria-label="Next step"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--field-border-focus)] text-lg text-[var(--text)] transition disabled:cursor-not-allowed disabled:opacity-25"
-        >
-          →
-        </button>
-      </nav>
-    </div>
+    <aside
+      id="workflow-step-popover"
+      aria-live={announce ? "polite" : undefined}
+      className={`fixed inset-x-4 bottom-4 z-50 mx-auto max-w-sm rounded-2xl border border-[var(--field-border-focus)] bg-[var(--card-bg)] p-4 shadow-2xl shadow-black/25 md:absolute md:inset-x-auto md:bottom-auto md:top-48 md:w-80 md:max-w-none ${interactive ? "" : "pointer-events-none"} ${STEP_POSITION[step]}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[0.58rem] font-semibold uppercase tracking-[0.15em] text-[var(--muted-text)]">
+            {info.eyebrow}
+          </p>
+          <h3 className="mt-1.5 font-display text-2xl leading-tight text-[var(--text)]">
+            {info.title}
+          </h3>
+        </div>
+        {interactive ? (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close step details"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--card-border)] text-lg text-[var(--text)] transition hover:bg-[var(--field-bg)]"
+          >
+            ×
+          </button>
+        ) : null}
+      </div>
+
+      <p className="mt-3 text-sm leading-5 text-[var(--text)]">{info.summary}</p>
+      <ul className="mt-3 space-y-1.5 text-xs leading-5 text-[var(--muted-text)]">
+        {info.bullets.map((bullet) => (
+          <li key={bullet} className="flex gap-2">
+            <span aria-hidden="true">→</span>
+            <span>{bullet}</span>
+          </li>
+        ))}
+      </ul>
+
+    </aside>
   );
 }
 
@@ -164,7 +191,9 @@ export default function WorkflowMap() {
   const [isMobile, setIsMobile] = useState(false);
   const [mobileActiveStep, setMobileActiveStep] = useState<StepId | null>(null);
   const [hoveredStep, setHoveredStep] = useState<StepId | null>(null);
-  const focusedStep = isMobile ? mobileActiveStep : hoveredStep;
+  const [selectedStep, setSelectedStep] = useState<StepId | null>(null);
+  const focusedStep = selectedStep ?? (isMobile ? mobileActiveStep : hoveredStep);
+  const visibleStep = focusedStep;
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -185,24 +214,24 @@ export default function WorkflowMap() {
         const sectionRect = document.getElementById("how-it-works")?.getBoundingClientRect();
         if (
           !sectionRect ||
-          sectionRect.top > viewportHeight * 0.85 ||
-          sectionRect.bottom < viewportHeight * 0.2
+          sectionRect.top > viewportHeight * 0.8 ||
+          sectionRect.bottom < viewportHeight * 0.95
         ) {
           setMobileActiveStep(null);
           return;
         }
-
-        const steps = STEP_ORDER.map((step) => {
-          const element = document.getElementById(`workflow-step-${step}`);
-          if (!element) return null;
-          const rect = element.getBoundingClientRect();
-          const isVisible = rect.bottom > viewportHeight * 0.15 && rect.top < viewportHeight * 0.8;
-          if (!isVisible) return null;
-          return {
-            step,
-            distance: Math.abs((rect.top + rect.bottom) / 2 - viewportHeight * 0.45),
-          };
-        })
+        const steps = (Object.keys(STEP_INFO) as StepId[])
+          .map((step) => {
+            const element = document.getElementById(`workflow-step-${step}`);
+            if (!element) return null;
+            const rect = element.getBoundingClientRect();
+            const isInFocusBand = rect.bottom > viewportHeight * 0.18 && rect.top < viewportHeight * 0.72;
+            if (!isInFocusBand) return null;
+            return {
+              step,
+              distance: Math.abs((rect.top + rect.bottom) / 2 - viewportHeight * 0.42),
+            };
+          })
           .filter((item): item is { step: StepId; distance: number } => item !== null)
           .sort((a, b) => a.distance - b.distance);
 
@@ -220,18 +249,13 @@ export default function WorkflowMap() {
     };
   }, [isMobile]);
 
-  function hoverStep(step: StepId | null) {
-    if (!isMobile) setHoveredStep(step);
+  function toggleStep(step: StepId) {
+    setSelectedStep((current) => (current === step ? null : step));
+    setHoveredStep(null);
   }
 
-  function navigateStep(step: StepId, direction: -1 | 1) {
-    const target = STEP_ORDER[STEP_ORDER.indexOf(step) + direction];
-    if (!target) return;
-    setMobileActiveStep(target);
-    document.getElementById(`workflow-step-${target}`)?.scrollIntoView({
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-      block: "center",
-    });
+  function hoverStep(step: StepId | null) {
+    if (!isMobile && selectedStep === null) setHoveredStep(step);
   }
 
   return (
@@ -258,8 +282,8 @@ export default function WorkflowMap() {
           </div>
 
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)]">
-            <span className="md:hidden">Scroll or use the arrows</span>
-            <span className="hidden md:inline">Hover to focus</span>
+            <span className="md:hidden">Scroll to explore</span>
+            <span className="hidden md:inline">Hover to explore</span>
           </p>
         </header>
 
@@ -292,8 +316,6 @@ export default function WorkflowMap() {
                 className={`${stageClass} flex scroll-mt-24 flex-col items-start`}
                 onMouseEnter={() => hoverStep("build")}
                 onMouseLeave={() => hoverStep(null)}
-                onFocusCapture={() => hoverStep("build")}
-                onBlurCapture={() => hoverStep(null)}
               >
                 <StepLabel>01 · Build</StepLabel>
                 <div className="flex w-full flex-col items-center">
@@ -315,8 +337,16 @@ export default function WorkflowMap() {
                   >
                     Book a call
                   </a>
+                  <button
+                    type="button"
+                    onClick={() => toggleStep("build")}
+                    aria-controls="workflow-step-popover"
+                    aria-expanded={selectedStep === "build"}
+                    className="mt-2 text-[0.58rem] font-semibold uppercase tracking-[0.14em] underline decoration-current/25 underline-offset-4"
+                  >
+                    Learn more
+                  </button>
                 </div>
-                <StepFooter onNavigate={navigateStep} step="build" />
               </div>
 
               <FlowArrow />
@@ -340,7 +370,11 @@ export default function WorkflowMap() {
                     <p className="mt-1 text-[0.6rem] opacity-65">Handled by you</p>
                   </CompactNode>
                   <span className="my-1 text-sm text-[var(--muted-text)]" aria-hidden="true">↓</span>
-                  <CompactNode active={false} kind="interface" className="w-full max-w-48 p-3">
+                  <CompactNode
+                    active={false}
+                    kind="interface"
+                    className="w-full max-w-48 p-3"
+                  >
                     <WindowHeader>Sales Page</WindowHeader>
                     <div className="grid grid-cols-[1fr_auto] gap-2">
                       <div className="space-y-1.5">
@@ -354,11 +388,20 @@ export default function WorkflowMap() {
                       </div>
                     </div>
                   </CompactNode>
+                  <p className="mt-2 text-[0.52rem] text-[var(--muted-text)]">Next client starts here ↻</p>
+                  <button
+                    type="button"
+                    onClick={() => toggleStep("market")}
+                    aria-controls="workflow-step-popover"
+                    aria-expanded={selectedStep === "market"}
+                    className="mt-2 text-[0.58rem] font-semibold uppercase tracking-[0.14em] underline decoration-current/25 underline-offset-4"
+                  >
+                    Learn more
+                  </button>
                 </div>
-                <StepFooter onNavigate={navigateStep} step="market" />
               </div>
 
-              <FlowArrow label="Client starts service" />
+              <FlowArrow />
 
               <div
                 id="workflow-step-fulfill"
@@ -372,51 +415,70 @@ export default function WorkflowMap() {
                   <p className="mb-3 text-[0.53rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)]">
                     Automated service execution
                   </p>
-                  <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-[1fr_auto_0.9fr_auto_1fr]">
-                    <CompactNode active={false} kind="interface" className="min-w-0 p-2.5">
-                      <WindowHeader>Client Portal</WindowHeader>
+                  <div className="grid grid-cols-[1fr_auto_0.9fr_auto_1fr] items-center gap-1.5">
+                    <CompactNode
+                      active={false}
+                      kind="interface"
+                      className="min-w-0 p-2.5"
+                    >
+                      <WindowHeader>Client Portal Onboarding</WindowHeader>
                       <div className="space-y-1.5">
                         <div className="h-5 border border-[var(--card-border)] bg-[var(--card-bg)]" />
                         <div className="h-5 border border-[var(--card-border)] bg-[var(--card-bg)]" />
                       </div>
-                      <div className="mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.48rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]">
-                        Start service
-                      </div>
+                      <p className="mt-2 text-[0.5rem] text-[var(--muted-text)]">Inputs + start</p>
                     </CompactNode>
 
-                    <InnerArrow />
+                    <span className="text-sm text-[var(--muted-text)]" aria-hidden="true">→</span>
 
                     <CompactNode
                       active={focusedStep === "fulfill"}
                       kind="action"
                       tone="workflow"
-                      className="mx-auto min-w-0 max-w-36 p-2.5 sm:max-w-none"
+                      className="min-w-0 p-2.5"
                     >
                       <p className="text-[0.46rem] uppercase tracking-[0.11em] opacity-70">Execution</p>
                       <p className="mt-1 font-display text-lg leading-none">Workflow</p>
                       <p className="mt-1 text-[0.46rem] opacity-70">check → deliver</p>
                     </CompactNode>
 
-                    <InnerArrow />
+                    <span className="text-sm text-[var(--muted-text)]" aria-hidden="true">→</span>
 
-                    <CompactNode active={false} kind="interface" className="min-w-0 p-2.5">
+                    <CompactNode
+                      active={false}
+                      kind="interface"
+                      className="min-w-0 p-2.5"
+                    >
                       <WindowHeader>Result</WindowHeader>
                       <div className="h-8 border border-dashed border-[var(--field-border-focus)] bg-[var(--field-bg)]" />
                       <div className="mt-2 grid grid-cols-2 gap-1 text-center text-[0.43rem] uppercase">
-                        <span className="border border-[var(--field-border-focus)] py-1">↶ Revise</span>
-                        <span className="bg-[var(--btn-bg)] py-1 text-[var(--btn-text)]">Accept →</span>
+                        <span className="border border-[var(--field-border-focus)] py-1">Revise</span>
+                        <span className="bg-[var(--btn-bg)] py-1 text-[var(--btn-text)]">Accept</span>
                       </div>
                     </CompactNode>
+                  </div>
 
-                    <ReturnRail className="sm:col-start-3 sm:col-end-6">
-                      Revision reruns the workflow
-                    </ReturnRail>
+                  <div className="mt-3 border-t border-dashed border-[var(--field-border-focus)] pt-2.5">
+                    <p className="text-center text-[0.55rem] font-semibold text-[var(--muted-text)]">
+                      ← Revise returns to the Execution Workflow
+                    </p>
+                    <p className="mt-1 text-center text-[0.52rem] text-[var(--muted-text)]">
+                      Accept → Result delivered → ready for the next client ↻
+                    </p>
                   </div>
                 </div>
-                <StepFooter onNavigate={navigateStep} step="fulfill" />
+                <button
+                  type="button"
+                  onClick={() => toggleStep("fulfill")}
+                  aria-controls="workflow-step-popover"
+                  aria-expanded={selectedStep === "fulfill"}
+                  className="mt-2 text-[0.58rem] font-semibold uppercase tracking-[0.14em] underline decoration-current/25 underline-offset-4"
+                >
+                  Learn more
+                </button>
               </div>
 
-              <FlowArrow label="Completed run" />
+              <FlowArrow />
 
               <div
                 id="workflow-step-improve"
@@ -426,39 +488,53 @@ export default function WorkflowMap() {
                 onMouseLeave={() => hoverStep(null)}
               >
                 <StepLabel>04 · Improve</StepLabel>
-                <div className="flex flex-col items-center">
-                  <CompactNode
-                    active={focusedStep === "improve"}
-                    kind="action"
-                    tone="workflow"
-                    className="w-full max-w-36"
-                  >
-                    <p className="text-[0.48rem] uppercase tracking-[0.12em] opacity-70">Completed runs</p>
-                    <h3 className="mt-2 font-display text-xl leading-none">Improvement Agent</h3>
-                    <p className="mt-2 text-[0.5rem] opacity-75">Finds reusable improvements</p>
-                  </CompactNode>
-                  <span className="my-1 text-sm text-[var(--muted-text)]" aria-hidden="true">↓</span>
-                  <div className="bg-[var(--workflow-accent)] px-3 py-2 text-center text-[0.5rem] font-semibold uppercase tracking-wider text-black">
-                    Review &amp; apply
+                <CompactNode
+                  active={focusedStep === "improve"}
+                  kind="interface"
+                  className="p-3"
+                >
+                  <WindowHeader>Skilldwork Platform</WindowHeader>
+                  <div className="relative mt-6 rounded-md border border-[var(--card-border)] bg-[var(--field-bg)] p-3 pt-12">
+                    <span className="absolute left-3 top-3 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] px-2 py-1 text-[0.44rem] font-semibold uppercase tracking-wide text-[var(--muted-text)]">
+                      Built in
+                    </span>
+                    <div
+                      data-active={focusedStep === "improve"}
+                      className={`${activeClass} absolute -right-2 -top-6 flex h-20 w-20 flex-col items-center justify-center rounded-full bg-[var(--workflow-blue)] p-2 text-center text-white shadow-lg`}
+                    >
+                      <p className="font-display text-base leading-none">Revision Agent</p>
+                      <p className="mt-1 text-[0.42rem] uppercase tracking-wide opacity-75">Platform agent</p>
+                    </div>
+                    <p className="text-[0.5rem] uppercase tracking-[0.12em] text-[var(--muted-text)]">
+                      Suggested improvement
+                    </p>
+                    <p className="mt-1 text-[0.62rem] font-semibold">Workflow v2 ready to review</p>
+                    <div
+                      className="mt-3 inline-flex bg-[var(--workflow-accent)] px-2.5 py-1.5 text-[0.48rem] font-semibold uppercase tracking-wider text-black"
+                    >
+                      Review & apply
+                    </div>
                   </div>
-                  <ReturnRail className="w-full xl:hidden">
-                    Improved workflow feeds the next run
-                  </ReturnRail>
-                </div>
-                <StepFooter onNavigate={navigateStep} step="improve" />
+                  <p className="mt-3 text-center text-[0.52rem] text-[var(--muted-text)]">
+                    ↶ Approved update returns to Execution
+                  </p>
+                </CompactNode>
+                <button
+                  type="button"
+                  onClick={() => toggleStep("improve")}
+                  aria-controls="workflow-step-popover"
+                  aria-expanded={selectedStep === "improve"}
+                  className="mt-2 text-[0.58rem] font-semibold uppercase tracking-[0.14em] underline decoration-current/25 underline-offset-4"
+                >
+                  Learn more
+                </button>
               </div>
-            </div>
-
-            <div className="mt-1 hidden xl:grid xl:grid-cols-[0.75fr_1.25rem_0.95fr_1.25rem_2.35fr_1.25rem_1.35fr]">
-              <ReturnRail className="col-start-5 col-end-8">
-                Approved improvement returns to the Execution Workflow
-              </ReturnRail>
             </div>
           </div>
 
           <div className="flex flex-col gap-3 rounded-xl bg-[var(--field-bg)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs leading-5 text-[var(--text)] sm:text-sm">
-              You create demand. Skilldwork delivers each service and improves the next run.
+              You create demand. Skilldwork coordinates delivery and makes approved improvements reusable.
             </p>
             <a
               href="#book"
@@ -468,6 +544,15 @@ export default function WorkflowMap() {
             </a>
           </div>
         </div>
+
+        {visibleStep ? (
+          <StepPopover
+            announce={isMobile && selectedStep === null}
+            interactive={selectedStep !== null}
+            onClose={() => setSelectedStep(null)}
+            step={visibleStep}
+          />
+        ) : null}
       </div>
     </section>
   );
