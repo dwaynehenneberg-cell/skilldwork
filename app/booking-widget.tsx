@@ -176,18 +176,19 @@ export default function BookingWidget() {
   return (
     <div className="mt-8">
       <button
-        className="w-full rounded-full bg-[var(--btn-bg)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)] disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-full bg-[var(--btn-bg)] px-5 py-3 font-display text-sm uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         disabled={!CALENDLY_URL}
         onClick={requestBookingOpen}
         type="button"
       >
-        Build your workflow
+        <span className="block">Build your workflow</span>
+        {CALENDLY_URL ? (
+          <span className="mt-0.5 block font-sans text-[0.68rem] normal-case tracking-normal opacity-70">
+            Starts with a 30-minute workflow fit call
+          </span>
+        ) : null}
       </button>
-      {CALENDLY_URL ? (
-        <p className="mt-2 text-center text-xs text-[var(--muted-text)]">
-          Starts with a 30-minute workflow fit call.
-        </p>
-      ) : (
+      {!CALENDLY_URL && (
         <p className="mt-2 text-center text-sm text-[var(--muted-text)]" role="status">
           Booking is temporarily unavailable.
         </p>
