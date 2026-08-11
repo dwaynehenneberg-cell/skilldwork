@@ -135,7 +135,8 @@ export default function BookingWidget() {
           onReady={() => setCalendlyStatus(window.Calendly ? "ready" : "error")}
         />
         <p className="mb-3 text-sm text-[var(--muted-text)]">
-          Pick a time that works for you:
+          Pick a time that works for you. It&rsquo;s a workflow fit call &mdash; bring one
+          repeatable service.
         </p>
         <div className="relative h-[620px] w-full min-w-0 overflow-hidden rounded-2xl bg-[var(--field-bg)] sm:h-[700px]">
           <div ref={embedRef} className="h-full w-full" />
@@ -180,11 +181,11 @@ export default function BookingWidget() {
         onClick={requestBookingOpen}
         type="button"
       >
-        Book a call
+        Build your workflow
       </button>
       {CALENDLY_URL ? (
         <p className="mt-2 text-center text-xs text-[var(--muted-text)]">
-          30-minute workflow fit call · Bring one repeatable service.
+          Starts with a 30-minute workflow fit call.
         </p>
       ) : (
         <p className="mt-2 text-center text-sm text-[var(--muted-text)]" role="status">

@@ -900,7 +900,7 @@ export default function WorkflowMap() {
               onClick={requestBookingOpen}
               type="button"
             >
-              Build my workflow
+              Build your workflow
             </button>
           </div>
         </div>
