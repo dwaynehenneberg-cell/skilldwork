@@ -511,14 +511,34 @@ function ImprovementVisual({
   );
 }
 
+/**
+ * The loop back into the workflow: down the right rail, left along the bottom, up to the arrow
+ * on the left. Square corners rather than a rounded box, so the sweep can travel each leg.
+ */
 function ReturnPath({ active, children, className = "" }: { active: boolean; children: ReactNode; className?: string }) {
+  const rail = "absolute bg-[var(--field-border-focus)]";
+
   return (
     <div
       aria-hidden="true"
       data-active={active}
-      className={`relative flex h-11 items-end justify-center rounded-b-xl border-x border-b border-[var(--field-border-focus)] px-7 pb-1.5 text-center text-[0.45rem] font-semibold uppercase tracking-[0.08em] text-[var(--muted-text)] transition duration-500 data-[active=true]:border-[var(--workflow-blue)] data-[active=true]:text-[var(--workflow-blue)] data-[active=true]:drop-shadow-[0_0_5px_var(--workflow-blue)] motion-reduce:transition-none ${className}`}
+      className={`group relative flex h-11 items-end justify-center px-7 pb-1.5 text-center text-[0.45rem] font-semibold uppercase tracking-[0.08em] ${connectorLitClass} ${className}`}
     >
-      <ArrowHead className="absolute -left-[5.5px] -top-1.5 -rotate-90" />
+      <span className={`${rail} right-0 top-0 h-full w-px`} />
+      <span className={`${rail} bottom-0 left-0 h-px w-full`} />
+      <span className={`${rail} left-0 top-0 h-full w-px`} />
+
+      <span
+        className={`${sweepClass} right-0 top-0 h-0 w-px group-data-[active=true]:h-full group-data-[active=true]:duration-[120ms]`}
+      />
+      <span
+        className={`${sweepClass} bottom-0 right-0 h-px w-0 group-data-[active=true]:w-full group-data-[active=true]:delay-[120ms] group-data-[active=true]:duration-[360ms]`}
+      />
+      <span
+        className={`${sweepClass} bottom-0 left-0 h-0 w-px group-data-[active=true]:h-full group-data-[active=true]:delay-[480ms] group-data-[active=true]:duration-[120ms]`}
+      />
+
+      <ArrowHead className="absolute -left-[4.5px] -top-1.5 -rotate-90" />
       {children}
     </div>
   );

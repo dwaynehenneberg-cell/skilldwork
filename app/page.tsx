@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BookingWidget from "./booking-widget";
+import Mission from "./mission";
 import ThemeToggle from "./theme-toggle";
 import WorkflowMap from "./workflow-map";
 
@@ -49,6 +50,8 @@ export default function Home() {
       </section>
 
       <WorkflowMap />
+
+      <Mission />
 
       <footer className="px-4 pb-8 text-center sm:px-6">
         <Link
