@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { requestBookingOpen } from "./booking-intent";
+import { revealOnView } from "./reveal";
+import ScrollReveal from "./scroll-reveal";
 
 const STEP_ORDER = ["build", "market", "fulfill", "improve"] as const;
 type StepId = (typeof STEP_ORDER)[number];
@@ -837,20 +839,24 @@ export default function WorkflowMap() {
     >
       <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-2xl shadow-black/10 dark:shadow-black/60">
         <header className="grid gap-5 border-b border-[var(--card-border)] p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div className="max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
+          <ScrollReveal className="max-w-3xl">
+            <p
+              className={`${revealOnView} text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]`}
+            >
               How it works
             </p>
             <h2
               id="workflow-title"
-              className="mt-3 font-display text-4xl leading-[1.05] tracking-tight text-[var(--text)] sm:text-5xl"
+              className={`${revealOnView} mt-3 font-display text-4xl leading-[1.05] tracking-tight text-[var(--text)] delay-100 sm:text-5xl`}
             >
               Build. Market. Fulfill. Improve.
             </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted-text)] sm:text-base">
+            <p
+              className={`${revealOnView} mt-3 max-w-2xl text-sm leading-6 text-[var(--muted-text)] delay-200 sm:text-base`}
+            >
               Four connected steps turn your service into a system that delivers and learns.
             </p>
-          </div>
+          </ScrollReveal>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)]">
             <span className="xl:hidden">Scroll to explore</span>
             <span className="hidden xl:inline">Hover to focus</span>

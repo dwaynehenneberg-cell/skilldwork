@@ -7,6 +7,23 @@
   --font-sans: var(--font-geist-sans);
 }
 
+/* Entrance for text blocks — see app/reveal.ts. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+/* `revealOnView` waits for a scroll observer. Without scripting it would never arrive, so
+   show those blocks outright rather than leaving the copy invisible. */
+@media (scripting: none) {
+  [data-visible] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 :root {
   color-scheme: light;
   --page-bg: #f4f4f3;

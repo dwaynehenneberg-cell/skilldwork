@@ -182,6 +182,15 @@ export default function BookingWidget() {
       >
         Book a call
       </button>
+      {CALENDLY_URL ? (
+        <p className="mt-2 text-center text-xs text-[var(--muted-text)]">
+          30-minute workflow fit call · Bring one repeatable service.
+        </p>
+      ) : (
+        <p className="mt-2 text-center text-sm text-[var(--muted-text)]" role="status">
+          Booking is temporarily unavailable.
+        </p>
+      )}
       <button
         className="mt-3 w-full rounded-full border border-black/10 bg-white px-5 py-3.5 font-display text-sm uppercase tracking-wider text-black transition hover:bg-neutral-100"
         onClick={showHowItWorks}
@@ -189,16 +198,6 @@ export default function BookingWidget() {
       >
         See how it works
       </button>
-      {!CALENDLY_URL && (
-        <p className="mt-3 text-center text-sm text-[var(--muted-text)]" role="status">
-          Booking is temporarily unavailable.
-        </p>
-      )}
-      {CALENDLY_URL ? (
-        <p className="mt-3 text-center text-xs text-[var(--muted-text)]">
-          30-minute workflow fit call · Bring one repeatable service.
-        </p>
-      ) : null}
     </div>
   );
 }

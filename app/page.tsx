@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BookingWidget from "./booking-widget";
 import Mission from "./mission";
+import { revealOnLoad } from "./reveal";
 import ThemeToggle from "./theme-toggle";
 import WorkflowMap from "./workflow-map";
 
@@ -39,13 +40,19 @@ export default function Home() {
         className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-44 sm:px-6 sm:py-36"
       >
         <div className="w-full max-w-xl rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-10 dark:shadow-black/60">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
+          <p
+            className={`${revealOnLoad} mb-3 text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]`}
+          >
             For freelancers, agencies, and expert service businesses
           </p>
-          <h1 className="font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] sm:text-5xl">
+          <h1
+            className={`${revealOnLoad} font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] [animation-delay:100ms] sm:text-5xl`}
+          >
             Turn your service into an automatable workflow.
           </h1>
-          <BookingWidget />
+          <div className={`${revealOnLoad} [animation-delay:200ms]`}>
+            <BookingWidget />
+          </div>
         </div>
       </section>
 
