@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { OPEN_BOOKING_EVENT, requestBookingOpen } from "./booking-intent";
 import { trackRedditLead } from "./reddit-pixel";
 
 type Step = "idle" | "book" | "done";
@@ -43,6 +44,7 @@ function loadCalendly(): Promise<void> {
 
 export default function BookingWidget() {
   const [step, setStep] = useState<Step>("idle");
+  const [bookingRequest, setBookingRequest] = useState(0);
   const embedRef = useRef<HTMLDivElement>(null);
   const leadTrackedRef = useRef(false);
 
@@ -52,6 +54,26 @@ export default function BookingWidget() {
       block: "start",
     });
   }
+
+  useEffect(() => {
+    function openBooking() {
+      if (CALENDLY_URL) setStep((current) => (current === "done" ? current : "book"));
+      setBookingRequest((current) => current + 1);
+    }
+
+    window.addEventListener(OPEN_BOOKING_EVENT, openBooking);
+    return () => window.removeEventListener(OPEN_BOOKING_EVENT, openBooking);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (bookingRequest === 0) return;
+
+    const bookingSection = document.getElementById("book");
+    window.scrollTo({
+      behavior: "auto",
+      top: bookingSection?.offsetTop ?? 0,
+    });
+  }, [bookingRequest]);
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
@@ -123,7 +145,7 @@ export default function BookingWidget() {
       <button
         className="w-full rounded-full bg-[var(--btn-bg)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         disabled={!CALENDLY_URL}
-        onClick={() => setStep("book")}
+        onClick={requestBookingOpen}
         type="button"
       >
         Book a call

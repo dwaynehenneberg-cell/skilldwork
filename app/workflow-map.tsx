@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { requestBookingOpen } from "./booking-intent";
 
 const STEP_ORDER = ["build", "market", "fulfill", "improve"] as const;
 type StepId = (typeof STEP_ORDER)[number];
@@ -203,12 +204,13 @@ function BuildVisual({ active }: { active: boolean }) {
         <h3 className="mt-2 font-display text-2xl leading-none">Build your workflow</h3>
         <span className="mt-2 text-[0.56rem] opacity-65">Sales Page + delivery</span>
       </div>
-      <a
-        href="#book"
+      <button
         className="mt-3 rounded-full border border-[var(--field-border-focus)] px-3 py-1.5 font-display text-[0.58rem] uppercase tracking-wider transition hover:bg-[var(--field-bg)]"
+        onClick={requestBookingOpen}
+        type="button"
       >
         Book a call
-      </a>
+      </button>
     </div>
   );
 }
@@ -683,12 +685,13 @@ export default function WorkflowMap() {
             <p className="text-xs leading-5 text-[var(--text)] sm:text-sm">
               You create demand. Skilldwork delivers each service and improves the next run.
             </p>
-            <a
-              href="#book"
+            <button
               className="shrink-0 rounded-full bg-[var(--btn-bg)] px-5 py-2.5 text-center font-display text-xs uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
+              onClick={requestBookingOpen}
+              type="button"
             >
               Build my workflow
-            </a>
+            </button>
           </div>
         </div>
       </div>
