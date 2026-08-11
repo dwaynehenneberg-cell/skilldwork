@@ -61,6 +61,12 @@ export default function PrivacyPage() {
             address, browser or device information, requested page, and date and time may also be
             processed to deliver the site securely.
           </p>
+          <p className="leading-7">
+            If you allow advertising measurement, the Reddit Pixel also processes information
+            about page visits and completed bookings, together with online identifiers and
+            device or browser information, so we can measure whether a Reddit advertisement led
+            to a booking.
+          </p>
         </section>
 
         <section className={sectionClass}>
@@ -71,8 +77,9 @@ export default function PrivacyPage() {
             steps you ask us to take before entering into a contract (Art. 6(1)(b) GDPR), or on
             your consent where a form specifically requests it (Art. 6(1)(a) GDPR). We process
             limited technical website data based on our legitimate interest in providing a secure
-            and reliable website (Art. 6(1)(f) GDPR). You may withdraw consent at any time with
-            effect for the future by emailing us.
+            and reliable website (Art. 6(1)(f) GDPR). Reddit advertising measurement is activated
+            only with your consent (Art. 6(1)(a) GDPR). You may change that choice at any time via
+            “Privacy choices” or withdraw consent by emailing us.
           </p>
         </section>
 
@@ -122,7 +129,17 @@ export default function PrivacyPage() {
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>5. Retention</h2>
+          <h2 className={headingClass}>5. Advertising measurement</h2>
+          <p className="leading-7">
+            The Reddit Pixel is disabled until you select “Allow measurement.” If enabled, it
+            records a page visit and, after Calendly confirms that an appointment was scheduled,
+            a lead event. Declining does not limit the website or booking function. Your choice is
+            stored in your browser so we can respect it on later visits.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>6. Retention</h2>
           <p className="leading-7">
             We retain personal data only for as long as necessary to handle your inquiry, booking,
             or resulting business relationship. We delete it when the purpose no longer applies or
@@ -131,7 +148,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>6. Your rights</h2>
+          <h2 className={headingClass}>7. Your rights</h2>
           <p className="leading-7">
             Subject to the legal requirements, you have the right to access, correct, erase,
             restrict the processing of, and receive a copy of your data. You may also withdraw
@@ -141,7 +158,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>7. Voluntary submission</h2>
+          <h2 className={headingClass}>8. Voluntary submission</h2>
           <p className="leading-7">
             Providing personal data is voluntary. Without the details needed to respond or arrange
             a meeting, we may be unable to handle your request. Skilldwork does not use automated
@@ -150,7 +167,7 @@ export default function PrivacyPage() {
         </section>
 
         <p className="border-t border-[var(--card-border)] pt-7 text-sm">
-          Last updated: August 10, 2026
+          Last updated: August 11, 2026
         </p>
       </article>
     </main>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { trackRedditLead } from "./reddit-pixel";
 
 type Step = "idle" | "book" | "done";
 
@@ -43,6 +44,7 @@ function loadCalendly(): Promise<void> {
 export default function BookingWidget() {
   const [step, setStep] = useState<Step>("idle");
   const embedRef = useRef<HTMLDivElement>(null);
+  const leadTrackedRef = useRef(false);
 
   function showHowItWorks() {
     document.getElementById("how-it-works")?.scrollIntoView({
@@ -55,8 +57,11 @@ export default function BookingWidget() {
     function onMessage(event: MessageEvent) {
       if (
         event.origin === "https://calendly.com" &&
-        event.data?.event === "calendly.event_scheduled"
+        event.data?.event === "calendly.event_scheduled" &&
+        !leadTrackedRef.current
       ) {
+        leadTrackedRef.current = true;
+        trackRedditLead();
         setStep("done");
       }
     }

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Geist } from "next/font/google";
 import "./globals.css";
+import RedditPixel from "./reddit-pixel";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {children}
+        <RedditPixel />
       </body>
     </html>
   );
