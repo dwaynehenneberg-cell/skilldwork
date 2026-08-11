@@ -1,10 +1,12 @@
 "use client";
 
+import Script from "next/script";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { OPEN_BOOKING_EVENT, requestBookingOpen } from "./booking-intent";
 import { trackRedditLead } from "./reddit-pixel";
 
 type Step = "idle" | "book" | "done";
+type CalendlyStatus = "idle" | "loading" | "ready" | "error";
 
 declare global {
   interface Window {
@@ -18,32 +20,11 @@ declare global {
 }
 
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL;
-
-let calendlyLoader: Promise<void> | null = null;
-
-function loadCalendly(): Promise<void> {
-  if (!calendlyLoader) {
-    calendlyLoader = new Promise((resolve) => {
-      if (window.Calendly) {
-        resolve();
-        return;
-      }
-      const stylesheet = document.createElement("link");
-      stylesheet.rel = "stylesheet";
-      stylesheet.href = "https://assets.calendly.com/assets/external/widget.css";
-      document.head.appendChild(stylesheet);
-
-      const script = document.createElement("script");
-      script.src = "https://assets.calendly.com/assets/external/widget.js";
-      script.onload = () => resolve();
-      document.body.appendChild(script);
-    });
-  }
-  return calendlyLoader;
-}
+const CALENDLY_STYLESHEET_ID = "calendly-widget-styles";
 
 export default function BookingWidget() {
   const [step, setStep] = useState<Step>("idle");
+  const [calendlyStatus, setCalendlyStatus] = useState<CalendlyStatus>("idle");
   const [bookingRequest, setBookingRequest] = useState(0);
   const embedRef = useRef<HTMLDivElement>(null);
   const leadTrackedRef = useRef(false);
@@ -57,7 +38,10 @@ export default function BookingWidget() {
 
   useEffect(() => {
     function openBooking() {
-      if (CALENDLY_URL) setStep((current) => (current === "done" ? current : "book"));
+      if (CALENDLY_URL) {
+        setStep((current) => (current === "done" ? current : "book"));
+        setCalendlyStatus((current) => (current === "ready" ? current : "loading"));
+      }
       setBookingRequest((current) => current + 1);
     }
 
@@ -92,31 +76,46 @@ export default function BookingWidget() {
   }, []);
 
   useEffect(() => {
-    if (step !== "book" || !CALENDLY_URL) return;
+    if (step !== "book") return;
 
-    let cancelled = false;
-    loadCalendly().then(() => {
-      const el = embedRef.current;
-      if (cancelled || !el || el.hasChildNodes()) return;
+    if (!document.getElementById(CALENDLY_STYLESHEET_ID)) {
+      const stylesheet = document.createElement("link");
+      stylesheet.id = CALENDLY_STYLESHEET_ID;
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "https://assets.calendly.com/assets/external/widget.css";
+      document.head.appendChild(stylesheet);
+    }
+  }, [step]);
 
-      const dark = document.documentElement.classList.contains("dark");
-      const params = new URLSearchParams({
-        hide_gdpr_banner: "1",
-        background_color: dark ? "1a1a19" : "ffffff",
-        text_color: dark ? "ffffff" : "0a0a0a",
-        primary_color: dark ? "ffffff" : "0a0a0a",
-      });
+  useEffect(() => {
+    if (step !== "book" || calendlyStatus !== "loading") return;
 
-      window.Calendly?.initInlineWidget({
-        url: `${CALENDLY_URL}?${params.toString()}`,
-        parentElement: el,
-      });
+    const timeout = window.setTimeout(() => setCalendlyStatus("error"), 12_000);
+    return () => window.clearTimeout(timeout);
+  }, [calendlyStatus, step]);
+
+  useEffect(() => {
+    if (step !== "book" || calendlyStatus !== "ready" || !CALENDLY_URL) return;
+
+    const el = embedRef.current;
+    if (!el || el.hasChildNodes()) return;
+
+    const calendly = window.Calendly;
+    if (!calendly) return;
+
+    const dark = document.documentElement.classList.contains("dark");
+    const params = new URLSearchParams({
+      hide_gdpr_banner: "1",
+      background_color: dark ? "1a1a19" : "ffffff",
+      text_color: dark ? "ffffff" : "0a0a0a",
+      primary_color: dark ? "ffffff" : "0a0a0a",
     });
 
-    return () => {
-      cancelled = true;
-    };
-  }, [step]);
+    calendly.initInlineWidget({
+      url: `${CALENDLY_URL}?${params.toString()}`,
+      parentElement: el,
+    });
+  }, [calendlyStatus, step]);
 
   if (step === "done") {
     return (
@@ -129,13 +128,46 @@ export default function BookingWidget() {
   if (step === "book") {
     return (
       <div className="mt-8 booking-open">
+        <Script
+          id="calendly-widget-script"
+          src="https://assets.calendly.com/assets/external/widget.js"
+          onError={() => setCalendlyStatus("error")}
+          onReady={() => setCalendlyStatus(window.Calendly ? "ready" : "error")}
+        />
         <p className="mb-3 text-sm text-[var(--muted-text)]">
           Pick a time that works for you:
         </p>
-        <div
-          ref={embedRef}
-          className="h-[620px] w-full min-w-0 overflow-hidden rounded-2xl sm:h-[700px]"
-        />
+        <div className="relative h-[620px] w-full min-w-0 overflow-hidden rounded-2xl bg-[var(--field-bg)] sm:h-[700px]">
+          <div ref={embedRef} className="h-full w-full" />
+          {calendlyStatus === "loading" ? (
+            <p
+              className="absolute inset-0 grid place-items-center px-6 text-center text-sm text-[var(--muted-text)]"
+              role="status"
+            >
+              Loading available times…
+            </p>
+          ) : null}
+          {calendlyStatus === "error" && CALENDLY_URL ? (
+            <div
+              className="absolute inset-0 grid place-items-center px-6 text-center"
+              role="status"
+            >
+              <div>
+                <p className="text-sm text-[var(--muted-text)]">
+                  The scheduler did not load in this page.
+                </p>
+                <a
+                  className="mt-4 inline-flex rounded-full bg-[var(--btn-bg)] px-5 py-3 font-display text-xs uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
+                  href={CALENDLY_URL}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Open scheduling page
+                </a>
+              </div>
+            </div>
+          ) : null}
+        </div>
       </div>
     );
   }
@@ -162,6 +194,11 @@ export default function BookingWidget() {
           Booking is temporarily unavailable.
         </p>
       )}
+      {CALENDLY_URL ? (
+        <p className="mt-3 text-center text-xs text-[var(--muted-text)]">
+          30-minute workflow fit call · Bring one repeatable service.
+        </p>
+      ) : null}
     </div>
   );
 }

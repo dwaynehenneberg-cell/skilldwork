@@ -38,6 +38,9 @@ export default function Home() {
         className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-44 sm:px-6 sm:py-36"
       >
         <div className="w-full max-w-xl rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-10 dark:shadow-black/60">
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
+            For freelancers, agencies, and expert service businesses
+          </p>
           <h1 className="font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] sm:text-5xl">
             Turn your service into a digital workflow.
           </h1>
