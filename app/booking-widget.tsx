@@ -44,6 +44,13 @@ export default function BookingWidget() {
   const [step, setStep] = useState<Step>("idle");
   const embedRef = useRef<HTMLDivElement>(null);
 
+  function showHowItWorks() {
+    document.getElementById("how-it-works")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
   useEffect(() => {
     function onMessage(event: MessageEvent) {
       if (
@@ -115,6 +122,13 @@ export default function BookingWidget() {
         type="button"
       >
         Book a call
+      </button>
+      <button
+        className="mt-3 w-full rounded-full border border-black/10 bg-white px-5 py-3.5 font-display text-sm uppercase tracking-wider text-black transition hover:bg-neutral-100"
+        onClick={showHowItWorks}
+        type="button"
+      >
+        See how it works
       </button>
       {!CALENDLY_URL && (
         <p className="mt-3 text-center text-sm text-[var(--muted-text)]" role="status">
