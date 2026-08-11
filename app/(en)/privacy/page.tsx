@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ThemeToggle from "../theme-toggle";
+import ThemeToggle from "../../theme-toggle";
 
 export const metadata: Metadata = {
   title: "Privacy | Skilldwork",

@@ -1,35 +1,29 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { requestBookingOpen } from "./booking-intent";
+import { COPY, type Copy, type Locale } from "./copy";
 import { revealOnView } from "./reveal";
 import ScrollReveal from "./scroll-reveal";
 
 const STEP_ORDER = ["build", "market", "fulfill", "improve"] as const;
 type StepId = (typeof STEP_ORDER)[number];
 
-const STEP_COPY: Record<StepId, { label: string; title: string; summary: string }> = {
-  build: {
-    label: "01 · Build",
-    title: "Build your workflow",
-    summary: "We turn your service into a Sales Page and automated delivery workflow.",
-  },
-  market: {
-    label: "02 · Market",
-    title: "Create demand",
-    summary: "You focus on marketing while one link brings clients into the system.",
-  },
-  fulfill: {
-    label: "03 · Fulfill",
-    title: "Deliver the result",
-    summary: "Onboarding, delivery, results, and revisions run through one connected workflow.",
-  },
-  improve: {
-    label: "04 · Improve",
-    title: "Improve every run",
-    summary: "Every completed client order helps the system deliver the next one better.",
-  },
-};
+type WorkflowCopy = Copy["workflow"];
+
+/**
+ * The map is assembled from a dozen small components; passing the strings down
+ * as props would mean threading a copy object through every one of them.
+ */
+const WorkflowCopyContext = createContext<WorkflowCopy>(COPY.en.workflow);
+const useWorkflowCopy = () => useContext(WorkflowCopyContext);
 
 type ConnectorId =
   | "build-market"
@@ -214,8 +208,10 @@ function ClientPage({ children, title }: { children: ReactNode; title: string })
 }
 
 function SalesPage({ activeFlow }: { activeFlow: FlowId | null }) {
+  const copy = useWorkflowCopy();
+
   return (
-    <ClientPage title="Sales Page">
+    <ClientPage title={copy.salesPage.title}>
       <div className="space-y-1.5">
         {([1, 2, 3] as const).map((offer) => (
           <div
@@ -223,7 +219,7 @@ function SalesPage({ activeFlow }: { activeFlow: FlowId | null }) {
             data-active={activeFlow === `pick-offer-${offer}`}
             className={`${pressedClass} flex items-center justify-between border border-[var(--card-border)] px-2 py-1.5 text-[0.48rem] font-semibold uppercase`}
           >
-            <span>Offer {offer}</span>
+            <span>{copy.salesPage.offer} {offer}</span>
             <span aria-hidden="true">→</span>
           </div>
         ))}
@@ -232,17 +228,18 @@ function SalesPage({ activeFlow }: { activeFlow: FlowId | null }) {
         data-active={activeFlow === "choose-offer"}
         className={`${pressedClass} mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]`}
       >
-        Choose offer
+        {copy.salesPage.choose}
       </div>
     </ClientPage>
   );
 }
 
 function ClientPortal({ activeFlow }: { activeFlow: FlowId | null }) {
+  const copy = useWorkflowCopy();
   const filled = activeFlow !== null && !PORTAL_EMPTY_STEPS.has(activeFlow);
 
   return (
-    <ClientPage title="Client Portal">
+    <ClientPage title={copy.portal.title}>
       <div className="space-y-1.5">
         {[
           "data-[active=true]:delay-[0ms]",
@@ -264,18 +261,19 @@ function ClientPortal({ activeFlow }: { activeFlow: FlowId | null }) {
         data-active={activeFlow === "start-service"}
         className={`${pressedClass} mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]`}
       >
-        Start service
+        {copy.portal.start}
       </div>
     </ClientPage>
   );
 }
 
 function ResultPage({ activeFlow }: { activeFlow: FlowId | null }) {
+  const copy = useWorkflowCopy();
   // The revision note is typed first, then stays put while "Revise" is pressed.
   const typing = activeFlow === "type-revision" || activeFlow === "revise";
 
   return (
-    <ClientPage title="Result">
+    <ClientPage title={copy.result.title}>
       <div className="h-[4.4rem] border border-dashed border-[var(--field-border-focus)] bg-[var(--field-bg)] p-2">
         <div className="h-1.5 w-full bg-[var(--card-border)]" />
         <div className="mt-1.5 h-1.5 w-3/4 bg-[var(--card-border)]" />
@@ -296,13 +294,13 @@ function ResultPage({ activeFlow }: { activeFlow: FlowId | null }) {
           data-active={activeFlow === "revise"}
           className={`${pressedClass} border border-[var(--field-border-focus)] py-1.5`}
         >
-          Revise
+          {copy.result.revise}
         </span>
         <span
           data-active={activeFlow === "accept"}
           className={`${pressedClass} bg-[var(--btn-bg)] py-1.5 text-[var(--btn-text)]`}
         >
-          Accept
+          {copy.result.accept}
         </span>
       </div>
     </ClientPage>
@@ -310,6 +308,8 @@ function ResultPage({ activeFlow }: { activeFlow: FlowId | null }) {
 }
 
 function BuildVisual({ active }: { active: boolean }) {
+  const copy = useWorkflowCopy();
+
   return (
     <div className="flex flex-col items-center">
       <div
@@ -317,17 +317,17 @@ function BuildVisual({ active }: { active: boolean }) {
         className={`${activeNodeClass} flex h-36 w-36 flex-col items-center justify-center rounded-full border border-[var(--card-border)] bg-[var(--btn-bg)] p-4 text-center text-[var(--btn-text)]`}
       >
         <span className="text-[0.5rem] font-semibold uppercase tracking-[0.14em] opacity-55">
-          Start here
+          {copy.build.eyebrow}
         </span>
-        <h3 className="mt-2 font-display text-2xl leading-none">Build your workflow</h3>
-        <span className="mt-2 text-[0.56rem] opacity-65">Sales Page + delivery</span>
+        <h3 className="mt-2 font-display text-2xl leading-none">{copy.build.title}</h3>
+        <span className="mt-2 text-[0.56rem] opacity-65">{copy.build.note}</span>
       </div>
       <button
         className="mt-3 rounded-full border border-[var(--field-border-focus)] px-3 py-1.5 font-display text-[0.58rem] uppercase tracking-wider transition hover:bg-[var(--field-bg)]"
         onClick={requestBookingOpen}
         type="button"
       >
-        Book a call
+        {copy.build.cta}
       </button>
     </div>
   );
@@ -439,25 +439,29 @@ function DesktopSalesPortalConnector({ active }: { active: boolean }) {
 }
 
 function MarketingVisual({ active, activeFlow }: { active: boolean; activeFlow: FlowId | null }) {
+  const copy = useWorkflowCopy();
+
   return (
     <div className="flex flex-col items-center">
       <div
         data-active={active}
         className={`${activeNodeClass} flex h-28 w-28 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-accent)] p-3 text-center text-black`}
       >
-        <h3 className="font-display text-2xl leading-none">Marketing</h3>
-        <span className="mt-1.5 text-[0.55rem] font-medium">Handled by you</span>
+        <h3 className="font-display text-2xl leading-none">{copy.marketing.title}</h3>
+        <span className="mt-1.5 text-[0.55rem] font-medium">{copy.marketing.note}</span>
       </div>
       <Connector active={activeFlow === "market-sales"} direction="vertical" />
       <SalesPage activeFlow={activeFlow} />
       <span className="mt-2 text-[0.5rem] font-semibold uppercase tracking-[0.1em] text-[var(--muted-text)]">
-        ↻ Next client
+        {copy.marketing.nextClient}
       </span>
     </div>
   );
 }
 
 function WorkflowCluster({ active, activeFlow }: { active: boolean; activeFlow: FlowId | null }) {
+  const copy = useWorkflowCopy();
+
   return (
     <div className="relative h-40 w-36 shrink-0">
       <div
@@ -465,20 +469,24 @@ function WorkflowCluster({ active, activeFlow }: { active: boolean; activeFlow: 
         className={`${activeNodeClass} absolute left-2 top-5 flex h-28 w-28 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-blue)] p-3 text-center text-white`}
       >
         <RunningRing active={activeFlow === "run-workflow"} />
-        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">Execution</span>
-        <h3 className="mt-1 font-display text-lg leading-none">Workflow</h3>
-        <span className="mt-1 text-[0.43rem] opacity-70">process → deliver</span>
+        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">
+          {copy.workflowNode.eyebrow}
+        </span>
+        <h3 className="mt-1 font-display text-lg leading-none">{copy.workflowNode.title}</h3>
+        <span className="mt-1 text-[0.43rem] opacity-70">{copy.workflowNode.note}</span>
       </div>
 
       {/* Leader line: drops from behind the pill onto the workflow circle's upper-left arc. */}
       <span className="absolute left-6 top-2 h-7 border-l border-dashed border-[var(--workflow-accent)]" />
       <span className="absolute -left-2 top-0 w-[5.5rem] rounded-full bg-[var(--workflow-accent)] px-2 py-1 text-center text-[0.43rem] font-semibold leading-tight text-black">
-        Your input if needed
+        {copy.workflowNode.yourInput}
       </span>
 
       <div className="absolute bottom-0 right-0 flex h-16 w-16 flex-col items-center justify-center rounded-full border-2 border-[var(--card-bg)] bg-[var(--workflow-blue)] p-2 text-center text-white shadow-md">
         <RunningRing active={activeFlow === "run-revision"} />
-        <span className="font-display text-[0.72rem] leading-none">Revision Agent</span>
+        <span className="font-display text-[0.72rem] leading-none">
+          {copy.workflowNode.revisionAgent}
+        </span>
       </div>
     </div>
   );
@@ -493,6 +501,8 @@ function ImprovementVisual({
   activeFlow: FlowId | null;
   compact: boolean;
 }) {
+  const copy = useWorkflowCopy();
+
   return (
     <div className="flex flex-col items-center">
       <div
@@ -500,13 +510,15 @@ function ImprovementVisual({
         className={`${activeNodeClass} relative flex h-36 w-36 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-blue)] p-4 text-center text-white`}
       >
         <RunningRing active={activeFlow === "run-improvement"} />
-        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">Completed runs</span>
-        <h3 className="mt-2 font-display text-xl leading-none">Improvement Agent</h3>
-        <span className="mt-2 text-[0.46rem] opacity-75">Improves future delivery</span>
+        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">
+          {copy.improvement.eyebrow}
+        </span>
+        <h3 className="mt-2 font-display text-xl leading-none">{copy.improvement.title}</h3>
+        <span className="mt-2 text-[0.46rem] opacity-75">{copy.improvement.note}</span>
       </div>
       {compact ? null : (
         <span className="mt-2 text-center text-[0.5rem] font-semibold uppercase tracking-[0.08em] text-[var(--muted-text)]">
-          Better with every run
+          {copy.improvement.caption}
         </span>
       )}
     </div>
@@ -555,6 +567,8 @@ function FulfillmentVisual({
   activeFlow: FlowId | null;
   compact: boolean;
 }) {
+  const copy = useWorkflowCopy();
+
   if (compact) {
     return (
       <div className="flex flex-col items-center">
@@ -564,7 +578,7 @@ function FulfillmentVisual({
         <Connector active={activeFlow === "workflow-result"} direction="vertical" />
         <ResultPage activeFlow={activeFlow} />
         <ReturnPath active={activeFlow === "revision-loop"} className="mt-2 w-52">
-          Revision returns to workflow
+          {copy.revisionReturn}
         </ReturnPath>
       </div>
     );
@@ -573,7 +587,7 @@ function FulfillmentVisual({
   return (
     <div className="rounded-xl bg-[var(--field-bg)] p-3">
       <p className="mb-3 text-[0.5rem] font-semibold uppercase tracking-[0.12em] text-[var(--muted-text)]">
-        Automated service execution
+        {copy.executionLabel}
       </p>
       <div className="grid grid-cols-[9rem_1.5rem_9rem_1.5rem_9rem] items-center justify-center">
         <ClientPortal activeFlow={activeFlow} />
@@ -582,7 +596,7 @@ function FulfillmentVisual({
         <Connector active={activeFlow === "workflow-result"} direction="horizontal" />
         <ResultPage activeFlow={activeFlow} />
         <ReturnPath active={activeFlow === "revision-loop"} className="col-start-3 col-end-6 mt-2">
-          Revision returns to workflow
+          {copy.revisionReturn}
         </ReturnPath>
       </div>
     </div>
@@ -590,7 +604,7 @@ function FulfillmentVisual({
 }
 
 function StepExplanation({ active, step, mobile }: { active: boolean; step: StepId; mobile: boolean }) {
-  const copy = STEP_COPY[step];
+  const copy = useWorkflowCopy().steps[step];
 
   if (mobile) {
     return (
@@ -641,6 +655,8 @@ function StepFrame({
   onMouseLeave,
   step,
 }: StepFrameProps) {
+  const copy = useWorkflowCopy();
+
   return (
     <article
       id={mobile ? `workflow-mobile-${step}` : undefined}
@@ -653,7 +669,7 @@ function StepFrame({
       tabIndex={mobile ? undefined : 0}
     >
       <p className="mb-3 text-left text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted-text)]">
-        {STEP_COPY[step].label}
+        {copy.steps[step].label}
       </p>
       {children}
       <StepExplanation active={active} mobile={mobile} step={step} />
@@ -672,6 +688,7 @@ function DesktopCanvas({
   onFocusStep: (step: StepId | null) => void;
   onHoverStep: (step: StepId | null) => void;
 }) {
+  const copy = useWorkflowCopy();
   const stepEvents = (step: StepId) => ({
     onBlur: () => onFocusStep(null),
     onFocus: () => onFocusStep(step),
@@ -698,7 +715,11 @@ function DesktopCanvas({
           <FulfillmentVisual active={activeStep === "fulfill"} activeFlow={activeFlow} compact={false} />
         </StepFrame>
 
-        <Connector active={activeFlow === "result-improve"} direction="horizontal" label="Completed run" />
+        <Connector
+          active={activeFlow === "result-improve"}
+          direction="horizontal"
+          label={copy.completedRun}
+        />
 
         <StepFrame active={activeStep === "improve"} mobile={false} step="improve" {...stepEvents("improve")}>
           <ImprovementVisual active={activeStep === "improve"} activeFlow={activeFlow} compact={false} />
@@ -707,7 +728,7 @@ function DesktopCanvas({
 
       <div className="-mt-7 hidden grid-cols-[9.4rem_2rem_10.6rem_2rem_minmax(29rem,1fr)_2rem_10rem] gap-2 xl:grid">
         <ReturnPath active={activeFlow === "improve-workflow"} className="col-start-5 col-end-8 ml-[16.5rem]">
-          Improved workflow returns to execution
+          {copy.improvementReturn}
         </ReturnPath>
       </div>
     </>
@@ -721,6 +742,8 @@ function MobileCanvas({
   activeFlow: FlowId | null;
   activeStep: StepId | null;
 }) {
+  const copy = useWorkflowCopy();
+
   return (
     <div className="space-y-3 xl:hidden">
       <StepFrame active={activeStep === "build"} mobile step="build">
@@ -739,19 +762,24 @@ function MobileCanvas({
         <FulfillmentVisual active={activeStep === "fulfill"} activeFlow={activeFlow} compact />
       </StepFrame>
 
-      <Connector active={activeFlow === "result-improve"} direction="vertical" label="Completed run" />
+      <Connector
+        active={activeFlow === "result-improve"}
+        direction="vertical"
+        label={copy.completedRun}
+      />
 
       <StepFrame active={activeStep === "improve"} mobile step="improve">
         <ImprovementVisual active={activeStep === "improve"} activeFlow={activeFlow} compact />
         <ReturnPath active={activeFlow === "improve-workflow"} className="mx-auto mt-3 w-60">
-          Improved workflow returns to execution
+          {copy.improvementReturn}
         </ReturnPath>
       </StepFrame>
     </div>
   );
 }
 
-export default function WorkflowMap() {
+export default function WorkflowMap({ locale }: { locale: Locale }) {
+  const copy = COPY[locale].workflow;
   const sectionRef = useRef<HTMLElement>(null);
   const [compactLayout, setCompactLayout] = useState(false);
   const [mobileActiveStep, setMobileActiveStep] = useState<StepId | null>(null);
@@ -831,6 +859,7 @@ export default function WorkflowMap() {
   }, [compactLayout]);
 
   return (
+    <WorkflowCopyContext value={copy}>
     <section
       ref={sectionRef}
       id="how-it-works"
@@ -843,23 +872,23 @@ export default function WorkflowMap() {
             <p
               className={`${revealOnView} text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]`}
             >
-              How it works
+              {copy.eyebrow}
             </p>
             <h2
               id="workflow-title"
               className={`${revealOnView} mt-3 font-display text-4xl leading-[1.05] tracking-tight text-[var(--text)] delay-100 sm:text-5xl`}
             >
-              Build. Market. Fulfill. Improve.
+              {copy.title}
             </h2>
             <p
               className={`${revealOnView} mt-3 max-w-2xl text-sm leading-6 text-[var(--muted-text)] delay-200 sm:text-base`}
             >
-              Four connected steps turn your service into a system that delivers and learns.
+              {copy.subtitle}
             </p>
           </ScrollReveal>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)]">
-            <span className="xl:hidden">Scroll to explore</span>
-            <span className="hidden xl:inline">Hover to focus</span>
+            <span className="xl:hidden">{copy.hintCompact}</span>
+            <span className="hidden xl:inline">{copy.hintWide}</span>
           </p>
         </header>
 
@@ -867,17 +896,20 @@ export default function WorkflowMap() {
           <div className="rounded-2xl border border-[var(--field-border-focus)] p-4 sm:p-5">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--card-border)] pb-3">
               <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted-text)]">
-                Skilldwork service system
+                {copy.systemLabel}
               </p>
               <div className="flex flex-wrap gap-3 text-[0.55rem] text-[var(--muted-text)]">
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-blue)]" /> Automated
+                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-blue)]" />{" "}
+                  {copy.legendAutomated}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-accent)]" /> Handled by you
+                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-accent)]" />{" "}
+                  {copy.legendYou}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-3.5 border border-[var(--field-border-focus)] bg-[var(--card-bg)]" /> Client page
+                  <span className="h-2.5 w-3.5 border border-[var(--field-border-focus)] bg-[var(--card-bg)]" />{" "}
+                  {copy.legendClientPage}
                 </span>
               </div>
             </div>
@@ -893,18 +925,19 @@ export default function WorkflowMap() {
 
           <div className="flex flex-col gap-3 rounded-xl bg-[var(--field-bg)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs leading-5 text-[var(--text)] sm:text-sm">
-              You create demand. Skilldwork delivers each service and improves the next run.
+              {copy.footer}
             </p>
             <button
               className="shrink-0 rounded-full bg-[var(--btn-bg)] px-5 py-2.5 text-center font-display text-xs uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
               onClick={requestBookingOpen}
               type="button"
             >
-              Build your workflow
+              {copy.footerCta}
             </button>
           </div>
         </div>
       </div>
     </section>
+    </WorkflowCopyContext>
   );
 }

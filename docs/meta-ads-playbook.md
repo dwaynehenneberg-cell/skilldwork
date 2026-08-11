@@ -81,14 +81,14 @@ fired `ViewContent` in the last 30 days but not `Schedule`. Small budget,
 
 ### A note on language
 
-The landing page is English. German-language ads into an English page will burn
-budget on clicks that bounce. Two honest options:
+Both languages now have a page: English at `/`, German at `/de`. Point each
+campaign at the page in its own language — a German ad landing on the English
+page loses most of the click.
 
-- Run English ads everywhere, accept a smaller DACH audience — recommended to
-  start.
-- Build `/de` first, then run a separate German campaign against it. This is the
-  bigger opportunity for Facebook specifically, where the DACH small-business
-  audience is much stronger than on Reddit.
+For Facebook specifically the DACH audience is the stronger one, so the German
+campaign against `/de` is the one to start with. A step-by-step setup for that
+first campaign, written for someone who has never run an ad, is in
+`erste-facebook-anzeige.md`.
 
 ## 5. Budget and benchmarks
 
@@ -184,5 +184,4 @@ it for the session for a later Conversions API integration.
   conversions, and the consent gate loses more. A server-side `Schedule` event
   from a Calendly webhook, keyed on the stored `fbclid`, is the single highest
   -value technical follow-up — same work as the Reddit CAPI integration.
-- **German landing page** at `/de`, then a DACH campaign against it.
 - **Lookalike audience** from bookers, once there are 100+ of them.

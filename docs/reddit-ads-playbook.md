@@ -4,9 +4,9 @@ How Skilldwork runs paid traffic from Reddit to skilldwork.com. The site's only
 conversion is a booked workflow fit call, so everything here is built around that
 one event.
 
-The ads are written in English because the landing page is English. A German
-campaign needs a German landing page first — an English page behind a German ad
-loses most of the click.
+The ads below are written in English and point at `/`. A German page exists at
+`/de`, but Reddit's DACH inventory for this audience is thin — the German
+campaign is worth more on Facebook (see `meta-ads-playbook.md`).
 
 ## 1. What the site already does
 
@@ -189,8 +189,6 @@ which change did anything.
   is the highest-value technical follow-up.
 - **Retargeting.** Once the pixel audience passes the platform minimum, run a
   small ad group at visitors who opened the scheduler but did not book.
-- **German landing page.** A DACH campaign is worth running only with a German
-  page behind it, `/de` with its own UTM set.
 - **Lead-gen forms.** Reddit's native lead forms convert cheaper but skip the
   landing page — useful only if a call booked from a form still shows up.
 

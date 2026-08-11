@@ -1,8 +1,9 @@
-import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { Anton, Geist } from "next/font/google";
 import "./globals.css";
 import CampaignCapture from "./campaign-capture";
 import ConsentBanner from "./consent-banner";
+import type { Locale } from "./copy";
 import MetaPixel from "./meta-pixel";
 import RedditPixel from "./reddit-pixel";
 
@@ -17,19 +18,6 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "skilldwork — Turn services into digital workflows.",
-  description:
-    "Skilldwork turns your service into a digital workflow so you can focus on marketing and expert decisions.",
-};
-
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4f4f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-};
-
 // Runs before paint so the saved/system theme applies without a flash.
 const themeScript = `try {
   var t = localStorage.getItem("theme");
@@ -38,10 +26,20 @@ const themeScript = `try {
   }
 } catch (e) {}`;
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+/**
+ * The document shell both root layouts render. Each locale has its own root
+ * layout so `lang` matches the language of the page actually being read.
+ */
+export default function LayoutShell({
+  children,
+  locale,
+}: {
+  children: ReactNode;
+  locale: Locale;
+}) {
   return (
     <html
-      lang="en"
+      lang={locale}
       suppressHydrationWarning
       className={`${anton.variable} ${geistSans.variable} h-full antialiased`}
     >
@@ -49,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {children}
         <CampaignCapture />
-        <ConsentBanner />
+        <ConsentBanner locale={locale} />
         <RedditPixel />
         <MetaPixel />
       </body>

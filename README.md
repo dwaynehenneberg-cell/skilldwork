@@ -43,4 +43,8 @@ Deploy on Vercel. Set `NEXT_PUBLIC_CALENDLY_URL` in the project's environment va
 
 `NEXT_PUBLIC_REDDIT_PIXEL_ID` and `NEXT_PUBLIC_META_PIXEL_ID` enable the Reddit and Meta pixels. Both stay dormant until the visitor accepts measurement in the shared consent banner. Campaign parameters (`utm_*`, `rdt_cid`, `fbclid`) are captured on landing and the UTM values are passed into the Calendly booking, so every booking names the campaign that produced it.
 
-How the campaigns themselves are run: [`docs/reddit-ads-playbook.md`](docs/reddit-ads-playbook.md) and [`docs/meta-ads-playbook.md`](docs/meta-ads-playbook.md).
+How the campaigns themselves are run: [`docs/reddit-ads-playbook.md`](docs/reddit-ads-playbook.md), [`docs/meta-ads-playbook.md`](docs/meta-ads-playbook.md), and a step-by-step first Facebook campaign in [`docs/erste-facebook-anzeige.md`](docs/erste-facebook-anzeige.md).
+
+## Languages
+
+The site is served in two languages, each with its own root layout so the `lang` attribute matches the page: English at `/` (`app/(en)/`) and German at `/de` (`app/(de)/`). Both render the same `app/home.tsx`; every visitor-facing string lives in `app/copy.ts`. German ads point at `/de`, English ads at `/`.

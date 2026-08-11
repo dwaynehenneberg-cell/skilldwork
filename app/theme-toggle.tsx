@@ -1,6 +1,8 @@
 "use client";
 
-export default function ThemeToggle() {
+import { COPY, type Locale } from "./copy";
+
+export default function ThemeToggle({ locale = "en" }: { locale?: Locale }) {
   function toggle() {
     const dark = !document.documentElement.classList.contains("dark");
     document.documentElement.classList.toggle("dark", dark);
@@ -11,7 +13,7 @@ export default function ThemeToggle() {
 
   return (
     <button
-      aria-label="Toggle color theme"
+      aria-label={COPY[locale].themeToggle}
       className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text)] transition hover:opacity-70"
       onClick={toggle}
       type="button"
