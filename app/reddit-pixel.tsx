@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Script from "next/script";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 const CONSENT_KEY = "skilldwork-ad-measurement-consent";
 const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID;
@@ -59,28 +58,47 @@ export default function RedditPixel() {
   const [isEditing, setIsEditing] = useState(false);
   const isChoosing = consent === "unset" || isEditing;
 
+  useEffect(() => {
+    if (
+      consent !== "accepted" ||
+      !REDDIT_PIXEL_ID ||
+      window.__skilldworkRedditPixelInitialized
+    ) {
+      return;
+    }
+
+    if (!window.rdt) {
+      const queue = function (...args: unknown[]) {
+        if (queue.sendEvent) {
+          queue.sendEvent(...args);
+        } else {
+          queue.callQueue?.push(args);
+        }
+      } as NonNullable<Window["rdt"]>;
+      queue.callQueue = [];
+      window.rdt = queue;
+
+      const script = document.createElement("script");
+      script.src = `https://www.redditstatic.com/ads/pixel.js?pixel_id=${encodeURIComponent(REDDIT_PIXEL_ID)}`;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+
+    window.rdt("init", REDDIT_PIXEL_ID, {
+      optOut: false,
+      useDecimalCurrencyValues: true,
+    });
+    window.rdt("track", "PageVisit");
+    window.__skilldworkRedditPixelInitialized = true;
+  }, [consent]);
+
   function choose(value: Consent) {
     saveConsent(value);
     setIsEditing(false);
   }
 
-  const pixelCode = REDDIT_PIXEL_ID
-    ? `if (!window.__skilldworkRedditPixelInitialized) {
-  !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(Array.prototype.slice.call(arguments))};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js?pixel_id=${encodeURIComponent(REDDIT_PIXEL_ID)}";t.async=true;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
-  rdt("init", ${JSON.stringify(REDDIT_PIXEL_ID)}, {optOut:false,useDecimalCurrencyValues:true});
-  rdt("track", "PageVisit");
-  window.__skilldworkRedditPixelInitialized = true;
-}`
-    : "";
-
   return (
     <>
-      {consent === "accepted" && REDDIT_PIXEL_ID && (
-        <Script id="reddit-pixel" strategy="afterInteractive">
-          {pixelCode}
-        </Script>
-      )}
-
       {isChoosing ? (
         <aside
           aria-label="Privacy choices"
