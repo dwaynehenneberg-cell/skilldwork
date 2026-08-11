@@ -62,10 +62,10 @@ export default function PrivacyPage() {
             processed to deliver the site securely.
           </p>
           <p className="leading-7">
-            If you allow advertising measurement, the Reddit Pixel also processes information
-            about page visits and completed bookings, together with online identifiers and
-            device or browser information, so we can measure whether a Reddit advertisement led
-            to a booking.
+            If you allow advertising measurement, the Reddit Pixel and the Meta Pixel also
+            process information about page visits and completed bookings, together with online
+            identifiers and device or browser information, so we can measure whether an
+            advertisement led to a booking.
           </p>
         </section>
 
@@ -131,10 +131,18 @@ export default function PrivacyPage() {
         <section className={sectionClass}>
           <h2 className={headingClass}>5. Advertising measurement</h2>
           <p className="leading-7">
-            The Reddit Pixel is disabled until you select “Allow measurement.” If enabled, it
-            records a page visit and, after Calendly confirms that an appointment was scheduled,
-            a lead event. Declining does not limit the website or booking function. Your choice is
-            stored in your browser so we can respect it on later visits.
+            The Reddit Pixel and the Meta Pixel are disabled until you select “Allow.” If
+            enabled, they record a page visit, the opening of the scheduler, and, after Calendly
+            confirms that an appointment was scheduled, a booking event. Declining does not limit
+            the website or booking function. Your choice covers both pixels and is stored in your
+            browser so we can respect it on later visits.
+          </p>
+          <p className="leading-7">
+            Independently of that choice, campaign parameters contained in the link you clicked
+            (for example utm_source or a Reddit or Meta click identifier) are kept in your browser
+            for the
+            duration of your visit and attached to a booking, so we can tell which campaign a
+            booking came from. They are deleted when you close the tab.
           </p>
         </section>
 

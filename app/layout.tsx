@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Geist } from "next/font/google";
 import "./globals.css";
+import CampaignCapture from "./campaign-capture";
+import ConsentBanner from "./consent-banner";
+import MetaPixel from "./meta-pixel";
 import RedditPixel from "./reddit-pixel";
 
 const anton = Anton({
@@ -45,7 +48,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {children}
+        <CampaignCapture />
+        <ConsentBanner />
         <RedditPixel />
+        <MetaPixel />
       </body>
     </html>
   );

@@ -3,7 +3,9 @@
 import Script from "next/script";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { OPEN_BOOKING_EVENT, requestBookingOpen } from "./booking-intent";
-import { trackRedditLead } from "./reddit-pixel";
+import { getCalendlyUtmParams } from "./campaign";
+import { trackMetaBookingOpened, trackMetaSchedule } from "./meta-pixel";
+import { trackRedditBookingOpened, trackRedditLead } from "./reddit-pixel";
 
 type Step = "idle" | "book" | "done";
 type CalendlyStatus = "idle" | "loading" | "ready" | "error";
@@ -22,12 +24,19 @@ declare global {
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL;
 const CALENDLY_STYLESHEET_ID = "calendly-widget-styles";
 
+// Only used after mount, so reading the stored campaign cannot desync hydration.
+function schedulingPageUrl(baseUrl: string) {
+  const query = new URLSearchParams(getCalendlyUtmParams()).toString();
+  return query ? `${baseUrl}?${query}` : baseUrl;
+}
+
 export default function BookingWidget() {
   const [step, setStep] = useState<Step>("idle");
   const [calendlyStatus, setCalendlyStatus] = useState<CalendlyStatus>("idle");
   const [bookingRequest, setBookingRequest] = useState(0);
   const embedRef = useRef<HTMLDivElement>(null);
   const leadTrackedRef = useRef(false);
+  const bookingOpenTrackedRef = useRef(false);
 
   function showHowItWorks() {
     document.getElementById("how-it-works")?.scrollIntoView({
@@ -41,6 +50,11 @@ export default function BookingWidget() {
       if (CALENDLY_URL) {
         setStep((current) => (current === "done" ? current : "book"));
         setCalendlyStatus((current) => (current === "ready" ? current : "loading"));
+        if (!bookingOpenTrackedRef.current) {
+          bookingOpenTrackedRef.current = true;
+          trackRedditBookingOpened();
+          trackMetaBookingOpened();
+        }
       }
       setBookingRequest((current) => current + 1);
     }
@@ -68,6 +82,7 @@ export default function BookingWidget() {
       ) {
         leadTrackedRef.current = true;
         trackRedditLead();
+        trackMetaSchedule();
         setStep("done");
       }
     }
@@ -109,6 +124,7 @@ export default function BookingWidget() {
       background_color: dark ? "1a1a19" : "ffffff",
       text_color: dark ? "ffffff" : "0a0a0a",
       primary_color: dark ? "ffffff" : "0a0a0a",
+      ...getCalendlyUtmParams(),
     });
 
     calendly.initInlineWidget({
@@ -159,7 +175,7 @@ export default function BookingWidget() {
                 </p>
                 <a
                   className="mt-4 inline-flex rounded-full bg-[var(--btn-bg)] px-5 py-3 font-display text-xs uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
-                  href={CALENDLY_URL}
+                  href={schedulingPageUrl(CALENDLY_URL)}
                   rel="noreferrer"
                   target="_blank"
                 >

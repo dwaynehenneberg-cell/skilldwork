@@ -38,3 +38,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Deployment
 
 Deploy on Vercel. Set `NEXT_PUBLIC_CALENDLY_URL` in the project's environment variables (see `.env.example`) — it powers the inline booking widget. `NEXT_PUBLIC_*` variables are baked in at build time, so redeploy after changing them. Bookings are recorded in Calendly.
+
+## Advertising
+
+`NEXT_PUBLIC_REDDIT_PIXEL_ID` and `NEXT_PUBLIC_META_PIXEL_ID` enable the Reddit and Meta pixels. Both stay dormant until the visitor accepts measurement in the shared consent banner. Campaign parameters (`utm_*`, `rdt_cid`, `fbclid`) are captured on landing and the UTM values are passed into the Calendly booking, so every booking names the campaign that produced it.
+
+How the campaigns themselves are run: [`docs/reddit-ads-playbook.md`](docs/reddit-ads-playbook.md) and [`docs/meta-ads-playbook.md`](docs/meta-ads-playbook.md).
