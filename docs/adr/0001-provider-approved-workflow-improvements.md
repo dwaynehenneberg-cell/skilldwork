@@ -1,3 +1,3 @@
 # Require approval for workflow improvements
 
-The Revision Agent is integrated into the Skilldwork Platform and creates a suggested new workflow version instead of modifying the active workflow directly. The Service Provider approves the suggestion in the Provider Workspace before it affects future Service Runs, preserving operational stability while retaining a visible improvement loop.
+The Improvement Agent creates a suggested workflow version from completed Service Runs instead of modifying the active workflow directly. The Service Provider approves the suggestion before it affects future runs. Revision requests remain inside their active Service Run and return directly to the Execution Workflow.
