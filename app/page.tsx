@@ -39,8 +39,12 @@ export default function Home() {
       >
         <div className="w-full max-w-xl rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-10 dark:shadow-black/60">
           <h1 className="font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] sm:text-5xl">
-            Create workflows, automate work, get paid.
+            Turn your service into a digital workflow.
           </h1>
+          <p className="mt-4 text-base leading-7 text-[var(--muted-text)] sm:text-lg">
+            Automate repeatable delivery while you keep expert review and client
+            relationships.
+          </p>
           <BookingWidget />
         </div>
       </section>
