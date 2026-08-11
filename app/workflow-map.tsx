@@ -39,35 +39,108 @@ type ConnectorId =
   | "result-improve"
   | "improve-workflow";
 
-const STANDARD_CYCLE: ConnectorId[] = [
+type OfferId = 1 | 2 | 3;
+/** What the client does on a page — a click, a form being filled, a revision being typed. */
+type ClientActionId =
+  | `pick-offer-${OfferId}`
+  | "choose-offer"
+  | "fill-form"
+  | "start-service"
+  | "type-revision"
+  | "revise"
+  | "accept";
+/** An automated node doing work — it spins for the length of the step. */
+type RunId = "run-workflow" | "run-revision" | "run-improvement";
+type FlowId = ConnectorId | ClientActionId | RunId;
+
+/** How long each step is held. Anything not listed gets the default connector beat. */
+const HOLD_MS = new Map<FlowId, number>([
+  ["pick-offer-1", 700],
+  ["pick-offer-2", 700],
+  ["pick-offer-3", 700],
+  ["choose-offer", 700],
+  ["start-service", 700],
+  ["revise", 700],
+  ["accept", 700],
+  ["run-workflow", 2800],
+  ["run-revision", 1800],
+  ["run-improvement", 1800],
+]);
+const CONNECTOR_HOLD_MS = 1400;
+/** Blank beat between two steps. Shorter than the clearing delay on typed lines. */
+const STEP_GAP_MS = 250;
+
+/** One client's trip through the system. */
+const clientRun = (offer: OfferId, withRevision: boolean): FlowId[] => [
   "market-sales",
+  `pick-offer-${offer}`,
+  "choose-offer",
   "sales-portal",
+  "fill-form",
+  "start-service",
   "portal-workflow",
+  "run-workflow",
   "workflow-result",
+  ...(withRevision
+    ? (["type-revision", "revise", "revision-loop", "run-revision", "workflow-result"] as FlowId[])
+    : []),
+  "accept",
   "result-improve",
+  "run-improvement",
   "improve-workflow",
 ];
 
-const REVISION_CYCLE: ConnectorId[] = [
-  "market-sales",
-  "sales-portal",
-  "portal-workflow",
-  "workflow-result",
-  "revision-loop",
-  "workflow-result",
-  "result-improve",
-  "improve-workflow",
-];
+/**
+ * Each run is a different client, on a different offer. The first one takes the revision
+ * path, so the most telling case is on screen straight away.
+ */
+const RUNS = [clientRun(2, true), clientRun(1, false), clientRun(3, false)];
 
-const INITIAL_SEQUENCE: ConnectorId[] = ["build-market", ...STANDARD_CYCLE];
+/**
+ * The portal form clears when the next run starts and stays filled for the rest of that run,
+ * so "Start service" visibly submits something. Listing the empty half means any step added
+ * later to the back of a run counts as filled automatically.
+ */
+const PORTAL_EMPTY_STEPS = new Set<FlowId>([
+  "build-market",
+  "market-sales",
+  "pick-offer-1",
+  "pick-offer-2",
+  "pick-offer-3",
+  "choose-offer",
+  "sales-portal",
+]);
 
 const activeNodeClass =
   "transition duration-300 data-[active=true]:-translate-y-1 data-[active=true]:ring-2 data-[active=true]:ring-[var(--text)] data-[active=true]:shadow-lg motion-reduce:transition-none";
 const focusedStepClass =
   "relative rounded-xl p-2 transition duration-300 data-[focused=true]:bg-[var(--field-bg)] data-[focused=true]:ring-1 data-[focused=true]:ring-[var(--field-border-focus)] data-[focused=true]:shadow-sm motion-reduce:transition-none";
+const pressedClass =
+  "transition duration-200 data-[active=true]:scale-95 data-[active=true]:ring-2 data-[active=true]:ring-[var(--workflow-blue)] data-[active=true]:shadow-[0_0_8px_var(--workflow-blue)] motion-reduce:transition-none";
+/**
+ * A line of "text" that types itself in while its step is active. The base delay is the
+ * *clearing* delay: it outlasts the blank beat between two steps, so a line that stays
+ * filled across a step boundary does not flicker. Each line sets its own typing delay.
+ */
+const typedLineClass =
+  "h-1.5 w-0 bg-[var(--card-border)] transition-[width] delay-[400ms] duration-500 ease-out motion-reduce:transition-none";
+/**
+ * A connector at rest, and lit once the sweep below has reached the arrow tip. The delay sits
+ * on the active state, so it only applies on the way in — going dark again is immediate.
+ */
+const connectorLitClass =
+  "text-[var(--muted-text)] transition duration-300 data-[active=true]:delay-[520ms] data-[active=true]:text-[var(--workflow-blue)] data-[active=true]:drop-shadow-[0_0_5px_var(--workflow-blue)] motion-reduce:transition-none";
+/**
+ * Highlight that travels along a connector from its start to the arrow tip, riding on top of
+ * the muted line. Each segment sets its own duration and delay; the base state carries no
+ * duration, so on the way out it snaps back to zero rather than retreating backwards — the
+ * next pass always starts from the beginning.
+ */
+const sweepClass =
+  "pointer-events-none absolute bg-[var(--workflow-blue)] transition-[width,height] duration-0 ease-out motion-reduce:transition-none";
 
 function useConnectorAnimation(enabled: boolean) {
-  const [activeConnector, setActiveConnector] = useState<ConnectorId | null>(null);
+  const [activeFlow, setActiveFlow] = useState<FlowId | null>(null);
   const initialPlayed = useRef(false);
   const cycleCount = useRef(0);
 
@@ -82,27 +155,26 @@ function useConnectorAnimation(enabled: boolean) {
         timer = setTimeout(resolve, milliseconds);
       });
 
-    async function play(sequence: ConnectorId[]) {
-      for (const connector of sequence) {
+    async function play(sequence: FlowId[]) {
+      for (const step of sequence) {
         if (cancelled) return;
-        setActiveConnector(connector);
-        await wait(1400);
+        setActiveFlow(step);
+        await wait(HOLD_MS.get(step) ?? CONNECTOR_HOLD_MS);
         if (cancelled) return;
-        setActiveConnector(null);
-        await wait(250);
+        setActiveFlow(null);
+        await wait(STEP_GAP_MS);
       }
     }
 
     async function run() {
       if (!initialPlayed.current) {
         initialPlayed.current = true;
-        await play(INITIAL_SEQUENCE);
+        await play(["build-market", ...RUNS[0]]);
       }
 
       while (!cancelled) {
-        const sequence = cycleCount.current % 3 === 1 ? REVISION_CYCLE : STANDARD_CYCLE;
         cycleCount.current += 1;
-        await play(sequence);
+        await play(RUNS[cycleCount.current % RUNS.length]);
         if (!cancelled) await wait(1500);
       }
     }
@@ -114,7 +186,7 @@ function useConnectorAnimation(enabled: boolean) {
     };
   }, [enabled]);
 
-  return enabled ? activeConnector : null;
+  return enabled ? activeFlow : null;
 }
 
 function WindowHeader({ children }: { children: ReactNode }) {
@@ -139,53 +211,97 @@ function ClientPage({ children, title }: { children: ReactNode; title: string })
   );
 }
 
-function SalesPage() {
+function SalesPage({ activeFlow }: { activeFlow: FlowId | null }) {
   return (
     <ClientPage title="Sales Page">
       <div className="space-y-1.5">
-        {[1, 2, 3].map((offer) => (
+        {([1, 2, 3] as const).map((offer) => (
           <div
             key={offer}
-            className="flex items-center justify-between border border-[var(--card-border)] px-2 py-1.5 text-[0.48rem] font-semibold uppercase"
+            data-active={activeFlow === `pick-offer-${offer}`}
+            className={`${pressedClass} flex items-center justify-between border border-[var(--card-border)] px-2 py-1.5 text-[0.48rem] font-semibold uppercase`}
           >
             <span>Offer {offer}</span>
             <span aria-hidden="true">→</span>
           </div>
         ))}
       </div>
-      <div className="mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]">
+      <div
+        data-active={activeFlow === "choose-offer"}
+        className={`${pressedClass} mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]`}
+      >
         Choose offer
       </div>
     </ClientPage>
   );
 }
 
-function ClientPortal() {
+function ClientPortal({ activeFlow }: { activeFlow: FlowId | null }) {
+  const filled = activeFlow !== null && !PORTAL_EMPTY_STEPS.has(activeFlow);
+
   return (
     <ClientPage title="Client Portal">
       <div className="space-y-1.5">
-        <div className="h-5 border border-[var(--card-border)] bg-[var(--field-bg)]" />
-        <div className="h-5 border border-[var(--card-border)] bg-[var(--field-bg)]" />
-        <div className="h-5 border border-[var(--card-border)] bg-[var(--field-bg)]" />
+        {[
+          "data-[active=true]:delay-[0ms]",
+          "data-[active=true]:delay-[300ms]",
+          "data-[active=true]:delay-[600ms]",
+        ].map((typingDelay) => (
+          <div
+            key={typingDelay}
+            className="flex h-5 items-center border border-[var(--card-border)] bg-[var(--field-bg)] px-1"
+          >
+            <span
+              data-active={filled}
+              className={`${typedLineClass} ${typingDelay} data-[active=true]:w-3/4`}
+            />
+          </div>
+        ))}
       </div>
-      <div className="mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]">
+      <div
+        data-active={activeFlow === "start-service"}
+        className={`${pressedClass} mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]`}
+      >
         Start service
       </div>
     </ClientPage>
   );
 }
 
-function ResultPage() {
+function ResultPage({ activeFlow }: { activeFlow: FlowId | null }) {
+  // The revision note is typed first, then stays put while "Revise" is pressed.
+  const typing = activeFlow === "type-revision" || activeFlow === "revise";
+
   return (
     <ClientPage title="Result">
       <div className="h-[4.4rem] border border-dashed border-[var(--field-border-focus)] bg-[var(--field-bg)] p-2">
         <div className="h-1.5 w-full bg-[var(--card-border)]" />
         <div className="mt-1.5 h-1.5 w-3/4 bg-[var(--card-border)]" />
-        <div className="mt-3 h-5 w-full bg-[var(--card-bg)]" />
+        <div className="mt-3 flex h-5 w-full items-center gap-px bg-[var(--card-bg)] px-1">
+          <span
+            data-active={typing}
+            className={`${typedLineClass} data-[active=true]:delay-[0ms] data-[active=true]:w-2/3`}
+          />
+          {/* The blink runs unconditionally — toggling the animation itself would snap past the delay. */}
+          <span
+            data-active={typing}
+            className="h-2.5 w-0 animate-pulse bg-[var(--text)] transition-[width] delay-[400ms] duration-100 data-[active=true]:w-px data-[active=true]:delay-[0ms] motion-reduce:animate-none motion-reduce:transition-none"
+          />
+        </div>
       </div>
       <div className="mt-2 grid grid-cols-2 gap-1 text-center text-[0.43rem] font-semibold uppercase">
-        <span className="border border-[var(--field-border-focus)] py-1.5">Revise</span>
-        <span className="bg-[var(--btn-bg)] py-1.5 text-[var(--btn-text)]">Accept</span>
+        <span
+          data-active={activeFlow === "revise"}
+          className={`${pressedClass} border border-[var(--field-border-focus)] py-1.5`}
+        >
+          Revise
+        </span>
+        <span
+          data-active={activeFlow === "accept"}
+          className={`${pressedClass} bg-[var(--btn-bg)] py-1.5 text-[var(--btn-text)]`}
+        >
+          Accept
+        </span>
       </div>
     </ClientPage>
   );
@@ -215,6 +331,43 @@ function BuildVisual({ active }: { active: boolean }) {
   );
 }
 
+/** Chevron head on a 10×10 box, tip centred on the box axis so it always lines up with a 1px rule. */
+function ArrowHead({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={`shrink-0 ${className}`}
+      fill="none"
+      height="10"
+      viewBox="0 0 10 10"
+      width="10"
+    >
+      <path
+        d="M4 1 L8 5 L4 9"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.2"
+      />
+    </svg>
+  );
+}
+
+/**
+ * Loading ring for an automated node. Sits just inside the circle, so it reads against the
+ * node's own fill rather than whatever is behind it. The spin runs unconditionally and only
+ * the opacity is gated — toggling the animation itself would snap the rotation back to 0.
+ */
+function RunningRing({ active }: { active: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      data-active={active}
+      className="pointer-events-none absolute inset-1 animate-spin rounded-full border-2 border-transparent border-t-current opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100 motion-reduce:animate-none"
+    />
+  );
+}
+
 function Connector({
   active,
   direction,
@@ -230,39 +383,60 @@ function Connector({
     <div
       aria-hidden="true"
       data-active={active}
-      className={`flex shrink-0 items-center justify-center gap-1 text-[var(--muted-text)] transition duration-500 data-[active=true]:text-[var(--workflow-blue)] data-[active=true]:drop-shadow-[0_0_5px_var(--workflow-blue)] motion-reduce:transition-none ${horizontal ? "min-w-6 flex-col" : "min-h-10 flex-col"}`}
+      className={`group flex shrink-0 flex-col items-center justify-center gap-1 ${connectorLitClass} ${horizontal ? "min-w-6" : "min-h-10"}`}
     >
       {label ? (
         <span className="max-w-24 text-center text-[0.43rem] font-semibold uppercase tracking-[0.08em]">
           {label}
         </span>
       ) : null}
-      <div className={`flex items-center ${horizontal ? "w-full" : "rotate-90"}`}>
-        <span className="h-px flex-1 bg-current" />
-        <span className="-ml-0.5 text-lg leading-none">›</span>
-      </div>
+      {horizontal ? (
+        <span className="relative flex w-full items-center">
+          <span className="h-px flex-1 bg-current" />
+          <ArrowHead className="-ml-1" />
+          <span
+            className={`${sweepClass} left-0 top-1/2 h-px w-0 -translate-y-1/2 group-data-[active=true]:w-full group-data-[active=true]:duration-[600ms]`}
+          />
+        </span>
+      ) : (
+        <span className="relative flex h-9 flex-col items-center">
+          <span className="w-px flex-1 bg-current" />
+          <ArrowHead className="-mt-1 rotate-90" />
+          <span
+            className={`${sweepClass} left-1/2 top-0 h-0 w-px -translate-x-1/2 group-data-[active=true]:h-full group-data-[active=true]:duration-[600ms]`}
+          />
+        </span>
+      )}
     </div>
   );
 }
 
 function DesktopSalesPortalConnector({ active }: { active: boolean }) {
   return (
-    <div
-      aria-hidden="true"
-      data-active={active}
-      className="relative h-80 text-[var(--muted-text)] transition duration-500 data-[active=true]:text-[var(--workflow-blue)] data-[active=true]:drop-shadow-[0_0_5px_var(--workflow-blue)] motion-reduce:transition-none"
-    >
+    <div aria-hidden="true" data-active={active} className={`group relative h-80 ${connectorLitClass}`}>
+      {/* Out of the sales page, up the riser, then into the portal — swept in that order. */}
       <span className="absolute left-0 top-[16.5rem] w-1/2 border-t border-current" />
+      <span
+        className={`${sweepClass} left-0 top-[16.5rem] h-px w-0 group-data-[active=true]:w-1/2 group-data-[active=true]:duration-[120ms]`}
+      />
+
       <span className="absolute left-1/2 top-[9rem] h-[7.5rem] border-l border-current" />
-      <span className="absolute left-1/2 right-0 top-[9rem] flex items-center">
+      <span
+        className={`${sweepClass} bottom-14 left-1/2 h-0 w-px group-data-[active=true]:h-[7.5rem] group-data-[active=true]:delay-[120ms] group-data-[active=true]:duration-[360ms]`}
+      />
+
+      <span className="absolute left-1/2 right-0 top-[9rem] flex -translate-y-1/2 items-center">
         <span className="h-px flex-1 bg-current" />
-        <span className="-ml-0.5 text-lg leading-none">›</span>
+        <ArrowHead className="-ml-1" />
       </span>
+      <span
+        className={`${sweepClass} left-1/2 top-[9rem] h-px w-0 -translate-y-1/2 group-data-[active=true]:w-1/2 group-data-[active=true]:delay-[480ms] group-data-[active=true]:duration-[120ms]`}
+      />
     </div>
   );
 }
 
-function MarketingVisual({ active, connectorActive }: { active: boolean; connectorActive: boolean }) {
+function MarketingVisual({ active, activeFlow }: { active: boolean; activeFlow: FlowId | null }) {
   return (
     <div className="flex flex-col items-center">
       <div
@@ -272,8 +446,8 @@ function MarketingVisual({ active, connectorActive }: { active: boolean; connect
         <h3 className="font-display text-2xl leading-none">Marketing</h3>
         <span className="mt-1.5 text-[0.55rem] font-medium">Handled by you</span>
       </div>
-      <Connector active={connectorActive} direction="vertical" />
-      <SalesPage />
+      <Connector active={activeFlow === "market-sales"} direction="vertical" />
+      <SalesPage activeFlow={activeFlow} />
       <span className="mt-2 text-[0.5rem] font-semibold uppercase tracking-[0.1em] text-[var(--muted-text)]">
         ↻ Next client
       </span>
@@ -281,39 +455,49 @@ function MarketingVisual({ active, connectorActive }: { active: boolean; connect
   );
 }
 
-function WorkflowCluster({ active }: { active: boolean }) {
+function WorkflowCluster({ active, activeFlow }: { active: boolean; activeFlow: FlowId | null }) {
   return (
     <div className="relative h-40 w-36 shrink-0">
       <div
         data-active={active}
         className={`${activeNodeClass} absolute left-2 top-5 flex h-28 w-28 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-blue)] p-3 text-center text-white`}
       >
+        <RunningRing active={activeFlow === "run-workflow"} />
         <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">Execution</span>
         <h3 className="mt-1 font-display text-lg leading-none">Workflow</h3>
         <span className="mt-1 text-[0.43rem] opacity-70">process → deliver</span>
       </div>
 
-      <div className="absolute -left-2 top-0 flex items-center">
-        <span className="mr-1 w-3 border-t border-dashed border-[var(--workflow-accent)]" />
-        <span className="w-[5.5rem] rounded-full bg-[var(--workflow-accent)] px-2 py-1 text-center text-[0.43rem] font-semibold leading-tight text-black">
-          Your input if needed
-        </span>
-      </div>
+      {/* Leader line: drops from behind the pill onto the workflow circle's upper-left arc. */}
+      <span className="absolute left-6 top-2 h-7 border-l border-dashed border-[var(--workflow-accent)]" />
+      <span className="absolute -left-2 top-0 w-[5.5rem] rounded-full bg-[var(--workflow-accent)] px-2 py-1 text-center text-[0.43rem] font-semibold leading-tight text-black">
+        Your input if needed
+      </span>
 
       <div className="absolute bottom-0 right-0 flex h-16 w-16 flex-col items-center justify-center rounded-full border-2 border-[var(--card-bg)] bg-[var(--workflow-blue)] p-2 text-center text-white shadow-md">
+        <RunningRing active={activeFlow === "run-revision"} />
         <span className="font-display text-[0.72rem] leading-none">Revision Agent</span>
       </div>
     </div>
   );
 }
 
-function ImprovementVisual({ active, compact }: { active: boolean; compact: boolean }) {
+function ImprovementVisual({
+  active,
+  activeFlow,
+  compact,
+}: {
+  active: boolean;
+  activeFlow: FlowId | null;
+  compact: boolean;
+}) {
   return (
     <div className="flex flex-col items-center">
       <div
         data-active={active}
-        className={`${activeNodeClass} flex h-36 w-36 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-blue)] p-4 text-center text-white`}
+        className={`${activeNodeClass} relative flex h-36 w-36 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-blue)] p-4 text-center text-white`}
       >
+        <RunningRing active={activeFlow === "run-improvement"} />
         <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">Completed runs</span>
         <h3 className="mt-2 font-display text-xl leading-none">Improvement Agent</h3>
         <span className="mt-2 text-[0.46rem] opacity-75">Improves future delivery</span>
@@ -334,7 +518,7 @@ function ReturnPath({ active, children, className = "" }: { active: boolean; chi
       data-active={active}
       className={`relative flex h-11 items-end justify-center rounded-b-xl border-x border-b border-[var(--field-border-focus)] px-7 pb-1.5 text-center text-[0.45rem] font-semibold uppercase tracking-[0.08em] text-[var(--muted-text)] transition duration-500 data-[active=true]:border-[var(--workflow-blue)] data-[active=true]:text-[var(--workflow-blue)] data-[active=true]:drop-shadow-[0_0_5px_var(--workflow-blue)] motion-reduce:transition-none ${className}`}
     >
-      <span className="absolute -left-1 -top-2 text-lg leading-none">↑</span>
+      <ArrowHead className="absolute -left-[5.5px] -top-1.5 -rotate-90" />
       {children}
     </div>
   );
@@ -342,22 +526,22 @@ function ReturnPath({ active, children, className = "" }: { active: boolean; chi
 
 function FulfillmentVisual({
   active,
-  activeConnector,
+  activeFlow,
   compact,
 }: {
   active: boolean;
-  activeConnector: ConnectorId | null;
+  activeFlow: FlowId | null;
   compact: boolean;
 }) {
   if (compact) {
     return (
       <div className="flex flex-col items-center">
-        <ClientPortal />
-        <Connector active={activeConnector === "portal-workflow"} direction="vertical" />
-        <WorkflowCluster active={active} />
-        <Connector active={activeConnector === "workflow-result"} direction="vertical" />
-        <ResultPage />
-        <ReturnPath active={activeConnector === "revision-loop"} className="mt-2 w-52">
+        <ClientPortal activeFlow={activeFlow} />
+        <Connector active={activeFlow === "portal-workflow"} direction="vertical" />
+        <WorkflowCluster active={active} activeFlow={activeFlow} />
+        <Connector active={activeFlow === "workflow-result"} direction="vertical" />
+        <ResultPage activeFlow={activeFlow} />
+        <ReturnPath active={activeFlow === "revision-loop"} className="mt-2 w-52">
           Revision returns to workflow
         </ReturnPath>
       </div>
@@ -370,12 +554,12 @@ function FulfillmentVisual({
         Automated service execution
       </p>
       <div className="grid grid-cols-[9rem_1.5rem_9rem_1.5rem_9rem] items-center justify-center">
-        <ClientPortal />
-        <Connector active={activeConnector === "portal-workflow"} direction="horizontal" />
-        <WorkflowCluster active={active} />
-        <Connector active={activeConnector === "workflow-result"} direction="horizontal" />
-        <ResultPage />
-        <ReturnPath active={activeConnector === "revision-loop"} className="col-start-3 col-end-6 mt-2">
+        <ClientPortal activeFlow={activeFlow} />
+        <Connector active={activeFlow === "portal-workflow"} direction="horizontal" />
+        <WorkflowCluster active={active} activeFlow={activeFlow} />
+        <Connector active={activeFlow === "workflow-result"} direction="horizontal" />
+        <ResultPage activeFlow={activeFlow} />
+        <ReturnPath active={activeFlow === "revision-loop"} className="col-start-3 col-end-6 mt-2">
           Revision returns to workflow
         </ReturnPath>
       </div>
@@ -456,12 +640,12 @@ function StepFrame({
 }
 
 function DesktopCanvas({
-  activeConnector,
+  activeFlow,
   activeStep,
   onFocusStep,
   onHoverStep,
 }: {
-  activeConnector: ConnectorId | null;
+  activeFlow: FlowId | null;
   activeStep: StepId | null;
   onFocusStep: (step: StepId | null) => void;
   onHoverStep: (step: StepId | null) => void;
@@ -480,27 +664,27 @@ function DesktopCanvas({
           <BuildVisual active={activeStep === "build"} />
         </StepFrame>
 
-        <Connector active={activeConnector === "build-market"} direction="horizontal" />
+        <Connector active={activeFlow === "build-market"} direction="horizontal" />
 
         <StepFrame active={activeStep === "market"} mobile={false} step="market" {...stepEvents("market")}>
-          <MarketingVisual active={activeStep === "market"} connectorActive={activeConnector === "market-sales"} />
+          <MarketingVisual active={activeStep === "market"} activeFlow={activeFlow} />
         </StepFrame>
 
-        <DesktopSalesPortalConnector active={activeConnector === "sales-portal"} />
+        <DesktopSalesPortalConnector active={activeFlow === "sales-portal"} />
 
         <StepFrame active={activeStep === "fulfill"} mobile={false} step="fulfill" {...stepEvents("fulfill")}>
-          <FulfillmentVisual active={activeStep === "fulfill"} activeConnector={activeConnector} compact={false} />
+          <FulfillmentVisual active={activeStep === "fulfill"} activeFlow={activeFlow} compact={false} />
         </StepFrame>
 
-        <Connector active={activeConnector === "result-improve"} direction="horizontal" label="Completed run" />
+        <Connector active={activeFlow === "result-improve"} direction="horizontal" label="Completed run" />
 
         <StepFrame active={activeStep === "improve"} mobile={false} step="improve" {...stepEvents("improve")}>
-          <ImprovementVisual active={activeStep === "improve"} compact={false} />
+          <ImprovementVisual active={activeStep === "improve"} activeFlow={activeFlow} compact={false} />
         </StepFrame>
       </div>
 
       <div className="-mt-7 hidden grid-cols-[9.4rem_2rem_10.6rem_2rem_minmax(29rem,1fr)_2rem_10rem] gap-2 xl:grid">
-        <ReturnPath active={activeConnector === "improve-workflow"} className="col-start-5 col-end-8 ml-[16.5rem]">
+        <ReturnPath active={activeFlow === "improve-workflow"} className="col-start-5 col-end-8 ml-[16.5rem]">
           Improved workflow returns to execution
         </ReturnPath>
       </div>
@@ -509,10 +693,10 @@ function DesktopCanvas({
 }
 
 function MobileCanvas({
-  activeConnector,
+  activeFlow,
   activeStep,
 }: {
-  activeConnector: ConnectorId | null;
+  activeFlow: FlowId | null;
   activeStep: StepId | null;
 }) {
   return (
@@ -521,23 +705,23 @@ function MobileCanvas({
         <BuildVisual active={activeStep === "build"} />
       </StepFrame>
 
-      <Connector active={activeConnector === "build-market"} direction="vertical" />
+      <Connector active={activeFlow === "build-market"} direction="vertical" />
 
       <StepFrame active={activeStep === "market"} mobile step="market">
-        <MarketingVisual active={activeStep === "market"} connectorActive={activeConnector === "market-sales"} />
+        <MarketingVisual active={activeStep === "market"} activeFlow={activeFlow} />
       </StepFrame>
 
-      <Connector active={activeConnector === "sales-portal"} direction="vertical" />
+      <Connector active={activeFlow === "sales-portal"} direction="vertical" />
 
       <StepFrame active={activeStep === "fulfill"} mobile step="fulfill">
-        <FulfillmentVisual active={activeStep === "fulfill"} activeConnector={activeConnector} compact />
+        <FulfillmentVisual active={activeStep === "fulfill"} activeFlow={activeFlow} compact />
       </StepFrame>
 
-      <Connector active={activeConnector === "result-improve"} direction="vertical" label="Completed run" />
+      <Connector active={activeFlow === "result-improve"} direction="vertical" label="Completed run" />
 
       <StepFrame active={activeStep === "improve"} mobile step="improve">
-        <ImprovementVisual active={activeStep === "improve"} compact />
-        <ReturnPath active={activeConnector === "improve-workflow"} className="mx-auto mt-3 w-60">
+        <ImprovementVisual active={activeStep === "improve"} activeFlow={activeFlow} compact />
+        <ReturnPath active={activeFlow === "improve-workflow"} className="mx-auto mt-3 w-60">
           Improved workflow returns to execution
         </ReturnPath>
       </StepFrame>
@@ -556,7 +740,7 @@ export default function WorkflowMap() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const desktopActiveStep = focusedStep ?? hoveredStep;
   const interactionPaused = desktopActiveStep !== null;
-  const activeConnector = useConnectorAnimation(
+  const activeFlow = useConnectorAnimation(
     sectionVisible && pageVisible && !reducedMotion && !interactionPaused,
   );
 
@@ -673,12 +857,12 @@ export default function WorkflowMap() {
             </div>
 
             <DesktopCanvas
-              activeConnector={activeConnector}
+              activeFlow={activeFlow}
               activeStep={desktopActiveStep}
               onFocusStep={setFocusedStep}
               onHoverStep={setHoveredStep}
             />
-            <MobileCanvas activeConnector={activeConnector} activeStep={mobileActiveStep} />
+            <MobileCanvas activeFlow={activeFlow} activeStep={mobileActiveStep} />
           </div>
 
           <div className="flex flex-col gap-3 rounded-xl bg-[var(--field-bg)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">

@@ -42,12 +42,8 @@ export default function Home() {
             For freelancers, agencies, and expert service businesses
           </p>
           <h1 className="font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] sm:text-5xl">
-            Turn your service into a digital workflow.
+            Turn your service into an automatable workflow.
           </h1>
-          <p className="mt-4 text-base leading-7 text-[var(--muted-text)] sm:text-lg">
-            Automate repeatable delivery while you keep expert review and client
-            relationships.
-          </p>
           <BookingWidget />
         </div>
       </section>
