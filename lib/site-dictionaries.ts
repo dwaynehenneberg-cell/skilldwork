@@ -326,7 +326,7 @@ const en = {
       {
         title: "1. Controller",
         paragraphs: [
-          "Dwayne Henneberg (Skilldwork)\nEmail: hello@skilldwork.com",
+          "Dwayne Henneberg (Skilldwork)\nEmail: dwayne@skilldwork.com",
         ],
       },
       {
@@ -383,7 +383,7 @@ const en = {
       {
         title: "1. Provider",
         paragraphs: [
-          "Dwayne Henneberg (Skilldwork)\nEmail: hello@skilldwork.com",
+          "Dwayne Henneberg (Skilldwork)\nEmail: dwayne@skilldwork.com",
         ],
       },
       {
@@ -778,7 +778,7 @@ const de: DeepString<typeof en> = {
       {
         title: "1. Verantwortlicher",
         paragraphs: [
-          "Dwayne Henneberg (Skilldwork)\nE-Mail: hello@skilldwork.com",
+          "Dwayne Henneberg (Skilldwork)\nE-Mail: dwayne@skilldwork.com",
         ],
       },
       {
@@ -835,7 +835,7 @@ const de: DeepString<typeof en> = {
       {
         title: "1. Anbieter",
         paragraphs: [
-          "Dwayne Henneberg (Skilldwork)\nE-Mail: hello@skilldwork.com",
+          "Dwayne Henneberg (Skilldwork)\nE-Mail: dwayne@skilldwork.com",
         ],
       },
       {
