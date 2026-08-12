@@ -25,12 +25,12 @@ const en = {
   booking: {
     thanks: "Thanks — your call is booked. We look forward to talking to you.",
     pickTime:
-      "Pick a time that works for you. It’s a workflow fit call — bring one repeatable service.",
+      "Pick a time that works for you. It’s a 15-minute workflow fit call — bring one repeatable service.",
     loading: "Loading available times…",
     loadError: "The scheduler did not load in this page.",
     openScheduling: "Open scheduling page",
-    ctaPrimary: "Build your workflow",
-    ctaSub: "Starts with a 30-minute workflow fit call",
+    ctaPrimary: "Book a 15-min fit call",
+    ctaSub: "Then we build your workflow",
     unavailable: "Booking is temporarily unavailable.",
     seeHow: "See how it works",
   },
@@ -481,12 +481,12 @@ const de: DeepString<typeof en> = {
   booking: {
     thanks: "Danke — dein Call ist gebucht. Wir freuen uns auf das Gespräch.",
     pickTime:
-      "Wähle einen Termin, der passt. Es ist ein Workflow-Fit-Call — bring eine wiederholbare Dienstleistung mit.",
+      "Wähle einen Termin, der passt. Es ist ein 15-minütiger Workflow-Fit-Call — bring eine wiederholbare Dienstleistung mit.",
     loading: "Verfügbare Zeiten werden geladen…",
     loadError: "Der Terminplaner hat auf dieser Seite nicht geladen.",
     openScheduling: "Terminseite öffnen",
-    ctaPrimary: "Workflow aufbauen",
-    ctaSub: "Startet mit einem 30-minütigen Workflow-Fit-Call",
+    ctaPrimary: "15-Min-Fit-Call buchen",
+    ctaSub: "Danach bauen wir deinen Workflow",
     unavailable: "Buchung ist vorübergehend nicht verfügbar.",
     seeHow: "So funktioniert’s",
   },

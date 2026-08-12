@@ -17,9 +17,9 @@ export default function Home() {
 
       <section
         id="book"
-        className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-40 sm:px-6 sm:py-36"
+        className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-40 sm:px-6 sm:py-36 has-[.booking-open]:items-start has-[.booking-open]:sm:pt-28"
       >
-        <div className="w-full max-w-xl rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-10 dark:shadow-black/60">
+        <div className="w-full max-w-xl rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 transition-[max-width] sm:p-10 has-[.booking-open]:max-w-3xl dark:shadow-black/60">
           <p
             className={`${revealOnLoad} mb-3 text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]`}
           >

@@ -108,6 +108,7 @@ export default function BookingWidget() {
     const dark = document.documentElement.classList.contains("dark");
     const params = new URLSearchParams({
       hide_gdpr_banner: "1",
+      hide_event_type_details: "1",
       background_color: dark ? "1a1a19" : "ffffff",
       text_color: dark ? "ffffff" : "0a0a0a",
       primary_color: dark ? "ffffff" : "0a0a0a",
