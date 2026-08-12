@@ -157,8 +157,8 @@ const en = {
   plans: {
     freelancer: {
       description: "Three Sales Pages, unlimited Offers — ship your first digital services.",
-      ctaMonthly: "Start monthly",
-      ctaYearly: "Start yearly",
+      ctaMonthly: "Get started",
+      ctaYearly: "Get started",
       includesFrom: "",
       highlights: [
         {
@@ -190,8 +190,8 @@ const en = {
     "freelancer-pro": {
       description:
         "Ten Sales Pages, lower fees, and room to run services in production.",
-      ctaMonthly: "Start Pro monthly",
-      ctaYearly: "Start Pro yearly",
+      ctaMonthly: "Get started",
+      ctaYearly: "Get started",
       includesFrom: "Everything in Freelancer, plus:",
       highlights: [
         {
@@ -219,8 +219,8 @@ const en = {
     agency: {
       description:
         "Unlimited Sales Pages for teams running multiple client services.",
-      ctaMonthly: "Start Business monthly",
-      ctaYearly: "Start Business yearly",
+      ctaMonthly: "Get started",
+      ctaYearly: "Get started",
       includesFrom: "Everything in Pro, plus:",
       highlights: [
         {
@@ -607,8 +607,8 @@ const de: DeepString<typeof en> = {
     freelancer: {
       description:
         "Drei Sales Pages, unbegrenzte Offers — bring deine ersten digitalen Services live.",
-      ctaMonthly: "Monatlich starten",
-      ctaYearly: "Jährlich starten",
+      ctaMonthly: "Jetzt loslegen",
+      ctaYearly: "Jetzt loslegen",
       includesFrom: "",
       highlights: [
         {
@@ -640,8 +640,8 @@ const de: DeepString<typeof en> = {
     "freelancer-pro": {
       description:
         "Zehn Sales Pages, niedrigere Gebühren und Raum für Services in Production.",
-      ctaMonthly: "Pro monatlich starten",
-      ctaYearly: "Pro jährlich starten",
+      ctaMonthly: "Jetzt loslegen",
+      ctaYearly: "Jetzt loslegen",
       includesFrom: "Alles aus Freelancer, plus:",
       highlights: [
         {
@@ -669,8 +669,8 @@ const de: DeepString<typeof en> = {
     agency: {
       description:
         "Unbegrenzte Sales Pages für Teams mit mehreren Client-Services.",
-      ctaMonthly: "Business monatlich starten",
-      ctaYearly: "Business jährlich starten",
+      ctaMonthly: "Jetzt loslegen",
+      ctaYearly: "Jetzt loslegen",
       includesFrom: "Alles aus Pro, plus:",
       highlights: [
         {

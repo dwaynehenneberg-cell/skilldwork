@@ -152,6 +152,22 @@ const STRIPE_FREELANCER_YEARLY =
   process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_YEARLY ||
   "https://buy.stripe.com/3cI00lcnhe7978O3FR6sw01";
 
+const STRIPE_PRO_MONTHLY =
+  process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_PRO ||
+  "https://buy.stripe.com/00w8wR3QL6EH3WCb8j6sw02";
+
+const STRIPE_PRO_YEARLY =
+  process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_PRO_YEARLY ||
+  "https://buy.stripe.com/6oUdRb871fbdeBgdgr6sw03";
+
+const STRIPE_BUSINESS_MONTHLY =
+  process.env.NEXT_PUBLIC_STRIPE_URL_AGENCY ||
+  "https://buy.stripe.com/dRm3cxcnh7IL78Ofoz6sw04";
+
+const STRIPE_BUSINESS_YEARLY =
+  process.env.NEXT_PUBLIC_STRIPE_URL_AGENCY_YEARLY ||
+  "https://buy.stripe.com/7sY4gBdrl8MP64Ka4f6sw05";
+
 export type BillingPeriod = "monthly" | "yearly";
 
 /** CTA targets by plan + billing — static reads so Next inlines NEXT_PUBLIC_*. */
@@ -164,12 +180,12 @@ export const PLAN_CTA_HREFS: Record<
     yearly: STRIPE_FREELANCER_YEARLY,
   },
   "freelancer-pro": {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_PRO || null,
-    yearly: process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_PRO_YEARLY || null,
+    monthly: STRIPE_PRO_MONTHLY,
+    yearly: STRIPE_PRO_YEARLY,
   },
   agency: {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_URL_AGENCY || null,
-    yearly: process.env.NEXT_PUBLIC_STRIPE_URL_AGENCY_YEARLY || null,
+    monthly: STRIPE_BUSINESS_MONTHLY,
+    yearly: STRIPE_BUSINESS_YEARLY,
   },
   custom: {
     monthly: process.env.NEXT_PUBLIC_CALENDLY_URL || null,
