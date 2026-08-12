@@ -19,6 +19,20 @@ export const metadata: Metadata = {
   title: "skilldwork — Turn services into digital workflows.",
   description:
     "Skilldwork turns your service into a digital workflow so you can focus on marketing and expert decisions.",
+  icons: {
+    icon: [
+      {
+        url: "/icon-light.png",
+        media: "(prefers-color-scheme: light)",
+        type: "image/png",
+      },
+      {
+        url: "/icon-dark.png",
+        media: "(prefers-color-scheme: dark)",
+        type: "image/png",
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {

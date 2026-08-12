@@ -12,6 +12,7 @@ import { useSiteI18n } from "@/lib/site-i18n";
 import { revealOnLoad, revealOnView } from "../reveal";
 import ScrollReveal from "../scroll-reveal";
 import SiteControls from "../site-controls";
+import SiteLogo from "../site-logo";
 import PricingPlans from "./pricing-plans";
 
 function translateFeatureValue(
@@ -56,12 +57,7 @@ export default function PricingContent() {
   return (
     <main className="relative min-h-screen px-4 py-6 sm:px-6 sm:py-12">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 pb-10">
-        <Link
-          href="/"
-          className="font-display text-2xl tracking-tight text-[var(--text)] transition-opacity hover:opacity-65"
-        >
-          skilldwork
-        </Link>
+        <SiteLogo size={48} />
         <SiteControls />
       </div>
 

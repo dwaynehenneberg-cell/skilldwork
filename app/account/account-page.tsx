@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import ThemeToggle from "@/app/theme-toggle";
 import LangSwitch from "@/app/lang-switch";
+import SiteLogo from "@/app/site-logo";
 import { formatOfferPrice, getOffer } from "@/lib/foerderklar/offers";
 import { I18nProvider, useI18n } from "@/lib/foerderklar/i18n";
 import { StoreProvider, useStore } from "@/lib/foerderklar/store";
@@ -58,20 +58,7 @@ function AccountInner() {
       <header className="sticky top-0 z-30 border-b border-[var(--card-border)] bg-[var(--page-bg)]/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/logo-light.png"
-              alt="skilldwork"
-              width={36}
-              height={36}
-              className="rounded-xl dark:hidden"
-            />
-            <Image
-              src="/logo.png"
-              alt="skilldwork"
-              width={36}
-              height={36}
-              className="hidden rounded-xl dark:block"
-            />
+            <SiteLogo href={false} size={36} />
             <div>
               <p className="text-sm font-semibold text-[var(--text)]">
                 {t.account.title}

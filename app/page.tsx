@@ -1,15 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import BookingWidget from "./booking-widget";
 import Mission from "./mission";
 import { revealOnLoad } from "./reveal";
 import SiteControls from "./site-controls";
+import SiteLogo from "./site-logo";
 import WorkflowMap from "./workflow-map";
 import { useSiteI18n } from "@/lib/site-i18n";
-
-const logoClass = "h-28 w-28 sm:h-32 sm:w-32";
 
 export default function Home() {
   const { t } = useSiteI18n();
@@ -17,22 +15,7 @@ export default function Home() {
   return (
     <main className="relative min-h-screen">
       <header className="absolute left-4 top-4 z-10 sm:left-10 sm:top-8">
-        <Image
-          src="/logo-light.png"
-          alt="skilld logo"
-          width={128}
-          height={128}
-          className={`${logoClass} dark:hidden`}
-          priority
-        />
-        <Image
-          src="/logo.png"
-          alt="skilld logo"
-          width={128}
-          height={128}
-          className={`${logoClass} hidden dark:block`}
-          priority
-        />
+        <SiteLogo href={false} size={128} className="h-28 w-28 sm:h-32 sm:w-32" priority />
       </header>
 
       <div className="absolute right-4 top-4 z-10 sm:right-10 sm:top-8">

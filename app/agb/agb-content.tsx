@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import SiteControls from "../site-controls";
+import SiteLogo from "../site-logo";
 import { useSiteI18n } from "@/lib/site-i18n";
 
 const sectionClass = "space-y-3";
@@ -31,12 +32,7 @@ export default function AgbContent() {
   return (
     <main className="relative min-h-screen px-4 py-6 sm:px-6 sm:py-12">
       <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 pb-6">
-        <Link
-          href="/"
-          className="font-display text-2xl tracking-tight text-[var(--text)] transition-opacity hover:opacity-65"
-        >
-          skilldwork
-        </Link>
+        <SiteLogo size={48} />
         <SiteControls />
       </div>
 

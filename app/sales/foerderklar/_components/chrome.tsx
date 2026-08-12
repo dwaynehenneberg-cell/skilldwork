@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LangSwitch from "@/app/lang-switch";
+import SiteLogo from "@/app/site-logo";
 import ThemeToggle from "@/app/theme-toggle";
 import { DEMO_DOMAIN } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
@@ -42,20 +42,7 @@ export function PoweredBy() {
   const { t } = useI18n();
   return (
     <div className="mt-4 flex items-center justify-center gap-2 text-[11px] text-[var(--muted-text)]">
-      <Image
-        src="/logo-light.png"
-        alt=""
-        width={18}
-        height={18}
-        className="rounded-md dark:hidden"
-      />
-      <Image
-        src="/logo.png"
-        alt=""
-        width={18}
-        height={18}
-        className="hidden rounded-md dark:block"
-      />
+      <SiteLogo href={false} size={18} alt="" />
       <span>{t.poweredBy}</span>
     </div>
   );
