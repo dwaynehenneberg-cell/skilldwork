@@ -1,6 +1,13 @@
 import type { Metadata, Viewport } from "next";
+import { cookies, headers } from "next/headers";
 import { Anton, Geist } from "next/font/google";
 import { SiteI18nProvider } from "@/lib/site-i18n";
+import {
+  isLocale,
+  LOCALE_HINT_HEADER,
+  LOCALE_STORAGE_KEY,
+  type Locale,
+} from "@/lib/locale";
 import "./globals.css";
 import RedditPixel from "./reddit-pixel";
 
@@ -42,26 +49,41 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before paint so the saved/system theme applies without a flash.
+async function readInitialLocale(): Promise<Locale> {
+  const headerList = await headers();
+  const hinted = headerList.get(LOCALE_HINT_HEADER);
+  if (isLocale(hinted)) return hinted;
+  const cookieStore = await cookies();
+  const saved = cookieStore.get(LOCALE_STORAGE_KEY)?.value;
+  return isLocale(saved) ? saved : "en";
+}
+
+// Runs before paint so the saved/system theme and locale apply without a flash.
 const themeScript = `try {
   var t = localStorage.getItem("theme");
   if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
     document.documentElement.classList.add("dark");
   }
   var l = localStorage.getItem("skilldwork-locale");
+  if (l !== "en" && l !== "de") {
+    var m = document.cookie.match(/(?:^|; )skilldwork-locale=([^;]*)/);
+    l = m ? decodeURIComponent(m[1]) : "";
+  }
   if (l === "en" || l === "de") document.documentElement.lang = l;
 } catch (e) {}`;
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const initialLocale = await readInitialLocale();
+
   return (
     <html
-      lang="en"
+      lang={initialLocale}
       suppressHydrationWarning
       className={`${anton.variable} ${geistSans.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <SiteI18nProvider>
+        <SiteI18nProvider initialLocale={initialLocale}>
           {children}
           <RedditPixel />
         </SiteI18nProvider>

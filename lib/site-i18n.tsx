@@ -8,8 +8,8 @@ import {
   type ReactNode,
 } from "react";
 import { siteDictionaries, type SiteDict } from "./site-dictionaries";
-import { useLocaleStore } from "./use-locale-store";
-import type { Locale } from "./locale";
+import { ServerLocaleContext, useLocaleStore } from "./use-locale-store";
+import { syncLocalePersistence, type Locale } from "./locale";
 
 type SiteI18nValue = {
   locale: Locale;
@@ -19,8 +19,12 @@ type SiteI18nValue = {
 
 const SiteI18nContext = createContext<SiteI18nValue | null>(null);
 
-export function SiteI18nProvider({ children }: { children: ReactNode }) {
+function SiteI18nInner({ children }: { children: ReactNode }) {
   const { locale, setLocale } = useLocaleStore();
+
+  useEffect(() => {
+    syncLocalePersistence();
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -37,6 +41,20 @@ export function SiteI18nProvider({ children }: { children: ReactNode }) {
 
   return (
     <SiteI18nContext.Provider value={value}>{children}</SiteI18nContext.Provider>
+  );
+}
+
+export function SiteI18nProvider({
+  children,
+  initialLocale = "en",
+}: {
+  children: ReactNode;
+  initialLocale?: Locale;
+}) {
+  return (
+    <ServerLocaleContext.Provider value={initialLocale}>
+      <SiteI18nInner>{children}</SiteI18nInner>
+    </ServerLocaleContext.Provider>
   );
 }
 

@@ -332,14 +332,14 @@ const en = {
       {
         title: "2. Data we process",
         paragraphs: [
-          "Depending on how you contact us, we may process your name, email address, phone number, company or role, message, appointment details, and any other information you choose to provide. When you visit our website, limited technical data such as your IP address, browser or device information, requested page, and date and time may also be processed to deliver the site securely.",
+          "Depending on how you contact us, we may process your name, email address, phone number, company or role, message, appointment details, and any other information you choose to provide. When you visit our website, limited technical data such as your IP address, browser or device information, requested page, and date and time may also be processed to deliver the site securely. On a first visit we use the country of your connection (provided by our host Vercel from your IP) only to choose German or English, and store that choice in a functional cookie and in your browser. You can change the language at any time. This is not used for advertising.",
           "If you allow advertising measurement, the Reddit Pixel also processes information about page visits and completed bookings, together with online identifiers and device or browser information, so we can measure whether a Reddit advertisement led to a booking.",
         ],
       },
       {
         title: "3. How and why we use your data",
         paragraphs: [
-          "We use your data to respond to your inquiry, contact you about the offer you requested, schedule and manage a call, and prepare any requested services. Processing is based on steps you ask us to take before entering into a contract (Art. 6(1)(b) GDPR), or on your consent where a form specifically requests it (Art. 6(1)(a) GDPR). We process limited technical website data based on our legitimate interest in providing a secure and reliable website (Art. 6(1)(f) GDPR). Reddit advertising measurement is activated only with your consent (Art. 6(1)(a) GDPR). You may change that choice at any time via “Privacy choices” or withdraw consent by emailing us.",
+          "We use your data to respond to your inquiry, contact you about the offer you requested, schedule and manage a call, and prepare any requested services. Processing is based on steps you ask us to take before entering into a contract (Art. 6(1)(b) GDPR), or on your consent where a form specifically requests it (Art. 6(1)(a) GDPR). We process limited technical website data, including country-based language selection, based on our legitimate interest in providing a secure, reliable, and usable website (Art. 6(1)(f) GDPR). Reddit advertising measurement is activated only with your consent (Art. 6(1)(a) GDPR). You may change that choice at any time via “Privacy choices” or withdraw consent by emailing us.",
         ],
       },
       {
@@ -784,14 +784,14 @@ const de: DeepString<typeof en> = {
       {
         title: "2. Welche Daten wir verarbeiten",
         paragraphs: [
-          "Je nachdem, wie du uns kontaktierst, können wir deinen Namen, E-Mail-Adresse, Telefonnummer, Unternehmen oder Rolle, Nachricht, Termindetails und weitere Angaben verarbeiten, die du uns mitteilst. Beim Besuch unserer Website können begrenzte technische Daten wie IP-Adresse, Browser- oder Geräteinformationen, aufgerufene Seite sowie Datum und Uhrzeit verarbeitet werden, um die Website sicher bereitzustellen.",
+          "Je nachdem, wie du uns kontaktierst, können wir deinen Namen, E-Mail-Adresse, Telefonnummer, Unternehmen oder Rolle, Nachricht, Termindetails und weitere Angaben verarbeiten, die du uns mitteilst. Beim Besuch unserer Website können begrenzte technische Daten wie IP-Adresse, Browser- oder Geräteinformationen, aufgerufene Seite sowie Datum und Uhrzeit verarbeitet werden, um die Website sicher bereitzustellen. Beim ersten Besuch nutzen wir das Land deiner Verbindung (über unseren Hoster Vercel aus der IP-Adresse) nur, um Deutsch oder Englisch zu wählen, und speichern diese Wahl in einem funktionalen Cookie und im Browser. Die Sprache kannst du jederzeit ändern. Das dient nicht der Werbung.",
           "Wenn du Werbemessung erlaubst, verarbeitet das Reddit Pixel außerdem Informationen zu Seitenbesuchen und abgeschlossenen Buchungen sowie Online-Kennungen und Geräte-/Browserdaten, damit wir messen können, ob eine Reddit-Anzeige zu einer Buchung geführt hat.",
         ],
       },
       {
         title: "3. Zwecke und Rechtsgrundlagen",
         paragraphs: [
-          "Wir nutzen deine Daten, um auf deine Anfrage zu antworten, dich zum gewünschten Angebot zu kontaktieren, Calls zu planen und zu verwalten sowie gewünschte Leistungen vorzubereiten. Die Verarbeitung erfolgt zur Durchführung vorvertraglicher Maßnahmen (Art. 6 Abs. 1 lit. b DSGVO) oder auf Grundlage deiner Einwilligung, wenn ein Formular diese ausdrücklich einholt (Art. 6 Abs. 1 lit. a DSGVO). Begrenzte technische Website-Daten verarbeiten wir aufgrund unseres berechtigten Interesses an einer sicheren und zuverlässigen Website (Art. 6 Abs. 1 lit. f DSGVO). Reddit-Werbemessung erfolgt nur mit Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Du kannst diese Wahl jederzeit über „Privacy choices“ ändern oder die Einwilligung per E-Mail widerrufen.",
+          "Wir nutzen deine Daten, um auf deine Anfrage zu antworten, dich zum gewünschten Angebot zu kontaktieren, Calls zu planen und zu verwalten sowie gewünschte Leistungen vorzubereiten. Die Verarbeitung erfolgt zur Durchführung vorvertraglicher Maßnahmen (Art. 6 Abs. 1 lit. b DSGVO) oder auf Grundlage deiner Einwilligung, wenn ein Formular diese ausdrücklich einholt (Art. 6 Abs. 1 lit. a DSGVO). Begrenzte technische Website-Daten, einschließlich der sprachlichen Vorauswahl nach Land, verarbeiten wir aufgrund unseres berechtigten Interesses an einer sicheren, zuverlässigen und nutzbaren Website (Art. 6 Abs. 1 lit. f DSGVO). Reddit-Werbemessung erfolgt nur mit Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Du kannst diese Wahl jederzeit über „Privacy choices“ ändern oder die Einwilligung per E-Mail widerrufen.",
         ],
       },
       {

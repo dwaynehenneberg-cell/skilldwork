@@ -1,12 +1,20 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useSyncExternalStore,
+} from "react";
 import {
   LOCALE_CHANGE_EVENT,
+  readCookieLocale,
   readStoredLocale,
   writeStoredLocale,
   type Locale,
 } from "./locale";
+
+export const ServerLocaleContext = createContext<Locale>("en");
 
 function subscribe(onStoreChange: () => void) {
   const handler = () => onStoreChange();
@@ -19,19 +27,17 @@ function subscribe(onStoreChange: () => void) {
 }
 
 function getLocaleSnapshot(): Locale {
-  return readStoredLocale() ?? "en";
-}
-
-function getServerLocaleSnapshot(): Locale {
-  return "en";
+  return readStoredLocale() ?? readCookieLocale() ?? "en";
 }
 
 /** One locale store for marketing site + FörderKlar demo — shared key, no drift. */
 export function useLocaleStore() {
+  const serverLocale = useContext(ServerLocaleContext);
+  const getServerSnapshot = useCallback(() => serverLocale, [serverLocale]);
   const locale = useSyncExternalStore(
     subscribe,
     getLocaleSnapshot,
-    getServerLocaleSnapshot,
+    getServerSnapshot,
   );
 
   const setLocale = useCallback((next: Locale) => {
