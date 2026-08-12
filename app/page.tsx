@@ -54,6 +54,12 @@ export default function Home() {
           >
             {t.nav.agb}
           </Link>
+          <Link
+            href="/pricing"
+            className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
+          >
+            {t.nav.pricing}
+          </Link>
         </div>
       </footer>
     </main>
