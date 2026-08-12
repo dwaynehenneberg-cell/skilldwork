@@ -283,6 +283,8 @@ const en = {
     "Affiliate links": "Affiliate marketing",
     "Transaction fee": "Transaction fee",
     "Workflow history": "Workflow history",
+    Support: "Support",
+    Community: "Community",
   },
   featureTips: {
     "Workflow Builds":
@@ -299,6 +301,9 @@ const en = {
     "Affiliate links": "Reward partners and marketplace promoters who bring new Clients — set incentives so others market your Offers and help you scale acquisition.",
     "Transaction fee": "Percentage of Client payments processed through Skilldwork.",
     "Workflow history": "How long past workflow versions and run history are retained.",
+    Support: "Reach the Skilldwork team by email, phone, or WhatsApp.",
+    Community:
+      "Access to the WhatsApp Service Provider Community — Last Humans Working — to exchange with other providers.",
   },
   featureValues: {
     Unlimited: "Unlimited",
@@ -306,6 +311,8 @@ const en = {
     "7 days": "7 days",
     "30 days": "30 days",
     "90 days": "90 days",
+    "Email, phone + WhatsApp": "Email, phone + WhatsApp",
+    "Last Humans Working": "Last Humans Working",
   },
   privacy: {
     title: "Privacy",
@@ -720,6 +727,8 @@ const de: DeepString<typeof en> = {
     "Affiliate links": "Affiliate-Marketing",
     "Transaction fee": "Transaktionsgebühr",
     "Workflow history": "Workflow-Historie",
+    Support: "Support",
+    Community: "Community",
   },
   featureTips: {
     "Workflow Builds":
@@ -739,6 +748,9 @@ const de: DeepString<typeof en> = {
       "Partner und Marketplace-Promoter belohnen, die neue Clients bringen — mit Anreizen skalierst du Kundengewinnung, indem andere deine Offers vermarkten.",
     "Transaction fee": "Prozentsatz der Client-Zahlungen über Skilldwork.",
     "Workflow history": "Wie lange Workflow-Versionen und Run-Historie behalten werden.",
+    Support: "Erreiche das Skilldwork-Team per E-Mail, Telefon oder WhatsApp.",
+    Community:
+      "Zugang zur WhatsApp Service-Provider-Community — Last Humans Working — zum Austausch mit anderen Providern.",
   },
   featureValues: {
     Unlimited: "Unbegrenzt",
@@ -746,6 +758,8 @@ const de: DeepString<typeof en> = {
     "7 days": "7 Tage",
     "30 days": "30 Tage",
     "90 days": "90 Tage",
+    "Email, phone + WhatsApp": "E-Mail, Telefon + WhatsApp",
+    "Last Humans Working": "Last Humans Working",
   },
   privacy: {
     title: "Datenschutz",

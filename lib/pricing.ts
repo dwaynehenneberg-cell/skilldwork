@@ -61,6 +61,8 @@ export const PLANS: Plan[] = [
       { label: "Transaction fee", value: "10%" },
       { label: "Affiliate links", value: false },
       { label: "Workflow history", value: "7 days" },
+      { label: "Support", value: "Email, phone + WhatsApp" },
+      { label: "Community", value: "Last Humans Working" },
     ],
   },
   {
@@ -79,6 +81,8 @@ export const PLANS: Plan[] = [
       { label: "Transaction fee", value: "2.9%" },
       { label: "Affiliate links", value: true },
       { label: "Workflow history", value: "30 days" },
+      { label: "Support", value: "Email, phone + WhatsApp" },
+      { label: "Community", value: "Last Humans Working" },
     ],
   },
   {
@@ -96,6 +100,8 @@ export const PLANS: Plan[] = [
       { label: "Transaction fee", value: "2.9%" },
       { label: "Affiliate links", value: true },
       { label: "Workflow history", value: "90 days" },
+      { label: "Support", value: "Email, phone + WhatsApp" },
+      { label: "Community", value: "Last Humans Working" },
     ],
   },
   {
@@ -113,6 +119,8 @@ export const PLANS: Plan[] = [
       { label: "Transaction fee", value: "Custom" },
       { label: "Affiliate links", value: true },
       { label: "Workflow history", value: "Custom" },
+      { label: "Support", value: "Email, phone + WhatsApp" },
+      { label: "Community", value: "Last Humans Working" },
     ],
   },
 ];
@@ -136,6 +144,8 @@ export const COMPARISON_ROWS = [
   "Affiliate links",
   "Transaction fee",
   "Workflow history",
+  "Support",
+  "Community",
 ] as const;
 
 export type ComparisonRow = (typeof COMPARISON_ROWS)[number];
