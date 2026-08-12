@@ -448,7 +448,7 @@ const en = {
         title: "11. Privacy",
         paragraphs: [
           "Information on processing of personal data is set out in the Privacy Policy. Where the Customer processes personal data of their Clients via the platform, they act as an independent controller toward those Clients unless a separate data-processing agreement is concluded.",
-          "Where the Customer involves AI/API providers selected by them via the platform in the processing of personal data, it is the Customer’s responsibility to check, before use, which provider is used, where the data is processed, whether the data is used to train AI models, and which subcontractors (sub-processors) are involved, and to conclude a separate data-processing agreement with that provider where required. Skilldwork provides general notices on this but does not replace the Customer’s own review. (Draft wording — not legal advice; have this reviewed by qualified counsel before publishing.)",
+          "Where the Customer involves AI/API providers selected by them via the platform in the processing of personal data, it is the Customer’s responsibility to check, before use, which provider is used, where the data is processed, whether the data is used to train AI models, and which subcontractors (sub-processors) are involved, and to conclude a separate data-processing agreement with that provider where required. Skilldwork provides general notices on this but does not replace the Customer’s own review.",
         ],
       },
       {
@@ -900,7 +900,7 @@ const de: DeepString<typeof en> = {
         title: "11. Datenschutz",
         paragraphs: [
           "Informationen zur Verarbeitung personenbezogener Daten enthält die Datenschutzerklärung. Soweit der Kunde personenbezogene Daten seiner Clients über die Plattform verarbeitet, handelt er als eigener Verantwortlicher gegenüber seinen Clients, sofern nicht gesondert eine Auftragsverarbeitung vereinbart wird.",
-          "Bindet der Kunde über die Plattform von ihm ausgewählte KI-/API-Anbieter in die Verarbeitung personenbezogener Daten ein, obliegt es dem Kunden, vor dem Einsatz zu prüfen, welcher Anbieter zum Einsatz kommt, wo die Daten verarbeitet werden, ob die Daten zum Training von KI-Modellen verwendet werden und welche Subunternehmer (Sub-Prozessoren) beteiligt sind, und erforderlichenfalls mit dem jeweiligen Anbieter eine eigene Auftragsverarbeitungsvereinbarung zu schließen. Skilldwork stellt hierzu allgemeine Hinweise bereit, ersetzt aber keine eigene Prüfung des Kunden. (Textentwurf — keine Rechtsberatung; vor Veröffentlichung anwaltlich prüfen lassen.)",
+          "Bindet der Kunde über die Plattform von ihm ausgewählte KI-/API-Anbieter in die Verarbeitung personenbezogener Daten ein, obliegt es dem Kunden, vor dem Einsatz zu prüfen, welcher Anbieter zum Einsatz kommt, wo die Daten verarbeitet werden, ob die Daten zum Training von KI-Modellen verwendet werden und welche Subunternehmer (Sub-Prozessoren) beteiligt sind, und erforderlichenfalls mit dem jeweiligen Anbieter eine eigene Auftragsverarbeitungsvereinbarung zu schließen. Skilldwork stellt hierzu allgemeine Hinweise bereit, ersetzt aber keine eigene Prüfung des Kunden.",
         ],
       },
       {
