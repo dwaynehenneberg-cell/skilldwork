@@ -97,11 +97,7 @@ function PlanCard({
 
   return (
     <article
-      className={`${revealOnLoad} relative flex h-full flex-col rounded-3xl border bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-7 dark:shadow-black/60 ${
-        plan.highlighted
-          ? "border-[var(--text)] ring-1 ring-[var(--text)]"
-          : "border-[var(--card-border)]"
-      }`}
+      className={`${revealOnLoad} relative flex h-full flex-col rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-7 dark:shadow-black/60`}
       style={{ animationDelay: `${delayMs}ms` }}
     >
       {plan.highlighted ? (
@@ -142,12 +138,13 @@ function PlanCard({
       </div>
 
       <ul className="mb-8 flex flex-1 flex-col gap-3">
+        {copy.includesFrom ? (
+          <li className="text-sm font-medium leading-5 text-[var(--text)]">{copy.includesFrom}</li>
+        ) : null}
         {copy.highlights.map((item) => (
           <li key={item.text} className="flex items-start gap-3">
             <CheckIcon />
-            <FeatureTip tip={item.tip}>
-              <span className="text-sm leading-5 text-[var(--muted-text)]">{item.text}</span>
-            </FeatureTip>
+            <FeatureTip tip={item.tip}>{item.text}</FeatureTip>
           </li>
         ))}
       </ul>

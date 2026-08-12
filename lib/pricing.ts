@@ -43,6 +43,7 @@ export function formatEur(amount: number): string {
 /**
  * Plans scale by concurrent Service Runs and Sales Pages.
  * Prices: 99 / 299 / 999 — display names Freelancer / Pro / Business.
+ * Sales Pages: 3 / 10 / Unlimited.
  */
 export const PLANS: Plan[] = [
   {
@@ -51,15 +52,13 @@ export const PLANS: Plan[] = [
     monthlyPriceEur: 99,
     features: [
       { label: "Workflow Builds", value: "Unlimited" },
-      { label: "Active Sales Pages", value: "1" },
+      { label: "Users", value: "Unlimited" },
+      { label: "Client & Provider apps", value: true },
+      { label: "Active Sales Pages", value: "3" },
       { label: "Offers per Sales Page", value: "Unlimited" },
       { label: "Concurrent Service Runs", value: "2" },
-      { label: "Users", value: "Unlimited" },
       { label: "Admin roles", value: false },
-      { label: "Client journey apps", value: true },
-      { label: "Provider Workspace", value: true },
       { label: "Transaction fee", value: "10%" },
-      { label: "Custom domain", value: false },
       { label: "Affiliate links", value: false },
       { label: "Workflow history", value: "7 days" },
     ],
@@ -71,15 +70,13 @@ export const PLANS: Plan[] = [
     highlighted: true,
     features: [
       { label: "Workflow Builds", value: "Unlimited" },
-      { label: "Active Sales Pages", value: "3" },
+      { label: "Users", value: "Unlimited" },
+      { label: "Client & Provider apps", value: true },
+      { label: "Active Sales Pages", value: "10" },
       { label: "Offers per Sales Page", value: "Unlimited" },
       { label: "Concurrent Service Runs", value: "8" },
-      { label: "Users", value: "Unlimited" },
       { label: "Admin roles", value: true },
-      { label: "Client journey apps", value: true },
-      { label: "Provider Workspace", value: true },
       { label: "Transaction fee", value: "2.9%" },
-      { label: "Custom domain", value: true },
       { label: "Affiliate links", value: true },
       { label: "Workflow history", value: "30 days" },
     ],
@@ -90,15 +87,13 @@ export const PLANS: Plan[] = [
     monthlyPriceEur: 999,
     features: [
       { label: "Workflow Builds", value: "Unlimited" },
-      { label: "Active Sales Pages", value: "10" },
+      { label: "Users", value: "Unlimited" },
+      { label: "Client & Provider apps", value: true },
+      { label: "Active Sales Pages", value: "Unlimited" },
       { label: "Offers per Sales Page", value: "Unlimited" },
       { label: "Concurrent Service Runs", value: "20" },
-      { label: "Users", value: "Unlimited" },
       { label: "Admin roles", value: true },
-      { label: "Client journey apps", value: true },
-      { label: "Provider Workspace", value: true },
       { label: "Transaction fee", value: "2.9%" },
-      { label: "Custom domain", value: true },
       { label: "Affiliate links", value: true },
       { label: "Workflow history", value: "90 days" },
     ],
@@ -109,15 +104,13 @@ export const PLANS: Plan[] = [
     monthlyPriceEur: null,
     features: [
       { label: "Workflow Builds", value: "Unlimited" },
+      { label: "Users", value: "Unlimited" },
+      { label: "Client & Provider apps", value: true },
       { label: "Active Sales Pages", value: "Custom" },
       { label: "Offers per Sales Page", value: "Unlimited" },
       { label: "Concurrent Service Runs", value: "Custom" },
-      { label: "Users", value: "Unlimited" },
       { label: "Admin roles", value: true },
-      { label: "Client journey apps", value: true },
-      { label: "Provider Workspace", value: true },
       { label: "Transaction fee", value: "Custom" },
-      { label: "Custom domain", value: true },
       { label: "Affiliate links", value: true },
       { label: "Workflow history", value: "Custom" },
     ],
@@ -131,19 +124,17 @@ export const PAID_PLANS = PLANS.filter((plan) => plan.monthlyPriceEur !== null).
 
 export const CUSTOM_PLAN = PLANS.find((plan) => plan.id === "custom")!;
 
-/** Differentiating rows only (identical “included everywhere” stays in tips/FAQ). */
+/** Shared features first, then plan differentiators. */
 export const COMPARISON_ROWS = [
   "Workflow Builds",
+  "Users",
+  "Client & Provider apps",
   "Active Sales Pages",
   "Offers per Sales Page",
   "Concurrent Service Runs",
-  "Users",
   "Admin roles",
-  "Client journey apps",
-  "Provider Workspace",
-  "Transaction fee",
-  "Custom domain",
   "Affiliate links",
+  "Transaction fee",
   "Workflow history",
 ] as const;
 
