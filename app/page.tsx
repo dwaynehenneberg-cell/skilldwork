@@ -9,8 +9,7 @@ import SiteControls from "./site-controls";
 import WorkflowMap from "./workflow-map";
 import { useSiteI18n } from "@/lib/site-i18n";
 
-const logoClass =
-  "h-28 w-28 rounded-3xl ring-1 ring-[var(--logo-ring)] sm:h-32 sm:w-32";
+const logoClass = "h-28 w-28 sm:h-32 sm:w-32";
 
 export default function Home() {
   const { t } = useSiteI18n();
