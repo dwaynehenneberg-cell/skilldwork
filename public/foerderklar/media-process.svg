@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" fill="none">
+  <rect width="960" height="540" fill="#0b1220"/>
+  <text x="80" y="120" fill="#ffffff" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900">Companies like yours unlocked</text>
+  <text x="80" y="220" fill="#f2c744" font-family="Arial Black, Arial, sans-serif" font-size="96" font-weight="900">€25k+</text>
+  <text x="80" y="290" fill="#ffffff" font-family="Arial, sans-serif" font-size="28" font-weight="700">in typical first-year funding</text>
+  <text x="80" y="350" fill="#ffffff99" font-family="Arial, sans-serif" font-size="20">Based on completed FörderKlar checks for German SMEs</text>
+  <rect x="80" y="400" width="220" height="48" rx="14" fill="#2f6fed"/>
+  <text x="190" y="431" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="16" font-weight="700">Real programme fits</text>
+</svg>

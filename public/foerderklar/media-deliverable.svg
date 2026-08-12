@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" fill="none">
+  <rect width="960" height="540" fill="#1a1207"/>
+  <text x="80" y="140" fill="#f2c744" font-family="Arial Black, Arial, sans-serif" font-size="28" font-weight="900">WHAT YOU WALK AWAY WITH</text>
+  <text x="80" y="230" fill="#ffffff" font-family="Arial Black, Arial, sans-serif" font-size="48" font-weight="900">Clear funding path</text>
+  <text x="80" y="300" fill="#ffffffcc" font-family="Arial, sans-serif" font-size="24">Sources to apply yourself — or application done for you</text>
+  <rect x="80" y="360" width="200" height="70" rx="16" fill="#2f6fed"/>
+  <text x="180" y="390" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="14" font-weight="700">Check</text>
+  <text x="180" y="412" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="18" font-weight="700">€250</text>
+  <rect x="300" y="360" width="260" height="70" rx="16" fill="#f2c744"/>
+  <text x="430" y="390" text-anchor="middle" fill="#0a0a0a" font-family="Arial, sans-serif" font-size="14" font-weight="700">+ Application</text>
+  <text x="430" y="412" text-anchor="middle" fill="#0a0a0a" font-family="Arial, sans-serif" font-size="18" font-weight="700">Completely free</text>
+</svg>

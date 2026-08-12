@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" fill="none">
+  <rect width="960" height="540" fill="#101828"/>
+  <rect x="60" y="70" width="840" height="400" rx="28" fill="#1d2939"/>
+  <text x="100" y="150" fill="#f2c744" font-family="Arial Black, Arial, sans-serif" font-size="28" font-weight="900">SAMPLE RESULT</text>
+  <text x="100" y="230" fill="#ffffff" font-family="Arial Black, Arial, sans-serif" font-size="56" font-weight="900">€10k – €50k</text>
+  <text x="100" y="285" fill="#ffffff" font-family="Arial, sans-serif" font-size="28" font-weight="700">Digitalization funding</text>
+  <text x="100" y="340" fill="#ffffff99" font-family="Arial, sans-serif" font-size="20">Fit 92% · Sources included · Ready to apply</text>
+  <rect x="100" y="380" width="160" height="44" rx="12" fill="#2f6fed"/>
+  <text x="180" y="409" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="16" font-weight="700">Top match</text>
+</svg>

@@ -1,0 +1,134 @@
+/* Inherit Skilldwork theme tokens from globals.css — dotted page bg stays on body. */
+.fk-shell {
+  --fk-surface: var(--card-bg);
+  --fk-ink: var(--text);
+  --fk-muted: var(--muted-text);
+  --fk-line: var(--card-border);
+  --fk-soft: var(--field-bg);
+  --fk-cta: var(--workflow-accent);
+  --fk-cta-ink: #0a0a0a;
+  --fk-blue: var(--workflow-blue);
+  --fk-blue-soft: color-mix(in srgb, var(--workflow-blue) 16%, transparent);
+  --fk-btn: var(--btn-bg);
+  --fk-btn-text: var(--btn-text);
+  --fk-shadow: 0 24px 60px rgb(0 0 0 / 0.1);
+  color: var(--fk-ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.dark .fk-shell {
+  --fk-shadow: 0 24px 60px rgb(0 0 0 / 0.55);
+}
+
+.fk-shell * {
+  box-sizing: border-box;
+}
+
+.fk-card {
+  background: var(--fk-surface);
+  border: 1px solid var(--fk-line);
+  border-radius: 1.5rem;
+  box-shadow: var(--fk-shadow);
+}
+
+.fk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.9rem;
+  padding: 0.9rem 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    filter 0.15s ease,
+    background 0.15s ease;
+}
+
+.fk-btn:active {
+  transform: scale(0.98);
+}
+
+.fk-btn-cta {
+  background: var(--fk-cta);
+  color: var(--fk-cta-ink);
+}
+
+.fk-btn-cta:hover {
+  filter: brightness(0.97);
+}
+
+.fk-btn-dark {
+  background: var(--fk-btn);
+  color: var(--fk-btn-text);
+}
+
+.fk-btn-dark:hover {
+  opacity: 0.88;
+}
+
+.fk-btn-ghost {
+  background: var(--fk-surface);
+  border: 1px solid var(--fk-line);
+  color: var(--fk-ink);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.04);
+}
+
+.fk-btn-ghost:hover {
+  background: var(--fk-soft);
+}
+
+.fk-field {
+  width: 100%;
+  border-radius: 0.85rem;
+  border: 1px solid var(--field-border);
+  background: var(--field-bg);
+  padding: 0.8rem 0.95rem;
+  color: var(--text);
+  outline: none;
+}
+
+.fk-field:focus {
+  border-color: var(--field-border-focus);
+}
+
+.fk-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--fk-muted);
+}
+
+@keyframes fk-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fk-spin-soft {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fk-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fk-rise {
+  animation: fk-rise 0.45s ease both;
+}

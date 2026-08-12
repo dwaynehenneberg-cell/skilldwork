@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" fill="none">
+  <rect width="960" height="540" fill="#0a0a0a"/>
+  <circle cx="140" cy="100" r="180" fill="#2f6fed" opacity="0.5"/>
+  <circle cx="820" cy="460" r="220" fill="#f2c744" opacity="0.28"/>
+  <text x="80" y="160" fill="#f2c744" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900">€42k</text>
+  <text x="80" y="220" fill="#ffffff" font-family="Arial, sans-serif" font-size="36" font-weight="700">avg. funding match</text>
+  <text x="80" y="270" fill="#ffffff99" font-family="Arial, sans-serif" font-size="20">See how FörderKlar finds programmes for your company</text>
+  <circle cx="780" cy="270" r="64" fill="#ffffff"/>
+  <path d="M764 240 L820 270 L764 300 Z" fill="#0a0a0a"/>
+</svg>
