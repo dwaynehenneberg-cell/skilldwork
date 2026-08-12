@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useSiteI18n } from "@/lib/site-i18n";
 import { OPEN_BOOKING_EVENT, requestBookingOpen } from "./booking-intent";
 import { trackRedditLead } from "./reddit-pixel";
 
@@ -23,6 +24,7 @@ const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL;
 const CALENDLY_STYLESHEET_ID = "calendly-widget-styles";
 
 export default function BookingWidget() {
+  const { t } = useSiteI18n();
   const [step, setStep] = useState<Step>("idle");
   const [calendlyStatus, setCalendlyStatus] = useState<CalendlyStatus>("idle");
   const [bookingRequest, setBookingRequest] = useState(0);
@@ -120,7 +122,7 @@ export default function BookingWidget() {
   if (step === "done") {
     return (
       <div className="mt-8 rounded-2xl border border-[var(--card-border)] bg-[var(--field-bg)] px-5 py-4 text-sm text-[var(--muted-text)]">
-        Thanks — your call is booked. We look forward to talking to you.
+        {t.booking.thanks}
       </div>
     );
   }
@@ -134,10 +136,7 @@ export default function BookingWidget() {
           onError={() => setCalendlyStatus("error")}
           onReady={() => setCalendlyStatus(window.Calendly ? "ready" : "error")}
         />
-        <p className="mb-3 text-sm text-[var(--muted-text)]">
-          Pick a time that works for you. It&rsquo;s a workflow fit call &mdash; bring one
-          repeatable service.
-        </p>
+        <p className="mb-3 text-sm text-[var(--muted-text)]">{t.booking.pickTime}</p>
         <div className="relative h-[620px] w-full min-w-0 overflow-hidden rounded-2xl bg-[var(--field-bg)] sm:h-[700px]">
           <div ref={embedRef} className="h-full w-full" />
           {calendlyStatus === "loading" ? (
@@ -145,7 +144,7 @@ export default function BookingWidget() {
               className="absolute inset-0 grid place-items-center px-6 text-center text-sm text-[var(--muted-text)]"
               role="status"
             >
-              Loading available times…
+              {t.booking.loading}
             </p>
           ) : null}
           {calendlyStatus === "error" && CALENDLY_URL ? (
@@ -154,16 +153,14 @@ export default function BookingWidget() {
               role="status"
             >
               <div>
-                <p className="text-sm text-[var(--muted-text)]">
-                  The scheduler did not load in this page.
-                </p>
+                <p className="text-sm text-[var(--muted-text)]">{t.booking.loadError}</p>
                 <a
                   className="mt-4 inline-flex rounded-full bg-[var(--btn-bg)] px-5 py-3 font-display text-xs uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
                   href={CALENDLY_URL}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  Open scheduling page
+                  {t.booking.openScheduling}
                 </a>
               </div>
             </div>
@@ -181,16 +178,16 @@ export default function BookingWidget() {
         onClick={requestBookingOpen}
         type="button"
       >
-        <span className="block">Build your workflow</span>
+        <span className="block">{t.booking.ctaPrimary}</span>
         {CALENDLY_URL ? (
           <span className="mt-0.5 block font-sans text-[0.68rem] normal-case tracking-normal opacity-70">
-            Starts with a 30-minute workflow fit call
+            {t.booking.ctaSub}
           </span>
         ) : null}
       </button>
       {!CALENDLY_URL && (
         <p className="mt-2 text-center text-sm text-[var(--muted-text)]" role="status">
-          Booking is temporarily unavailable.
+          {t.booking.unavailable}
         </p>
       )}
       <button
@@ -198,7 +195,7 @@ export default function BookingWidget() {
         onClick={showHowItWorks}
         type="button"
       >
-        See how it works
+        {t.booking.seeHow}
       </button>
     </div>
   );

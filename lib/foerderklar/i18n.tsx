@@ -2,18 +2,15 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
 import type { OfferId } from "./offers";
+import { useLocaleStore } from "@/lib/use-locale-store";
+import type { Locale } from "@/lib/locale";
 
-export type Locale = "en" | "de";
-
-const STORAGE_KEY = "foerderklar-locale";
+export type { Locale };
 
 type DeepString<T> = {
   [K in keyof T]: T[K] extends string
@@ -646,21 +643,7 @@ type I18nContextValue = {
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "en" || saved === "de") setLocaleState(saved);
-    } catch {}
-  }, []);
-
-  const setLocale = useCallback((next: Locale) => {
-    setLocaleState(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {}
-  }, []);
+  const { locale, setLocale } = useLocaleStore();
 
   const value = useMemo<I18nContextValue>(() => {
     const t = dictionaries[locale];

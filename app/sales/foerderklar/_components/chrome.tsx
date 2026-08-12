@@ -3,32 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LangSwitch from "@/app/lang-switch";
 import ThemeToggle from "@/app/theme-toggle";
 import { DEMO_DOMAIN } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
 import { FloatingContact } from "./floating-contact";
-
-export function LangSwitch() {
-  const { locale, setLocale, t } = useI18n();
-  return (
-    <div className="inline-flex rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] p-0.5 text-xs font-semibold">
-      {(["en", "de"] as const).map((code) => (
-        <button
-          key={code}
-          type="button"
-          onClick={() => setLocale(code)}
-          className={`rounded-full px-2.5 py-1 transition ${
-            locale === code
-              ? "bg-[var(--btn-bg)] text-[var(--btn-text)]"
-              : "text-[var(--muted-text)] hover:text-[var(--text)]"
-          }`}
-        >
-          {t.lang[code]}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 export function TopBar({ compact }: { compact?: boolean }) {
   const { t } = useI18n();

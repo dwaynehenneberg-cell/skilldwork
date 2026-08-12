@@ -1,35 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useSiteI18n } from "@/lib/site-i18n";
 import { requestBookingOpen } from "./booking-intent";
 import { revealOnView } from "./reveal";
 import ScrollReveal from "./scroll-reveal";
 
 const STEP_ORDER = ["build", "market", "fulfill", "improve"] as const;
 type StepId = (typeof STEP_ORDER)[number];
-
-const STEP_COPY: Record<StepId, { label: string; title: string; summary: string }> = {
-  build: {
-    label: "01 · Build",
-    title: "Build your workflow",
-    summary: "We turn your service into a Sales Page and automated delivery workflow.",
-  },
-  market: {
-    label: "02 · Market",
-    title: "Create demand",
-    summary: "You focus on marketing while one link brings clients into the system.",
-  },
-  fulfill: {
-    label: "03 · Fulfill",
-    title: "Deliver the result",
-    summary: "Onboarding, delivery, results, and revisions run through one connected workflow.",
-  },
-  improve: {
-    label: "04 · Improve",
-    title: "Improve every run",
-    summary: "Every completed client order helps the system deliver the next one better.",
-  },
-};
 
 type ConnectorId =
   | "build-market"
@@ -214,8 +192,10 @@ function ClientPage({ children, title }: { children: ReactNode; title: string })
 }
 
 function SalesPage({ activeFlow }: { activeFlow: FlowId | null }) {
+  const { t } = useSiteI18n();
+  const n = t.workflow.nodes;
   return (
-    <ClientPage title="Sales Page">
+    <ClientPage title={n.salesPage}>
       <div className="space-y-1.5">
         {([1, 2, 3] as const).map((offer) => (
           <div
@@ -223,7 +203,9 @@ function SalesPage({ activeFlow }: { activeFlow: FlowId | null }) {
             data-active={activeFlow === `pick-offer-${offer}`}
             className={`${pressedClass} flex items-center justify-between border border-[var(--card-border)] px-2 py-1.5 text-[0.48rem] font-semibold uppercase`}
           >
-            <span>Offer {offer}</span>
+            <span>
+              {n.offer} {offer}
+            </span>
             <span aria-hidden="true">→</span>
           </div>
         ))}
@@ -232,17 +214,19 @@ function SalesPage({ activeFlow }: { activeFlow: FlowId | null }) {
         data-active={activeFlow === "choose-offer"}
         className={`${pressedClass} mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]`}
       >
-        Choose offer
+        {n.chooseOffer}
       </div>
     </ClientPage>
   );
 }
 
 function ClientPortal({ activeFlow }: { activeFlow: FlowId | null }) {
+  const { t } = useSiteI18n();
+  const n = t.workflow.nodes;
   const filled = activeFlow !== null && !PORTAL_EMPTY_STEPS.has(activeFlow);
 
   return (
-    <ClientPage title="Client Portal">
+    <ClientPage title={n.clientPortal}>
       <div className="space-y-1.5">
         {[
           "data-[active=true]:delay-[0ms]",
@@ -264,18 +248,20 @@ function ClientPortal({ activeFlow }: { activeFlow: FlowId | null }) {
         data-active={activeFlow === "start-service"}
         className={`${pressedClass} mt-2 bg-[var(--btn-bg)] py-1.5 text-center text-[0.46rem] font-semibold uppercase tracking-wider text-[var(--btn-text)]`}
       >
-        Start service
+        {n.startService}
       </div>
     </ClientPage>
   );
 }
 
 function ResultPage({ activeFlow }: { activeFlow: FlowId | null }) {
+  const { t } = useSiteI18n();
+  const n = t.workflow.nodes;
   // The revision note is typed first, then stays put while "Revise" is pressed.
   const typing = activeFlow === "type-revision" || activeFlow === "revise";
 
   return (
-    <ClientPage title="Result">
+    <ClientPage title={n.result}>
       <div className="h-[4.4rem] border border-dashed border-[var(--field-border-focus)] bg-[var(--field-bg)] p-2">
         <div className="h-1.5 w-full bg-[var(--card-border)]" />
         <div className="mt-1.5 h-1.5 w-3/4 bg-[var(--card-border)]" />
@@ -296,13 +282,13 @@ function ResultPage({ activeFlow }: { activeFlow: FlowId | null }) {
           data-active={activeFlow === "revise"}
           className={`${pressedClass} border border-[var(--field-border-focus)] py-1.5`}
         >
-          Revise
+          {n.revise}
         </span>
         <span
           data-active={activeFlow === "accept"}
           className={`${pressedClass} bg-[var(--btn-bg)] py-1.5 text-[var(--btn-text)]`}
         >
-          Accept
+          {n.accept}
         </span>
       </div>
     </ClientPage>
@@ -310,6 +296,8 @@ function ResultPage({ activeFlow }: { activeFlow: FlowId | null }) {
 }
 
 function BuildVisual({ active }: { active: boolean }) {
+  const { t } = useSiteI18n();
+  const n = t.workflow.nodes;
   return (
     <div className="flex flex-col items-center">
       <div
@@ -317,17 +305,17 @@ function BuildVisual({ active }: { active: boolean }) {
         className={`${activeNodeClass} flex h-36 w-36 flex-col items-center justify-center rounded-full border border-[var(--card-border)] bg-[var(--btn-bg)] p-4 text-center text-[var(--btn-text)]`}
       >
         <span className="text-[0.5rem] font-semibold uppercase tracking-[0.14em] opacity-55">
-          Start here
+          {n.startHere}
         </span>
-        <h3 className="mt-2 font-display text-2xl leading-none">Build your workflow</h3>
-        <span className="mt-2 text-[0.56rem] opacity-65">Sales Page + delivery</span>
+        <h3 className="mt-2 font-display text-2xl leading-none">{n.buildTitle}</h3>
+        <span className="mt-2 text-[0.56rem] opacity-65">{n.buildSub}</span>
       </div>
       <button
         className="mt-3 rounded-full border border-[var(--field-border-focus)] px-3 py-1.5 font-display text-[0.58rem] uppercase tracking-wider transition hover:bg-[var(--field-bg)]"
         onClick={requestBookingOpen}
         type="button"
       >
-        Book a call
+        {n.bookCall}
       </button>
     </div>
   );
@@ -439,25 +427,29 @@ function DesktopSalesPortalConnector({ active }: { active: boolean }) {
 }
 
 function MarketingVisual({ active, activeFlow }: { active: boolean; activeFlow: FlowId | null }) {
+  const { t } = useSiteI18n();
+  const n = t.workflow.nodes;
   return (
     <div className="flex flex-col items-center">
       <div
         data-active={active}
         className={`${activeNodeClass} flex h-28 w-28 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-accent)] p-3 text-center text-black`}
       >
-        <h3 className="font-display text-2xl leading-none">Marketing</h3>
-        <span className="mt-1.5 text-[0.55rem] font-medium">Handled by you</span>
+        <h3 className="font-display text-2xl leading-none">{n.marketing}</h3>
+        <span className="mt-1.5 text-[0.55rem] font-medium">{n.handledByYou}</span>
       </div>
       <Connector active={activeFlow === "market-sales"} direction="vertical" />
       <SalesPage activeFlow={activeFlow} />
       <span className="mt-2 text-[0.5rem] font-semibold uppercase tracking-[0.1em] text-[var(--muted-text)]">
-        ↻ Next client
+        {n.nextClient}
       </span>
     </div>
   );
 }
 
 function WorkflowCluster({ active, activeFlow }: { active: boolean; activeFlow: FlowId | null }) {
+  const { t } = useSiteI18n();
+  const n = t.workflow.nodes;
   return (
     <div className="relative h-40 w-36 shrink-0">
       <div
@@ -465,20 +457,20 @@ function WorkflowCluster({ active, activeFlow }: { active: boolean; activeFlow: 
         className={`${activeNodeClass} absolute left-2 top-5 flex h-28 w-28 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-blue)] p-3 text-center text-white`}
       >
         <RunningRing active={activeFlow === "run-workflow"} />
-        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">Execution</span>
-        <h3 className="mt-1 font-display text-lg leading-none">Workflow</h3>
-        <span className="mt-1 text-[0.43rem] opacity-70">process → deliver</span>
+        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">{n.execution}</span>
+        <h3 className="mt-1 font-display text-lg leading-none">{n.workflow}</h3>
+        <span className="mt-1 text-[0.43rem] opacity-70">{n.processDeliver}</span>
       </div>
 
       {/* Leader line: drops from behind the pill onto the workflow circle's upper-left arc. */}
       <span className="absolute left-6 top-2 h-7 border-l border-dashed border-[var(--workflow-accent)]" />
-      <span className="absolute -left-2 top-0 w-[5.5rem] rounded-full bg-[var(--workflow-accent)] px-2 py-1 text-center text-[0.43rem] font-semibold leading-tight text-black">
-        Your input if needed
+      <span className="absolute -left-2 top-0 max-w-[6.5rem] rounded-full bg-[var(--workflow-accent)] px-2 py-1 text-center text-[0.43rem] font-semibold leading-tight text-black">
+        {n.yourInput}
       </span>
 
       <div className="absolute bottom-0 right-0 flex h-16 w-16 flex-col items-center justify-center rounded-full border-2 border-[var(--card-bg)] bg-[var(--workflow-blue)] p-2 text-center text-white shadow-md">
         <RunningRing active={activeFlow === "run-revision"} />
-        <span className="font-display text-[0.72rem] leading-none">Revision Agent</span>
+        <span className="font-display text-[0.72rem] leading-none">{n.revisionAgent}</span>
       </div>
     </div>
   );
@@ -493,6 +485,8 @@ function ImprovementVisual({
   activeFlow: FlowId | null;
   compact: boolean;
 }) {
+  const { t } = useSiteI18n();
+  const n = t.workflow.nodes;
   return (
     <div className="flex flex-col items-center">
       <div
@@ -500,13 +494,13 @@ function ImprovementVisual({
         className={`${activeNodeClass} relative flex h-36 w-36 flex-col items-center justify-center rounded-full border border-black/10 bg-[var(--workflow-blue)] p-4 text-center text-white`}
       >
         <RunningRing active={activeFlow === "run-improvement"} />
-        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">Completed runs</span>
-        <h3 className="mt-2 font-display text-xl leading-none">Improvement Agent</h3>
-        <span className="mt-2 text-[0.46rem] opacity-75">Improves future delivery</span>
+        <span className="text-[0.45rem] uppercase tracking-[0.1em] opacity-70">{n.completedRuns}</span>
+        <h3 className="mt-2 font-display text-xl leading-none">{n.improvementAgent}</h3>
+        <span className="mt-2 text-[0.46rem] opacity-75">{n.improvesFuture}</span>
       </div>
       {compact ? null : (
         <span className="mt-2 text-center text-[0.5rem] font-semibold uppercase tracking-[0.08em] text-[var(--muted-text)]">
-          Better with every run
+          {n.betterEveryRun}
         </span>
       )}
     </div>
@@ -555,6 +549,8 @@ function FulfillmentVisual({
   activeFlow: FlowId | null;
   compact: boolean;
 }) {
+  const { t } = useSiteI18n();
+
   if (compact) {
     return (
       <div className="flex flex-col items-center">
@@ -564,7 +560,7 @@ function FulfillmentVisual({
         <Connector active={activeFlow === "workflow-result"} direction="vertical" />
         <ResultPage activeFlow={activeFlow} />
         <ReturnPath active={activeFlow === "revision-loop"} className="mt-2 w-52">
-          Revision returns to workflow
+          {t.workflow.returnRevision}
         </ReturnPath>
       </div>
     );
@@ -573,7 +569,7 @@ function FulfillmentVisual({
   return (
     <div className="rounded-xl bg-[var(--field-bg)] p-3">
       <p className="mb-3 text-[0.5rem] font-semibold uppercase tracking-[0.12em] text-[var(--muted-text)]">
-        Automated service execution
+        {t.workflow.automatedExec}
       </p>
       <div className="grid grid-cols-[9rem_1.5rem_9rem_1.5rem_9rem] items-center justify-center">
         <ClientPortal activeFlow={activeFlow} />
@@ -582,7 +578,7 @@ function FulfillmentVisual({
         <Connector active={activeFlow === "workflow-result"} direction="horizontal" />
         <ResultPage activeFlow={activeFlow} />
         <ReturnPath active={activeFlow === "revision-loop"} className="col-start-3 col-end-6 mt-2">
-          Revision returns to workflow
+          {t.workflow.returnRevision}
         </ReturnPath>
       </div>
     </div>
@@ -590,7 +586,8 @@ function FulfillmentVisual({
 }
 
 function StepExplanation({ active, step, mobile }: { active: boolean; step: StepId; mobile: boolean }) {
-  const copy = STEP_COPY[step];
+  const { t } = useSiteI18n();
+  const copy = t.workflow.steps[step];
 
   if (mobile) {
     return (
@@ -641,6 +638,7 @@ function StepFrame({
   onMouseLeave,
   step,
 }: StepFrameProps) {
+  const { t } = useSiteI18n();
   return (
     <article
       id={mobile ? `workflow-mobile-${step}` : undefined}
@@ -653,7 +651,7 @@ function StepFrame({
       tabIndex={mobile ? undefined : 0}
     >
       <p className="mb-3 text-left text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted-text)]">
-        {STEP_COPY[step].label}
+        {t.workflow.steps[step].label}
       </p>
       {children}
       <StepExplanation active={active} mobile={mobile} step={step} />
@@ -672,6 +670,7 @@ function DesktopCanvas({
   onFocusStep: (step: StepId | null) => void;
   onHoverStep: (step: StepId | null) => void;
 }) {
+  const { t } = useSiteI18n();
   const stepEvents = (step: StepId) => ({
     onBlur: () => onFocusStep(null),
     onFocus: () => onFocusStep(step),
@@ -698,7 +697,11 @@ function DesktopCanvas({
           <FulfillmentVisual active={activeStep === "fulfill"} activeFlow={activeFlow} compact={false} />
         </StepFrame>
 
-        <Connector active={activeFlow === "result-improve"} direction="horizontal" label="Completed run" />
+        <Connector
+          active={activeFlow === "result-improve"}
+          direction="horizontal"
+          label={t.workflow.completedRun}
+        />
 
         <StepFrame active={activeStep === "improve"} mobile={false} step="improve" {...stepEvents("improve")}>
           <ImprovementVisual active={activeStep === "improve"} activeFlow={activeFlow} compact={false} />
@@ -707,7 +710,7 @@ function DesktopCanvas({
 
       <div className="-mt-7 hidden grid-cols-[9.4rem_2rem_10.6rem_2rem_minmax(29rem,1fr)_2rem_10rem] gap-2 xl:grid">
         <ReturnPath active={activeFlow === "improve-workflow"} className="col-start-5 col-end-8 ml-[16.5rem]">
-          Improved workflow returns to execution
+          {t.workflow.returnImprove}
         </ReturnPath>
       </div>
     </>
@@ -721,6 +724,7 @@ function MobileCanvas({
   activeFlow: FlowId | null;
   activeStep: StepId | null;
 }) {
+  const { t } = useSiteI18n();
   return (
     <div className="space-y-3 xl:hidden">
       <StepFrame active={activeStep === "build"} mobile step="build">
@@ -739,12 +743,16 @@ function MobileCanvas({
         <FulfillmentVisual active={activeStep === "fulfill"} activeFlow={activeFlow} compact />
       </StepFrame>
 
-      <Connector active={activeFlow === "result-improve"} direction="vertical" label="Completed run" />
+      <Connector
+        active={activeFlow === "result-improve"}
+        direction="vertical"
+        label={t.workflow.completedRun}
+      />
 
       <StepFrame active={activeStep === "improve"} mobile step="improve">
         <ImprovementVisual active={activeStep === "improve"} activeFlow={activeFlow} compact />
         <ReturnPath active={activeFlow === "improve-workflow"} className="mx-auto mt-3 w-60">
-          Improved workflow returns to execution
+          {t.workflow.returnImprove}
         </ReturnPath>
       </StepFrame>
     </div>
@@ -752,6 +760,7 @@ function MobileCanvas({
 }
 
 export default function WorkflowMap() {
+  const { t } = useSiteI18n();
   const sectionRef = useRef<HTMLElement>(null);
   const [compactLayout, setCompactLayout] = useState(false);
   const [mobileActiveStep, setMobileActiveStep] = useState<StepId | null>(null);
@@ -843,23 +852,23 @@ export default function WorkflowMap() {
             <p
               className={`${revealOnView} text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]`}
             >
-              How it works
+              {t.workflow.eyebrow}
             </p>
             <h2
               id="workflow-title"
               className={`${revealOnView} mt-3 font-display text-4xl leading-[1.05] tracking-tight text-[var(--text)] delay-100 sm:text-5xl`}
             >
-              Build. Market. Fulfill. Improve.
+              {t.workflow.title}
             </h2>
             <p
               className={`${revealOnView} mt-3 max-w-2xl text-sm leading-6 text-[var(--muted-text)] delay-200 sm:text-base`}
             >
-              Four connected steps turn your service into a system that delivers and learns.
+              {t.workflow.lead}
             </p>
           </ScrollReveal>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)]">
-            <span className="xl:hidden">Scroll to explore</span>
-            <span className="hidden xl:inline">Hover to focus</span>
+            <span className="xl:hidden">{t.workflow.scroll}</span>
+            <span className="hidden xl:inline">{t.workflow.hover}</span>
           </p>
         </header>
 
@@ -867,17 +876,20 @@ export default function WorkflowMap() {
           <div className="rounded-2xl border border-[var(--field-border-focus)] p-4 sm:p-5">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--card-border)] pb-3">
               <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted-text)]">
-                Skilldwork service system
+                {t.workflow.system}
               </p>
               <div className="flex flex-wrap gap-3 text-[0.55rem] text-[var(--muted-text)]">
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-blue)]" /> Automated
+                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-blue)]" />{" "}
+                  {t.workflow.legendAutomated}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-accent)]" /> Handled by you
+                  <span className="h-2.5 w-2.5 rounded-full bg-[var(--workflow-accent)]" />{" "}
+                  {t.workflow.legendYou}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-3.5 border border-[var(--field-border-focus)] bg-[var(--card-bg)]" /> Client page
+                  <span className="h-2.5 w-3.5 border border-[var(--field-border-focus)] bg-[var(--card-bg)]" />{" "}
+                  {t.workflow.legendClient}
                 </span>
               </div>
             </div>
@@ -892,15 +904,13 @@ export default function WorkflowMap() {
           </div>
 
           <div className="flex flex-col gap-3 rounded-xl bg-[var(--field-bg)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs leading-5 text-[var(--text)] sm:text-sm">
-              You create demand. Skilldwork delivers each service and improves the next run.
-            </p>
+            <p className="text-xs leading-5 text-[var(--text)] sm:text-sm">{t.workflow.footer}</p>
             <button
               className="shrink-0 rounded-full bg-[var(--btn-bg)] px-5 py-2.5 text-center font-display text-xs uppercase tracking-wider text-[var(--btn-text)] transition hover:bg-[var(--btn-hover)]"
               onClick={requestBookingOpen}
               type="button"
             >
-              Build your workflow
+              {t.workflow.cta}
             </button>
           </div>
         </div>

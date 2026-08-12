@@ -9,6 +9,7 @@ import {
   yearlyPriceEur,
   type Plan,
 } from "@/lib/pricing";
+import { useSiteI18n } from "@/lib/site-i18n";
 import { revealOnLoad, revealOnView } from "../reveal";
 import ScrollReveal from "../scroll-reveal";
 
@@ -27,7 +28,17 @@ function CheckIcon() {
   );
 }
 
-function PlanCta({ plan, className }: { plan: Plan; className?: string }) {
+function PlanCta({
+  plan,
+  className,
+  label,
+  soonLabel,
+}: {
+  plan: Plan;
+  className?: string;
+  label: string;
+  soonLabel: string;
+}) {
   const href = PLAN_CTA_HREFS[plan.id];
 
   if (!href) {
@@ -35,7 +46,7 @@ function PlanCta({ plan, className }: { plan: Plan; className?: string }) {
       <span
         className={`inline-flex w-full cursor-not-allowed items-center justify-center rounded-full border border-[var(--card-border)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--muted-text)] ${className ?? ""}`}
       >
-        Link coming soon
+        {soonLabel}
       </span>
     );
   }
@@ -47,7 +58,7 @@ function PlanCta({ plan, className }: { plan: Plan; className?: string }) {
       rel="noreferrer"
       className={`inline-flex w-full items-center justify-center rounded-full bg-[var(--btn-bg)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--btn-text)] transition hover:opacity-85 ${className ?? ""}`}
     >
-      {plan.ctaLabel}
+      {label}
     </a>
   );
 }
@@ -61,9 +72,11 @@ function PlanCard({
   billing: Billing;
   delayMs: number;
 }) {
+  const { t } = useSiteI18n();
+  const copy = t.plans[plan.id];
   const monthly = plan.monthlyPriceEur!;
   const price = billing === "yearly" ? yearlyPriceEur(monthly) : monthly;
-  const periodLabel = billing === "yearly" ? "/ year" : "/ month";
+  const periodLabel = billing === "yearly" ? t.pricingPage.perYear : t.pricingPage.perMonth;
 
   return (
     <article
@@ -77,11 +90,11 @@ function PlanCard({
       <div className="mb-5 space-y-2">
         {plan.highlighted ? (
           <p className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
-            Most popular
+            {t.pricingPage.mostPopular}
           </p>
         ) : null}
         <h2 className="font-display text-3xl tracking-tight text-[var(--text)]">{plan.name}</h2>
-        <p className="text-sm leading-6 text-[var(--muted-text)]">{plan.description}</p>
+        <p className="text-sm leading-6 text-[var(--muted-text)]">{copy.description}</p>
       </div>
 
       <div className="mb-6">
@@ -93,13 +106,13 @@ function PlanCard({
         </p>
         {billing === "yearly" ? (
           <p className="mt-1 text-xs text-[var(--muted-text)]">
-            {formatEur(monthly)} / month billed yearly · 2 months free
+            {formatEur(monthly)} {t.pricingPage.billedYearly}
           </p>
         ) : null}
       </div>
 
       <ul className="mb-8 flex flex-1 flex-col gap-3">
-        {plan.highlights.map((line) => (
+        {copy.highlights.map((line) => (
           <li key={line} className="flex items-start gap-3">
             <CheckIcon />
             <span className="text-sm leading-5 text-[var(--muted-text)]">{line}</span>
@@ -107,13 +120,19 @@ function PlanCard({
         ))}
       </ul>
 
-      <PlanCta plan={plan} />
+      <PlanCta
+        plan={plan}
+        label={copy.ctaLabel}
+        soonLabel={t.pricingPage.linkSoon}
+      />
     </article>
   );
 }
 
 export default function PricingPlans() {
+  const { t } = useSiteI18n();
   const [billing, setBilling] = useState<Billing>("monthly");
+  const customCopy = t.plans.custom;
 
   return (
     <div className="space-y-14">
@@ -121,7 +140,7 @@ export default function PricingPlans() {
         <div
           className="inline-flex items-center rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] p-1 shadow-lg shadow-black/5 dark:shadow-black/40"
           role="group"
-          aria-label="Billing period"
+          aria-label={t.pricingPage.billingLabel}
         >
           <button
             type="button"
@@ -132,7 +151,7 @@ export default function PricingPlans() {
                 : "text-[var(--muted-text)] hover:text-[var(--text)]"
             }`}
           >
-            Monthly
+            {t.pricingPage.monthly}
           </button>
           <button
             type="button"
@@ -143,9 +162,9 @@ export default function PricingPlans() {
                 : "text-[var(--muted-text)] hover:text-[var(--text)]"
             }`}
           >
-            Yearly
+            {t.pricingPage.yearly}
             <span className="absolute -right-1 -top-3 rounded-full bg-[var(--workflow-accent)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-black">
-              2 months free
+              {t.pricingPage.monthsFree}
             </span>
           </button>
         </div>
@@ -163,19 +182,22 @@ export default function PricingPlans() {
         >
           <div className="max-w-xl space-y-2">
             <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
-              Beyond Agency
+              {t.pricingPage.beyond}
             </p>
             <h2 className="font-display text-3xl tracking-tight text-[var(--text)]">
               {CUSTOM_PLAN.name}
             </h2>
-            <p className="text-sm leading-6 text-[var(--muted-text)]">{CUSTOM_PLAN.description}</p>
+            <p className="text-sm leading-6 text-[var(--muted-text)]">{customCopy.description}</p>
           </div>
           <div className="w-full shrink-0 sm:w-56">
-            <PlanCta plan={CUSTOM_PLAN} />
+            <PlanCta
+              plan={CUSTOM_PLAN}
+              label={customCopy.ctaLabel}
+              soonLabel={t.pricingPage.linkSoon}
+            />
           </div>
         </aside>
       </ScrollReveal>
     </div>
   );
 }
-

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Geist } from "next/font/google";
+import { SiteI18nProvider } from "@/lib/site-i18n";
 import "./globals.css";
 import RedditPixel from "./reddit-pixel";
 
@@ -33,6 +34,8 @@ const themeScript = `try {
   if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
     document.documentElement.classList.add("dark");
   }
+  var l = localStorage.getItem("skilldwork-locale");
+  if (l === "en" || l === "de") document.documentElement.lang = l;
 } catch (e) {}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -44,8 +47,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full">
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        {children}
-        <RedditPixel />
+        <SiteI18nProvider>
+          {children}
+          <RedditPixel />
+        </SiteI18nProvider>
       </body>
     </html>
   );

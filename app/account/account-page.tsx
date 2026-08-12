@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import ThemeToggle from "@/app/theme-toggle";
+import LangSwitch from "@/app/lang-switch";
 import { formatOfferPrice, getOffer } from "@/lib/foerderklar/offers";
 import { I18nProvider, useI18n } from "@/lib/foerderklar/i18n";
 import { StoreProvider, useStore } from "@/lib/foerderklar/store";
@@ -82,6 +83,7 @@ function AccountInner() {
             <span className="rounded-full bg-[var(--workflow-accent)] px-2.5 py-1 text-[11px] font-bold text-[#0a0a0a]">
               {t.account.demoBadge}
             </span>
+            <LangSwitch />
             <ThemeToggle />
           </div>
         </div>

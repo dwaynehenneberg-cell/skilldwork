@@ -1,15 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import BookingWidget from "./booking-widget";
 import Mission from "./mission";
 import { revealOnLoad } from "./reveal";
-import ThemeToggle from "./theme-toggle";
+import SiteControls from "./site-controls";
 import WorkflowMap from "./workflow-map";
+import { useSiteI18n } from "@/lib/site-i18n";
 
 const logoClass =
   "h-28 w-28 rounded-3xl ring-1 ring-[var(--logo-ring)] sm:h-32 sm:w-32";
 
 export default function Home() {
+  const { t } = useSiteI18n();
+
   return (
     <main className="relative min-h-screen">
       <header className="absolute left-4 top-4 z-10 sm:left-10 sm:top-8">
@@ -31,8 +36,8 @@ export default function Home() {
         />
       </header>
 
-      <div className="absolute right-6 top-6 z-10 sm:right-10 sm:top-8">
-        <ThemeToggle />
+      <div className="absolute right-4 top-4 z-10 sm:right-10 sm:top-8">
+        <SiteControls />
       </div>
 
       <section
@@ -43,12 +48,12 @@ export default function Home() {
           <p
             className={`${revealOnLoad} mb-3 text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]`}
           >
-            For freelancers, agencies, and expert service businesses
+            {t.home.eyebrow}
           </p>
           <h1
             className={`${revealOnLoad} font-display text-4xl leading-[1.08] tracking-tight text-[var(--text)] [animation-delay:100ms] sm:text-5xl`}
           >
-            Turn your service into an automatable workflow.
+            {t.home.title}
           </h1>
           <div className={`${revealOnLoad} [animation-delay:200ms]`}>
             <BookingWidget />
@@ -66,13 +71,13 @@ export default function Home() {
             href="/privacy"
             className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
           >
-            Privacy
+            {t.nav.privacy}
           </Link>
           <Link
             href="/agb"
             className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
           >
-            AGB
+            {t.nav.agb}
           </Link>
         </div>
       </footer>
