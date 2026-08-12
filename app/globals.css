@@ -84,7 +84,7 @@ html:has(.booking-open) {
 
 @media (max-width: 639px) {
   main:has(.booking-open) header img {
-    height: 2.75rem;
-    width: 2.75rem;
+    height: 3.5rem;
+    width: 3.5rem;
   }
 }

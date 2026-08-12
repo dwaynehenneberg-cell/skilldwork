@@ -58,7 +58,7 @@ function AccountInner() {
       <header className="sticky top-0 z-30 border-b border-[var(--card-border)] bg-[var(--page-bg)]/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-3">
-            <SiteLogo href={false} size={36} />
+            <SiteLogo href={false} size={44} className="h-11 w-11" />
             <div>
               <p className="text-sm font-semibold text-[var(--text)]">
                 {t.account.title}

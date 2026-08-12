@@ -4,8 +4,7 @@ import Link from "next/link";
 import BookingWidget from "./booking-widget";
 import Mission from "./mission";
 import { revealOnLoad } from "./reveal";
-import SiteControls from "./site-controls";
-import SiteLogo from "./site-logo";
+import SiteHeader from "./site-header";
 import WorkflowMap from "./workflow-map";
 import { useSiteI18n } from "@/lib/site-i18n";
 
@@ -14,17 +13,11 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen">
-      <header className="absolute left-4 top-4 z-10 sm:left-10 sm:top-8">
-        <SiteLogo href={false} size={128} className="h-28 w-28 sm:h-32 sm:w-32" priority />
-      </header>
-
-      <div className="absolute right-4 top-4 z-10 sm:right-10 sm:top-8">
-        <SiteControls />
-      </div>
+      <SiteHeader floating logoSize="lg" logoHref={false} priority />
 
       <section
         id="book"
-        className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-44 sm:px-6 sm:py-36"
+        className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-52 sm:px-6 sm:py-36"
       >
         <div className="w-full max-w-xl rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-10 dark:shadow-black/60">
           <p
