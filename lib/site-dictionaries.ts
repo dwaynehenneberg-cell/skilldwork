@@ -207,8 +207,8 @@ const en = {
           tip: "Permission controls for who can edit workflows, billing, and Client work.",
         },
         {
-          text: "Affiliate links",
-          tip: "Reward partners who refer Clients.",
+          text: "Affiliate marketing",
+          tip: "Run an affiliate program so partners and marketplace promoters earn rewards for bringing you new Clients — scale acquisition by letting others market your Offers for a financial incentive.",
         },
         {
           text: "2.9% transaction fee",
@@ -234,6 +234,10 @@ const en = {
         {
           text: "90-day workflow history",
           tip: "How long past workflow versions and run history are retained.",
+        },
+        {
+          text: "2.9% transaction fee",
+          tip: "Same as Pro — percentage of Client payments processed through Skilldwork.",
         },
       ],
     },
@@ -280,7 +284,7 @@ const en = {
     "Offers per Sales Page": "Offers per Sales Page",
     "Concurrent Service Runs": "Concurrent Service Runs",
     "Admin roles": "Admin roles",
-    "Affiliate links": "Affiliate links",
+    "Affiliate links": "Affiliate marketing",
     "Transaction fee": "Transaction fee",
     "Workflow history": "Workflow history",
   },
@@ -296,7 +300,7 @@ const en = {
     "Concurrent Service Runs":
       "How many Client journeys can run at once. Extra runs wait until a slot frees up.",
     "Admin roles": "Permission controls for who can edit workflows, billing, and Client work. Included from Pro.",
-    "Affiliate links": "Reward partners who refer Clients.",
+    "Affiliate links": "Reward partners and marketplace promoters who bring new Clients — set incentives so others market your Offers and help you scale acquisition.",
     "Transaction fee": "Percentage of Client payments processed through Skilldwork.",
     "Workflow history": "How long past workflow versions and run history are retained.",
   },
@@ -653,8 +657,8 @@ const de: DeepString<typeof en> = {
           tip: "Berechtigungen dafür, wer Workflows, Billing und Client-Arbeit bearbeiten darf.",
         },
         {
-          text: "Affiliate-Links",
-          tip: "Partner belohnen, die Clients empfehlen.",
+          text: "Affiliate-Marketing",
+          tip: "Starte ein Affiliate-Programm: Partner und Marketplace-Promoter verdienen an neuen Clients, die sie dir bringen — skaliere Kundengewinnung, indem andere deine Offers gegen finanzielle Anreize vermarkten.",
         },
         {
           text: "2,9 % Transaktionsgebühr",
@@ -680,6 +684,10 @@ const de: DeepString<typeof en> = {
         {
           text: "90 Tage Workflow-Historie",
           tip: "Wie lange Workflow-Versionen und Run-Historie behalten werden.",
+        },
+        {
+          text: "2,9 % Transaktionsgebühr",
+          tip: "Wie bei Pro — Prozentsatz der Client-Zahlungen über Skilldwork.",
         },
       ],
     },
@@ -717,7 +725,7 @@ const de: DeepString<typeof en> = {
     "Offers per Sales Page": "Offers pro Sales Page",
     "Concurrent Service Runs": "Gleichzeitige Service Runs",
     "Admin roles": "Admin-Rollen",
-    "Affiliate links": "Affiliate-Links",
+    "Affiliate links": "Affiliate-Marketing",
     "Transaction fee": "Transaktionsgebühr",
     "Workflow history": "Workflow-Historie",
   },
@@ -735,7 +743,8 @@ const de: DeepString<typeof en> = {
       "Wie viele Client-Journeys gleichzeitig laufen können. Weitere Läufe warten, bis ein Slot frei wird.",
     "Admin roles":
       "Berechtigungen dafür, wer Workflows, Billing und Client-Arbeit bearbeiten darf. Ab Pro enthalten.",
-    "Affiliate links": "Partner belohnen, die Clients empfehlen.",
+    "Affiliate links":
+      "Partner und Marketplace-Promoter belohnen, die neue Clients bringen — mit Anreizen skalierst du Kundengewinnung, indem andere deine Offers vermarkten.",
     "Transaction fee": "Prozentsatz der Client-Zahlungen über Skilldwork.",
     "Workflow history": "Wie lange Workflow-Versionen und Run-Historie behalten werden.",
   },
