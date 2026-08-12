@@ -92,15 +92,17 @@ export default function PricingContent() {
             <p className="text-sm leading-6 text-[var(--muted-text)]">{p.compareLead}</p>
           </div>
 
-          <div className="overflow-x-auto rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-2xl shadow-black/10 dark:shadow-black/60">
-            <table className="min-w-[40rem] w-full border-collapse text-left text-sm">
+          <div className="rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-4 shadow-2xl shadow-black/10 sm:p-6 dark:shadow-black/60">
+            <table className="w-full table-fixed border-collapse text-left text-sm">
               <thead>
                 <tr className="border-b border-[var(--card-border)]">
-                  <th className="px-5 py-4 font-medium text-[var(--muted-text)]">{p.feature}</th>
+                  <th className="w-[34%] py-3 pr-3 font-medium text-[var(--muted-text)] sm:py-4 sm:pr-5">
+                    {p.feature}
+                  </th>
                   {PAID_PLANS.map((plan) => (
                     <th
                       key={plan.id}
-                      className="px-5 py-4 font-display text-lg tracking-tight text-[var(--text)]"
+                      className="py-3 px-1 font-display text-base tracking-tight text-[var(--text)] sm:px-3 sm:text-lg"
                     >
                       {plan.name}
                     </th>
@@ -110,13 +112,13 @@ export default function PricingContent() {
               <tbody>
                 {COMPARISON_ROWS.map((row) => (
                   <tr key={row} className="border-b border-[var(--card-border)] last:border-0">
-                    <th className="px-5 py-3.5 font-normal text-[var(--muted-text)]">
+                    <th className="py-3 pr-3 align-top font-normal text-[var(--muted-text)] sm:py-3.5 sm:pr-5">
                       <FeatureTip tip={t.featureTips[row]} placement="bottom">
                         <span>{t.featureLabels[row]}</span>
                       </FeatureTip>
                     </th>
                     {PAID_PLANS.map((plan) => (
-                      <td key={plan.id} className="px-5 py-3.5">
+                      <td key={plan.id} className="py-3 px-1 align-top sm:px-3 sm:py-3.5">
                         {translateFeatureValue(
                           featureFor(plan, row),
                           t.featureValues,
