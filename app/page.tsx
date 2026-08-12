@@ -13,11 +13,11 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen">
-      <SiteHeader floating logoSize="lg" logoHref={false} priority />
+      <SiteHeader floating logoHref={false} priority />
 
       <section
         id="book"
-        className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-52 sm:px-6 sm:py-36"
+        className="flex min-h-screen w-full items-center justify-center px-4 pb-16 pt-40 sm:px-6 sm:py-36"
       >
         <div className="w-full max-w-xl rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-10 dark:shadow-black/60">
           <p
