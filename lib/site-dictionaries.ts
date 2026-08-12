@@ -120,7 +120,7 @@ const en = {
     compareEyebrow: "Compare",
     compareTitle: "What’s included",
     compareLead:
-      "Same platform on every plan. Hover a feature for a short explanation. Limits scale with Sales Pages and concurrent Service Runs.",
+      "Same platform on every plan. Tap or hover a feature for a short explanation. Limits scale with Sales Pages and concurrent Service Runs.",
     feature: "Feature",
     included: "Included",
     faqEyebrow: "FAQ",
@@ -575,7 +575,7 @@ const de: DeepString<typeof en> = {
     compareEyebrow: "Vergleich",
     compareTitle: "Was enthalten ist",
     compareLead:
-      "Dieselbe Plattform in jedem Plan. Hover über ein Feature für eine kurze Erklärung. Limits skalieren mit Sales Pages und gleichzeitigen Service Runs.",
+      "Dieselbe Plattform in jedem Plan. Feature antippen oder mit der Maus darüberfahren für eine kurze Erklärung. Limits skalieren mit Sales Pages und gleichzeitigen Service Runs.",
     feature: "Feature",
     included: "Enthalten",
     faqEyebrow: "FAQ",
