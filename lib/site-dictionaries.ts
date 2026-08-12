@@ -116,11 +116,11 @@ const en = {
     eyebrow: "Pricing",
     title: "Select your plan",
     lead:
-      "Workflow automation for services — Sales Pages, unlimited Offers, Client Portal. Plans scale by concurrent Service Runs, not per-step billing.",
+      "Turn your service into digital workflows — unlimited Workflow Builds, Client journey apps, and Provider Workspace. Plans scale by Sales Pages and concurrent Service Runs.",
     compareEyebrow: "Compare",
     compareTitle: "What’s included",
     compareLead:
-      "Same platform on every plan. Limits scale with Sales Pages and how many Service Runs can run at once.",
+      "Same platform on every plan. Hover a feature for a short explanation. Limits scale with Sales Pages and concurrent Service Runs.",
     feature: "Feature",
     included: "Included",
     faqEyebrow: "FAQ",
@@ -142,7 +142,7 @@ const en = {
       },
       {
         q: "What is a concurrent Service Run?",
-        a: "How many full Client journeys (purchase → onboarding → workflow → optional human-in-the-loop → result) can process at the same time. Extra runs queue until a slot frees up. We limit concurrency instead of monthly run buckets because each run uses dedicated capacity.",
+        a: "How many full Client journeys can process at the same time. Extra runs queue until a slot frees up. We limit concurrency instead of monthly run buckets because each run uses dedicated capacity.",
       },
       {
         q: "What is the transaction fee?",
@@ -160,12 +160,34 @@ const en = {
       ctaMonthly: "Start monthly",
       ctaYearly: "Start yearly",
       highlights: [
-        "1 active Sales Page",
-        "Unlimited Offers on that page",
-        "2 concurrent Service Runs",
-        "Client Portal + Provider Workspace",
-        "Human-in-the-loop",
-        "10% transaction fee",
+        {
+          text: "Unlimited Workflow Builds",
+          tip: "Build and iterate as many digital workflows as you need. You are not charged per Workflow Build.",
+        },
+        {
+          text: "1 active Sales Page, unlimited Offers",
+          tip: "A Sales Page is your result-based landing page where Clients choose an Offer. Offers on that page are unlimited.",
+        },
+        {
+          text: "2 concurrent Service Runs",
+          tip: "How many Client journeys can run at once (purchase through delivery). Extra runs wait until a slot frees up.",
+        },
+        {
+          text: "Unlimited users",
+          tip: "Invite your team freely. Admin roles for permissions start on Pro.",
+        },
+        {
+          text: "Client journey apps",
+          tip: "Client-facing apps cover the full cycle: Sales Page → purchase & onboarding → delivery & revisions → wrap-up, upsells, and retention.",
+        },
+        {
+          text: "Provider Workspace",
+          tip: "Your internal app for CRM, delivery, Workflow Builds, Sales Page & onboarding editors, Revision Agent, and Improvement Agent suggestions.",
+        },
+        {
+          text: "10% transaction fee",
+          tip: "Percentage of Client payments processed through Skilldwork.",
+        },
       ],
     },
     "freelancer-pro": {
@@ -174,12 +196,38 @@ const en = {
       ctaMonthly: "Start Pro monthly",
       ctaYearly: "Start Pro yearly",
       highlights: [
-        "3 active Sales Pages",
-        "Unlimited Offers on every page",
-        "8 concurrent Service Runs",
-        "Affiliate links",
-        "Custom domain + team roles",
-        "2.9% transaction fee",
+        {
+          text: "Unlimited Workflow Builds",
+          tip: "Build and iterate as many digital workflows as you need. You are not charged per Workflow Build.",
+        },
+        {
+          text: "3 active Sales Pages, unlimited Offers",
+          tip: "A Sales Page is your result-based landing page where Clients choose an Offer. Offers on each page are unlimited.",
+        },
+        {
+          text: "8 concurrent Service Runs",
+          tip: "How many Client journeys can run at once (purchase through delivery). Extra runs wait until a slot frees up.",
+        },
+        {
+          text: "Unlimited users + Admin roles",
+          tip: "Invite your whole team. Admin roles let you control permissions and access.",
+        },
+        {
+          text: "Client journey apps",
+          tip: "Client-facing apps cover the full cycle: Sales Page → purchase & onboarding → delivery & revisions → wrap-up, upsells, and retention.",
+        },
+        {
+          text: "Provider Workspace",
+          tip: "Your internal app for CRM, delivery, Workflow Builds, Sales Page & onboarding editors, Revision Agent, and Improvement Agent suggestions.",
+        },
+        {
+          text: "Custom domain + Affiliate links",
+          tip: "Run Sales Pages on your domain and reward partners who refer Clients.",
+        },
+        {
+          text: "2.9% transaction fee",
+          tip: "Percentage of Client payments processed through Skilldwork.",
+        },
       ],
     },
     agency: {
@@ -188,13 +236,38 @@ const en = {
       ctaMonthly: "Start Business monthly",
       ctaYearly: "Start Business yearly",
       highlights: [
-        "10 active Sales Pages",
-        "Unlimited Offers on every page",
-        "20 concurrent Service Runs",
-        "Affiliate links",
-        "10 provider seats",
-        "Custom domain + team roles",
-        "2.9% transaction fee",
+        {
+          text: "Unlimited Workflow Builds",
+          tip: "Build and iterate as many digital workflows as you need. You are not charged per Workflow Build.",
+        },
+        {
+          text: "10 active Sales Pages, unlimited Offers",
+          tip: "A Sales Page is your result-based landing page where Clients choose an Offer. Offers on each page are unlimited.",
+        },
+        {
+          text: "20 concurrent Service Runs",
+          tip: "How many Client journeys can run at once (purchase through delivery). Extra runs wait until a slot frees up.",
+        },
+        {
+          text: "Unlimited users + Admin roles",
+          tip: "Invite your whole team. Admin roles let you control permissions and access.",
+        },
+        {
+          text: "Client journey apps",
+          tip: "Client-facing apps cover the full cycle: Sales Page → purchase & onboarding → delivery & revisions → wrap-up, upsells, and retention.",
+        },
+        {
+          text: "Provider Workspace",
+          tip: "Your internal app for CRM, delivery, Workflow Builds, Sales Page & onboarding editors, Revision Agent, and Improvement Agent suggestions.",
+        },
+        {
+          text: "Custom domain + Affiliate links",
+          tip: "Run Sales Pages on your domain and reward partners who refer Clients.",
+        },
+        {
+          text: "2.9% transaction fee",
+          tip: "Percentage of Client payments processed through Skilldwork.",
+        },
       ],
     },
     custom: {
@@ -203,29 +276,65 @@ const en = {
       ctaMonthly: "Book a call",
       ctaYearly: "Book a call",
       highlights: [
-        "Custom Sales Page & concurrency limits",
-        "Self-hosted or dedicated cloud",
-        "Affiliate links",
-        "Custom transaction fees",
+        {
+          text: "Unlimited Workflow Builds",
+          tip: "Build and iterate as many digital workflows as you need. You are not charged per Workflow Build.",
+        },
+        {
+          text: "Custom Sales Page & concurrency limits",
+          tip: "We size active Sales Pages and concurrent Service Runs to your operation.",
+        },
+        {
+          text: "Unlimited users + Admin roles",
+          tip: "Invite your whole team with permission controls.",
+        },
+        {
+          text: "Self-hosted or dedicated cloud",
+          tip: "Run on your infrastructure or a dedicated environment when compliance requires it.",
+        },
       ],
     },
   } satisfies Record<
     PlanId,
-    { description: string; ctaMonthly: string; ctaYearly: string; highlights: string[] }
+    {
+      description: string;
+      ctaMonthly: string;
+      ctaYearly: string;
+      highlights: { text: string; tip: string }[];
+    }
   >,
   featureLabels: {
+    "Workflow Builds": "Workflow Builds",
     "Active Sales Pages": "Active Sales Pages",
     "Offers per Sales Page": "Offers per Sales Page",
     "Concurrent Service Runs": "Concurrent Service Runs",
-    "Transaction fee": "Transaction fee",
-    "Provider seats": "Provider seats",
-    "Client Portal": "Client Portal",
+    Users: "Users",
+    "Admin roles": "Admin roles",
+    "Client journey apps": "Client journey apps",
     "Provider Workspace": "Provider Workspace",
-    "Human-in-the-loop": "Human-in-the-loop",
+    "Transaction fee": "Transaction fee",
     "Custom domain": "Custom domain",
     "Affiliate links": "Affiliate links",
-    "Team roles": "Team roles",
     "Workflow history": "Workflow history",
+  },
+  featureTips: {
+    "Workflow Builds":
+      "Build and iterate as many digital workflows as you need. You are not charged per Workflow Build.",
+    "Active Sales Pages":
+      "Result-based landing pages where Clients choose an Offer and start purchase.",
+    "Offers per Sales Page": "Purchasable result scopes on a Sales Page — unlimited on every plan.",
+    "Concurrent Service Runs":
+      "How many Client journeys can run at once. Extra runs wait until a slot frees up.",
+    Users: "Invite your whole team on every plan.",
+    "Admin roles": "Permission controls for who can edit workflows, billing, and Client work. Included from Pro.",
+    "Client journey apps":
+      "Client-facing apps for Sales Page → onboarding → delivery & revisions → wrap-up, upsells, and retention.",
+    "Provider Workspace":
+      "Internal app for CRM, delivery, Workflow Builds, editors, Revision Agent, and Improvement Agent suggestions.",
+    "Transaction fee": "Percentage of Client payments processed through Skilldwork.",
+    "Custom domain": "Serve Sales Pages on your own domain.",
+    "Affiliate links": "Reward partners who refer Clients.",
+    "Workflow history": "How long past workflow versions and run history are retained.",
   },
   featureValues: {
     Unlimited: "Unlimited",
@@ -488,11 +597,11 @@ const de: DeepString<typeof en> = {
     eyebrow: "Preise",
     title: "Wähle deinen Plan",
     lead:
-      "Workflow-Automation für Services — Sales Pages, unbegrenzte Offers, Client Portal. Pläne skalieren über gleichzeitige Service Runs, nicht über Step-Billing.",
+      "Mach aus deinem Service digitale Workflows — unbegrenzte Workflow Builds, Client-Journey-Apps und Provider Workspace. Pläne skalieren über Sales Pages und gleichzeitige Service Runs.",
     compareEyebrow: "Vergleich",
     compareTitle: "Was enthalten ist",
     compareLead:
-      "Dieselbe Plattform in jedem Plan. Limits skalieren mit Sales Pages und wie vielen Service Runs gleichzeitig.",
+      "Dieselbe Plattform in jedem Plan. Hover über ein Feature für eine kurze Erklärung. Limits skalieren mit Sales Pages und gleichzeitigen Service Runs.",
     feature: "Feature",
     included: "Enthalten",
     faqEyebrow: "FAQ",
@@ -533,12 +642,34 @@ const de: DeepString<typeof en> = {
       ctaMonthly: "Monatlich starten",
       ctaYearly: "Jährlich starten",
       highlights: [
-        "1 aktive Sales Page",
-        "Unbegrenzte Offers auf dieser Seite",
-        "2 gleichzeitige Service Runs",
-        "Client Portal + Provider Workspace",
-        "Human-in-the-loop",
-        "10 % Transaktionsgebühr",
+        {
+          text: "Unbegrenzte Workflow Builds",
+          tip: "Baue und iteriere so viele digitale Workflows wie du brauchst. Pro Workflow Build wird nichts berechnet.",
+        },
+        {
+          text: "1 aktive Sales Page, unbegrenzte Offers",
+          tip: "Eine Sales Page ist deine ergebnisbasierte Landingpage, auf der Clients ein Offer wählen. Offers auf dieser Seite sind unbegrenzt.",
+        },
+        {
+          text: "2 gleichzeitige Service Runs",
+          tip: "Wie viele Client-Journeys gleichzeitig laufen können (Kauf bis Auslieferung). Weitere Läufe warten, bis ein Slot frei wird.",
+        },
+        {
+          text: "Unbegrenzte Users",
+          tip: "Lade dein Team frei ein. Admin-Rollen für Berechtigungen starten ab Pro.",
+        },
+        {
+          text: "Client-Journey-Apps",
+          tip: "Client-seitige Apps decken den vollen Zyklus ab: Sales Page → Kauf & Onboarding → Auslieferung & Revisionen → Abschluss, Upsells und Bindung.",
+        },
+        {
+          text: "Provider Workspace",
+          tip: "Deine interne App für CRM, Auslieferung, Workflow Builds, Sales-Page- & Onboarding-Editoren, Revision Agent und Improvement-Agent-Vorschläge.",
+        },
+        {
+          text: "10 % Transaktionsgebühr",
+          tip: "Prozentsatz der Client-Zahlungen über Skilldwork.",
+        },
       ],
     },
     "freelancer-pro": {
@@ -547,12 +678,38 @@ const de: DeepString<typeof en> = {
       ctaMonthly: "Pro monatlich starten",
       ctaYearly: "Pro jährlich starten",
       highlights: [
-        "3 aktive Sales Pages",
-        "Unbegrenzte Offers auf jeder Seite",
-        "8 gleichzeitige Service Runs",
-        "Affiliate-Links",
-        "Custom Domain + Team-Rollen",
-        "2,9 % Transaktionsgebühr",
+        {
+          text: "Unbegrenzte Workflow Builds",
+          tip: "Baue und iteriere so viele digitale Workflows wie du brauchst. Pro Workflow Build wird nichts berechnet.",
+        },
+        {
+          text: "3 aktive Sales Pages, unbegrenzte Offers",
+          tip: "Eine Sales Page ist deine ergebnisbasierte Landingpage, auf der Clients ein Offer wählen. Offers auf jeder Seite sind unbegrenzt.",
+        },
+        {
+          text: "8 gleichzeitige Service Runs",
+          tip: "Wie viele Client-Journeys gleichzeitig laufen können (Kauf bis Auslieferung). Weitere Läufe warten, bis ein Slot frei wird.",
+        },
+        {
+          text: "Unbegrenzte Users + Admin-Rollen",
+          tip: "Lade dein ganzes Team ein. Admin-Rollen steuern Berechtigungen und Zugriffe.",
+        },
+        {
+          text: "Client-Journey-Apps",
+          tip: "Client-seitige Apps decken den vollen Zyklus ab: Sales Page → Kauf & Onboarding → Auslieferung & Revisionen → Abschluss, Upsells und Bindung.",
+        },
+        {
+          text: "Provider Workspace",
+          tip: "Deine interne App für CRM, Auslieferung, Workflow Builds, Sales-Page- & Onboarding-Editoren, Revision Agent und Improvement-Agent-Vorschläge.",
+        },
+        {
+          text: "Custom Domain + Affiliate-Links",
+          tip: "Sales Pages auf deiner Domain und Partner, die Clients empfehlen, belohnen.",
+        },
+        {
+          text: "2,9 % Transaktionsgebühr",
+          tip: "Prozentsatz der Client-Zahlungen über Skilldwork.",
+        },
       ],
     },
     agency: {
@@ -561,13 +718,38 @@ const de: DeepString<typeof en> = {
       ctaMonthly: "Business monatlich starten",
       ctaYearly: "Business jährlich starten",
       highlights: [
-        "10 aktive Sales Pages",
-        "Unbegrenzte Offers auf jeder Seite",
-        "20 gleichzeitige Service Runs",
-        "Affiliate-Links",
-        "10 Provider-Sitze",
-        "Custom Domain + Team-Rollen",
-        "2,9 % Transaktionsgebühr",
+        {
+          text: "Unbegrenzte Workflow Builds",
+          tip: "Baue und iteriere so viele digitale Workflows wie du brauchst. Pro Workflow Build wird nichts berechnet.",
+        },
+        {
+          text: "10 aktive Sales Pages, unbegrenzte Offers",
+          tip: "Eine Sales Page ist deine ergebnisbasierte Landingpage, auf der Clients ein Offer wählen. Offers auf jeder Seite sind unbegrenzt.",
+        },
+        {
+          text: "20 gleichzeitige Service Runs",
+          tip: "Wie viele Client-Journeys gleichzeitig laufen können (Kauf bis Auslieferung). Weitere Läufe warten, bis ein Slot frei wird.",
+        },
+        {
+          text: "Unbegrenzte Users + Admin-Rollen",
+          tip: "Lade dein ganzes Team ein. Admin-Rollen steuern Berechtigungen und Zugriffe.",
+        },
+        {
+          text: "Client-Journey-Apps",
+          tip: "Client-seitige Apps decken den vollen Zyklus ab: Sales Page → Kauf & Onboarding → Auslieferung & Revisionen → Abschluss, Upsells und Bindung.",
+        },
+        {
+          text: "Provider Workspace",
+          tip: "Deine interne App für CRM, Auslieferung, Workflow Builds, Sales-Page- & Onboarding-Editoren, Revision Agent und Improvement-Agent-Vorschläge.",
+        },
+        {
+          text: "Custom Domain + Affiliate-Links",
+          tip: "Sales Pages auf deiner Domain und Partner, die Clients empfehlen, belohnen.",
+        },
+        {
+          text: "2,9 % Transaktionsgebühr",
+          tip: "Prozentsatz der Client-Zahlungen über Skilldwork.",
+        },
       ],
     },
     custom: {
@@ -576,26 +758,59 @@ const de: DeepString<typeof en> = {
       ctaMonthly: "Call buchen",
       ctaYearly: "Call buchen",
       highlights: [
-        "Custom Sales-Page- & Concurrency-Limits",
-        "Self-hosted oder dedizierte Cloud",
-        "Affiliate-Links",
-        "Individuelle Transaktionsgebühren",
+        {
+          text: "Unbegrenzte Workflow Builds",
+          tip: "Baue und iteriere so viele digitale Workflows wie du brauchst. Pro Workflow Build wird nichts berechnet.",
+        },
+        {
+          text: "Individuelle Sales-Page- & Concurrency-Limits",
+          tip: "Wir dimensionieren aktive Sales Pages und gleichzeitige Service Runs nach eurem Betrieb.",
+        },
+        {
+          text: "Unbegrenzte Users + Admin-Rollen",
+          tip: "Lade dein ganzes Team mit Berechtigungssteuerung ein.",
+        },
+        {
+          text: "Self-hosted oder dedizierte Cloud",
+          tip: "Auf eurer Infrastruktur oder in einer dedizierten Umgebung, wenn Compliance das verlangt.",
+        },
       ],
     },
   },
   featureLabels: {
+    "Workflow Builds": "Workflow Builds",
     "Active Sales Pages": "Aktive Sales Pages",
     "Offers per Sales Page": "Offers pro Sales Page",
     "Concurrent Service Runs": "Gleichzeitige Service Runs",
-    "Transaction fee": "Transaktionsgebühr",
-    "Provider seats": "Provider-Sitze",
-    "Client Portal": "Client Portal",
+    Users: "Users",
+    "Admin roles": "Admin-Rollen",
+    "Client journey apps": "Client-Journey-Apps",
     "Provider Workspace": "Provider Workspace",
-    "Human-in-the-loop": "Human-in-the-loop",
+    "Transaction fee": "Transaktionsgebühr",
     "Custom domain": "Custom Domain",
     "Affiliate links": "Affiliate-Links",
-    "Team roles": "Team-Rollen",
     "Workflow history": "Workflow-Historie",
+  },
+  featureTips: {
+    "Workflow Builds":
+      "Baue und iteriere so viele digitale Workflows wie du brauchst. Pro Workflow Build wird nichts berechnet.",
+    "Active Sales Pages":
+      "Ergebnisbasierte Landingpages, auf denen Clients ein Offer wählen und den Kauf starten.",
+    "Offers per Sales Page":
+      "Kaufbare Ergebnis-Scopes auf einer Sales Page — in jedem Plan unbegrenzt.",
+    "Concurrent Service Runs":
+      "Wie viele Client-Journeys gleichzeitig laufen können. Weitere Läufe warten, bis ein Slot frei wird.",
+    Users: "Lade dein ganzes Team in jedem Plan ein.",
+    "Admin roles":
+      "Berechtigungen dafür, wer Workflows, Billing und Client-Arbeit bearbeiten darf. Ab Pro enthalten.",
+    "Client journey apps":
+      "Client-seitige Apps für Sales Page → Onboarding → Auslieferung & Revisionen → Abschluss, Upsells und Bindung.",
+    "Provider Workspace":
+      "Interne App für CRM, Auslieferung, Workflow Builds, Editoren, Revision Agent und Improvement-Agent-Vorschläge.",
+    "Transaction fee": "Prozentsatz der Client-Zahlungen über Skilldwork.",
+    "Custom domain": "Sales Pages auf deiner eigenen Domain.",
+    "Affiliate links": "Partner belohnen, die Clients empfehlen.",
+    "Workflow history": "Wie lange Workflow-Versionen und Run-Historie behalten werden.",
   },
   featureValues: {
     Unlimited: "Unbegrenzt",

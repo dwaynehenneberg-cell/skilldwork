@@ -12,6 +12,7 @@ import { useSiteI18n } from "@/lib/site-i18n";
 import { revealOnLoad, revealOnView } from "../reveal";
 import ScrollReveal from "../scroll-reveal";
 import SiteHeader from "../site-header";
+import { FeatureTip } from "./feature-tip";
 import PricingPlans from "./pricing-plans";
 
 function translateFeatureValue(
@@ -110,7 +111,9 @@ export default function PricingContent() {
                 {COMPARISON_ROWS.map((row) => (
                   <tr key={row} className="border-b border-[var(--card-border)] last:border-0">
                     <th className="px-5 py-3.5 font-normal text-[var(--muted-text)]">
-                      {t.featureLabels[row]}
+                      <FeatureTip tip={t.featureTips[row]} placement="bottom">
+                        <span>{t.featureLabels[row]}</span>
+                      </FeatureTip>
                     </th>
                     {PAID_PLANS.map((plan) => (
                       <td key={plan.id} className="px-5 py-3.5">

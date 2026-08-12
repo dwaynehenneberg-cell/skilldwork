@@ -15,6 +15,7 @@ import {
 import { useSiteI18n } from "@/lib/site-i18n";
 import { revealOnLoad, revealOnView } from "../reveal";
 import ScrollReveal from "../scroll-reveal";
+import { FeatureTip } from "./feature-tip";
 
 type Billing = BillingPeriod;
 
@@ -96,19 +97,28 @@ function PlanCard({
 
   return (
     <article
-      className={`${revealOnLoad} flex h-full flex-col rounded-3xl border bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-7 dark:shadow-black/60 ${
+      className={`${revealOnLoad} relative flex h-full flex-col rounded-3xl border bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-7 dark:shadow-black/60 ${
         plan.highlighted
           ? "border-[var(--text)] ring-1 ring-[var(--text)]"
           : "border-[var(--card-border)]"
       }`}
       style={{ animationDelay: `${delayMs}ms` }}
     >
+      {plan.highlighted ? (
+        <>
+          <span className="sr-only">{t.pricingPage.mostPopular}</span>
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl"
+          >
+            <span className="absolute -right-10 top-5 z-10 w-40 rotate-45 bg-[var(--workflow-accent)] py-1.5 text-center text-[0.6rem] font-semibold uppercase tracking-wider text-black shadow-sm">
+              {t.pricingPage.mostPopular}
+            </span>
+          </span>
+        </>
+      ) : null}
+
       <div className="mb-5 space-y-2">
-        {plan.highlighted ? (
-          <p className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
-            {t.pricingPage.mostPopular}
-          </p>
-        ) : null}
         <h2 className="font-display text-3xl tracking-tight text-[var(--text)]">{plan.name}</h2>
         <p className="text-sm leading-6 text-[var(--muted-text)]">{copy.description}</p>
       </div>
@@ -124,16 +134,20 @@ function PlanCard({
           <p className="mt-1 text-xs text-[var(--muted-text)]">
             {formatEur(yearlyTotal)} {t.pricingPage.billedYearly}
             {" · "}
-            {t.pricingPage.yearlySave} {formatEur(savings)}
+            <span className="font-medium text-[var(--workflow-accent)]">
+              {t.pricingPage.yearlySave} {formatEur(savings)}
+            </span>
           </p>
         ) : null}
       </div>
 
       <ul className="mb-8 flex flex-1 flex-col gap-3">
-        {copy.highlights.map((line) => (
-          <li key={line} className="flex items-start gap-3">
+        {copy.highlights.map((item) => (
+          <li key={item.text} className="flex items-start gap-3">
             <CheckIcon />
-            <span className="text-sm leading-5 text-[var(--muted-text)]">{line}</span>
+            <FeatureTip tip={item.tip}>
+              <span className="text-sm leading-5 text-[var(--muted-text)]">{item.text}</span>
+            </FeatureTip>
           </li>
         ))}
       </ul>
