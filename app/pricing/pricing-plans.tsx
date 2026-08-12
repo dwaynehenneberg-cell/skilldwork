@@ -107,7 +107,7 @@ function PlanCard({
             aria-hidden
             className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl"
           >
-            <span className="absolute -right-10 top-5 z-10 w-40 rotate-45 bg-[var(--workflow-accent)] py-1.5 text-center text-[0.6rem] font-semibold uppercase tracking-wider text-black shadow-sm">
+            <span className="absolute -right-12 top-6 z-10 w-48 rotate-45 bg-[var(--workflow-accent)] px-4 py-2 text-center text-[0.6rem] font-semibold uppercase tracking-wide text-black shadow-sm">
               {t.pricingPage.mostPopular}
             </span>
           </span>
