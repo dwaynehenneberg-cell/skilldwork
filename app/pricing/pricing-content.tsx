@@ -108,14 +108,14 @@ export default function PricingContent() {
               </thead>
               <tbody>
                 {COMPARISON_ROWS.map((row) => (
-                  <tr key={row.key} className="border-b border-[var(--card-border)] last:border-0">
+                  <tr key={row} className="border-b border-[var(--card-border)] last:border-0">
                     <th className="px-5 py-3.5 font-normal text-[var(--muted-text)]">
-                      {t.featureLabels[row.key as keyof typeof t.featureLabels] ?? row.label}
+                      {t.featureLabels[row]}
                     </th>
                     {PAID_PLANS.map((plan) => (
                       <td key={plan.id} className="px-5 py-3.5">
                         {translateFeatureValue(
-                          featureFor(plan, row.key),
+                          featureFor(plan, row),
                           t.featureValues,
                           p.included,
                         )}

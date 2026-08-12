@@ -129,12 +129,12 @@ const en = {
     yearly: "Yearly",
     billingLabel: "Billing period",
     perMonth: "/ month",
-    perYear: "/ year",
-    billedYearly: "billed yearly · 2 months free",
+    billedYearly: "billed yearly",
+    yearlySave: "save",
     monthsFree: "2 months free",
     mostPopular: "Most popular",
     linkSoon: "Link coming soon",
-    beyond: "Beyond Agency",
+    beyond: "Beyond Business",
     faqs: [
       {
         q: "What is a Sales Page?",
@@ -146,7 +146,7 @@ const en = {
       },
       {
         q: "What is the transaction fee?",
-        a: "A percentage of Client payments processed through Skilldwork. Freelancer is 10%; Freelancer Pro and Agency are 2.9%. Custom Solution fees are negotiated.",
+        a: "A percentage of Client payments processed through Skilldwork. Freelancer is 10%; Pro and Business are 2.9%. Custom Solution fees are negotiated.",
       },
       {
         q: "How does support work?",
@@ -157,35 +157,36 @@ const en = {
   plans: {
     freelancer: {
       description: "One Sales Page, unlimited Offers — ship your first digital service.",
-      ctaLabel: "Start Freelancer",
+      ctaMonthly: "Start monthly",
+      ctaYearly: "Start yearly",
       highlights: [
         "1 active Sales Page",
         "Unlimited Offers on that page",
         "2 concurrent Service Runs",
         "Client Portal + Provider Workspace",
         "Human-in-the-loop",
-        "Direct support",
         "10% transaction fee",
       ],
     },
     "freelancer-pro": {
       description:
         "More Sales Pages, lower fees, and room to run services in production.",
-      ctaLabel: "Start Freelancer Pro",
+      ctaMonthly: "Start Pro monthly",
+      ctaYearly: "Start Pro yearly",
       highlights: [
         "3 active Sales Pages",
         "Unlimited Offers on every page",
         "8 concurrent Service Runs",
         "Affiliate links",
         "Custom domain + team roles",
-        "Direct support",
         "2.9% transaction fee",
       ],
     },
     agency: {
       description:
-        "Ten active Sales Pages for agencies running multiple client services.",
-      ctaLabel: "Start Agency",
+        "Ten active Sales Pages for teams running multiple client services.",
+      ctaMonthly: "Start Business monthly",
+      ctaYearly: "Start Business yearly",
       highlights: [
         "10 active Sales Pages",
         "Unlimited Offers on every page",
@@ -198,19 +199,19 @@ const en = {
     },
     custom: {
       description:
-        "Self-hosted, white-label, compliance, or limits beyond Agency — we design it with you.",
-      ctaLabel: "Book a call",
+        "Self-hosted, white-label, compliance, or limits beyond Business — we design it with you.",
+      ctaMonthly: "Book a call",
+      ctaYearly: "Book a call",
       highlights: [
         "Custom Sales Page & concurrency limits",
         "Self-hosted or dedicated cloud",
         "Affiliate links",
         "Custom transaction fees",
-        "Direct support",
       ],
     },
   } satisfies Record<
     PlanId,
-    { description: string; ctaLabel: string; highlights: string[] }
+    { description: string; ctaMonthly: string; ctaYearly: string; highlights: string[] }
   >,
   featureLabels: {
     "Active Sales Pages": "Active Sales Pages",
@@ -225,11 +226,9 @@ const en = {
     "Affiliate links": "Affiliate links",
     "Team roles": "Team roles",
     "Workflow history": "Workflow history",
-    Support: "Support",
   },
   featureValues: {
     Unlimited: "Unlimited",
-    Direct: "Direct",
     Custom: "Custom",
     "7 days": "7 days",
     "30 days": "30 days",
@@ -502,12 +501,12 @@ const de: DeepString<typeof en> = {
     yearly: "Jährlich",
     billingLabel: "Abrechnungszeitraum",
     perMonth: "/ Monat",
-    perYear: "/ Jahr",
-    billedYearly: "jährlich abgerechnet · 2 Monate gratis",
+    billedYearly: "jährlich abgerechnet",
+    yearlySave: "Ersparnis",
     monthsFree: "2 Monate gratis",
     mostPopular: "Am beliebtesten",
     linkSoon: "Link folgt bald",
-    beyond: "Über Agency hinaus",
+    beyond: "Über Business hinaus",
     faqs: [
       {
         q: "Was ist eine Sales Page?",
@@ -519,7 +518,7 @@ const de: DeepString<typeof en> = {
       },
       {
         q: "Was ist die Transaktionsgebühr?",
-        a: "Ein Prozentsatz der Client-Zahlungen über Skilldwork. Freelancer: 10 %; Freelancer Pro und Agency: 2,9 %. Custom Solution nach Vereinbarung.",
+        a: "Ein Prozentsatz der Client-Zahlungen über Skilldwork. Freelancer: 10 %; Pro und Business: 2,9 %. Custom Solution nach Vereinbarung.",
       },
       {
         q: "Wie funktioniert Support?",
@@ -531,35 +530,36 @@ const de: DeepString<typeof en> = {
     freelancer: {
       description:
         "Eine Sales Page, unbegrenzte Offers — bring deinen ersten digitalen Service live.",
-      ctaLabel: "Freelancer starten",
+      ctaMonthly: "Monatlich starten",
+      ctaYearly: "Jährlich starten",
       highlights: [
         "1 aktive Sales Page",
         "Unbegrenzte Offers auf dieser Seite",
         "2 gleichzeitige Service Runs",
         "Client Portal + Provider Workspace",
         "Human-in-the-loop",
-        "Direkter Support",
         "10 % Transaktionsgebühr",
       ],
     },
     "freelancer-pro": {
       description:
         "Mehr Sales Pages, niedrigere Gebühren und Raum für Services in Production.",
-      ctaLabel: "Freelancer Pro starten",
+      ctaMonthly: "Pro monatlich starten",
+      ctaYearly: "Pro jährlich starten",
       highlights: [
         "3 aktive Sales Pages",
         "Unbegrenzte Offers auf jeder Seite",
         "8 gleichzeitige Service Runs",
         "Affiliate-Links",
         "Custom Domain + Team-Rollen",
-        "Direkter Support",
         "2,9 % Transaktionsgebühr",
       ],
     },
     agency: {
       description:
-        "Zehn aktive Sales Pages für Agenturen mit mehreren Client-Services.",
-      ctaLabel: "Agency starten",
+        "Zehn aktive Sales Pages für Teams mit mehreren Client-Services.",
+      ctaMonthly: "Business monatlich starten",
+      ctaYearly: "Business jährlich starten",
       highlights: [
         "10 aktive Sales Pages",
         "Unbegrenzte Offers auf jeder Seite",
@@ -572,14 +572,14 @@ const de: DeepString<typeof en> = {
     },
     custom: {
       description:
-        "Self-hosted, White-Label, Compliance oder Limits über Agency — wir designen es mit dir.",
-      ctaLabel: "Call buchen",
+        "Self-hosted, White-Label, Compliance oder Limits über Business — wir designen es mit dir.",
+      ctaMonthly: "Call buchen",
+      ctaYearly: "Call buchen",
       highlights: [
         "Custom Sales-Page- & Concurrency-Limits",
         "Self-hosted oder dedizierte Cloud",
         "Affiliate-Links",
         "Individuelle Transaktionsgebühren",
-        "Direkter Support",
       ],
     },
   },
@@ -596,11 +596,9 @@ const de: DeepString<typeof en> = {
     "Affiliate links": "Affiliate-Links",
     "Team roles": "Team-Rollen",
     "Workflow history": "Workflow-Historie",
-    Support: "Support",
   },
   featureValues: {
     Unlimited: "Unbegrenzt",
-    Direct: "Direkt",
     Custom: "Individuell",
     "7 days": "7 Tage",
     "30 days": "30 Tage",

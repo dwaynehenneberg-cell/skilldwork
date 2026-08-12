@@ -4,7 +4,7 @@ import PricingContent from "./pricing-content";
 export const metadata: Metadata = {
   title: "Pricing | Skilldwork",
   description:
-    "Freelancer, Freelancer Pro, and Agency plans for turning services into digital workflows — plus custom solutions.",
+    "Freelancer, Pro, and Business plans for turning services into digital workflows — plus custom solutions.",
 };
 
 export default function PricingPage() {

@@ -7,22 +7,29 @@ export type PlanFeature = {
   value: FeatureValue;
 };
 
+/** Structural plan data. Marketing copy lives in site-dictionaries. */
 export type Plan = {
   id: PlanId;
   name: string;
-  description: string;
-  /** Monthly price in EUR. Null = custom / contact sales. */
+  /** Monthly list price in EUR. Null = custom / contact sales. */
   monthlyPriceEur: number | null;
   highlighted?: boolean;
-  ctaLabel: string;
   features: PlanFeature[];
-  /** Short bullets shown on the pricing card (Skool-style). */
-  highlights: string[];
 };
 
-/** Two months free on yearly billing (Skool-style). */
+/** Two months free on yearly billing (pay 10, get 12). */
 export function yearlyPriceEur(monthly: number): number {
   return monthly * 10;
+}
+
+/** Effective monthly rate when paying yearly, rounded for display. */
+export function yearlyEffectiveMonthlyEur(monthly: number): number {
+  return Math.round(yearlyPriceEur(monthly) / 12);
+}
+
+/** Savings vs paying 12× monthly. */
+export function yearlySavingsEur(monthly: number): number {
+  return monthly * 2;
 }
 
 export function formatEur(amount: number): string {
@@ -34,28 +41,14 @@ export function formatEur(amount: number): string {
 }
 
 /**
- * Skilldwork plans.
- *
- * Differentiator is concurrent Service Runs (each run is a full Client journey on
- * dedicated capacity), not monthly execution buckets like n8n. Sales Pages, fees,
- * and seats create the value steps at 99 / 299 / 999.
+ * Plans scale by concurrent Service Runs and Sales Pages.
+ * Prices: 99 / 299 / 999 — display names Freelancer / Pro / Business.
  */
 export const PLANS: Plan[] = [
   {
     id: "freelancer",
     name: "Freelancer",
-    description: "One Sales Page, unlimited Offers — ship your first digital service.",
     monthlyPriceEur: 99,
-    ctaLabel: "Start Freelancer",
-    highlights: [
-      "1 active Sales Page",
-      "Unlimited Offers on that page",
-      "2 concurrent Service Runs",
-      "Client Portal + Provider Workspace",
-      "Human-in-the-loop",
-      "Direct support",
-      "10% transaction fee",
-    ],
     features: [
       { label: "Active Sales Pages", value: "1" },
       { label: "Offers per Sales Page", value: "Unlimited" },
@@ -69,25 +62,13 @@ export const PLANS: Plan[] = [
       { label: "Affiliate links", value: false },
       { label: "Team roles", value: false },
       { label: "Workflow history", value: "7 days" },
-      { label: "Support", value: "Direct" },
     ],
   },
   {
     id: "freelancer-pro",
-    name: "Freelancer Pro",
-    description: "More Sales Pages, lower fees, and room to run services in production.",
+    name: "Pro",
     monthlyPriceEur: 299,
     highlighted: true,
-    ctaLabel: "Start Freelancer Pro",
-    highlights: [
-      "3 active Sales Pages",
-      "Unlimited Offers on every page",
-      "8 concurrent Service Runs",
-      "Affiliate links",
-      "Custom domain + team roles",
-      "Direct support",
-      "2.9% transaction fee",
-    ],
     features: [
       { label: "Active Sales Pages", value: "3" },
       { label: "Offers per Sales Page", value: "Unlimited" },
@@ -101,24 +82,12 @@ export const PLANS: Plan[] = [
       { label: "Affiliate links", value: true },
       { label: "Team roles", value: true },
       { label: "Workflow history", value: "30 days" },
-      { label: "Support", value: "Direct" },
     ],
   },
   {
     id: "agency",
-    name: "Agency",
-    description: "Ten active Sales Pages for agencies running multiple client services.",
+    name: "Business",
     monthlyPriceEur: 999,
-    ctaLabel: "Start Agency",
-    highlights: [
-      "10 active Sales Pages",
-      "Unlimited Offers on every page",
-      "20 concurrent Service Runs",
-      "Affiliate links",
-      "10 provider seats",
-      "Custom domain + team roles",
-      "2.9% transaction fee",
-    ],
     features: [
       { label: "Active Sales Pages", value: "10" },
       { label: "Offers per Sales Page", value: "Unlimited" },
@@ -132,23 +101,12 @@ export const PLANS: Plan[] = [
       { label: "Affiliate links", value: true },
       { label: "Team roles", value: true },
       { label: "Workflow history", value: "90 days" },
-      { label: "Support", value: "Direct" },
     ],
   },
   {
     id: "custom",
     name: "Custom Solution",
-    description:
-      "Self-hosted, white-label, compliance, or limits beyond Agency — we design it with you.",
     monthlyPriceEur: null,
-    ctaLabel: "Book a call",
-    highlights: [
-      "Custom Sales Page & concurrency limits",
-      "Self-hosted or dedicated cloud",
-      "Affiliate links",
-      "Custom transaction fees",
-      "Direct support",
-    ],
     features: [
       { label: "Active Sales Pages", value: "Custom" },
       { label: "Offers per Sales Page", value: "Unlimited" },
@@ -162,33 +120,34 @@ export const PLANS: Plan[] = [
       { label: "Affiliate links", value: true },
       { label: "Team roles", value: true },
       { label: "Workflow history", value: "Custom" },
-      { label: "Support", value: "Direct" },
     ],
   },
 ];
 
-/** Paid plans high → low for price anchoring (Agency first). */
+/** Paid plans high → low for price anchoring (Business first). */
 export const PAID_PLANS = PLANS.filter((plan) => plan.monthlyPriceEur !== null).sort(
   (a, b) => (b.monthlyPriceEur ?? 0) - (a.monthlyPriceEur ?? 0),
 );
+
 export const CUSTOM_PLAN = PLANS.find((plan) => plan.id === "custom")!;
 
-/** Feature rows for the comparison table (paid plans only). */
-export const COMPARISON_ROWS: { label: string; key: string }[] = [
-  { label: "Active Sales Pages", key: "Active Sales Pages" },
-  { label: "Offers per Sales Page", key: "Offers per Sales Page" },
-  { label: "Concurrent Service Runs", key: "Concurrent Service Runs" },
-  { label: "Transaction fee", key: "Transaction fee" },
-  { label: "Provider seats", key: "Provider seats" },
-  { label: "Client Portal", key: "Client Portal" },
-  { label: "Provider Workspace", key: "Provider Workspace" },
-  { label: "Human-in-the-loop", key: "Human-in-the-loop" },
-  { label: "Custom domain", key: "Custom domain" },
-  { label: "Affiliate links", key: "Affiliate links" },
-  { label: "Team roles", key: "Team roles" },
-  { label: "Workflow history", key: "Workflow history" },
-  { label: "Support", key: "Support" },
-];
+/** Differentiating rows only (identical features stay off the table). */
+export const COMPARISON_ROWS = [
+  "Active Sales Pages",
+  "Offers per Sales Page",
+  "Concurrent Service Runs",
+  "Transaction fee",
+  "Provider seats",
+  "Client Portal",
+  "Provider Workspace",
+  "Human-in-the-loop",
+  "Custom domain",
+  "Affiliate links",
+  "Team roles",
+  "Workflow history",
+] as const;
+
+export type ComparisonRow = (typeof COMPARISON_ROWS)[number];
 
 export function featureFor(plan: Plan, label: string): FeatureValue {
   return plan.features.find((f) => f.label === label)?.value ?? false;
@@ -204,7 +163,7 @@ const STRIPE_FREELANCER_YEARLY =
 
 export type BillingPeriod = "monthly" | "yearly";
 
-/** CTA targets by plan + billing — read statically so Next can inline NEXT_PUBLIC_* . */
+/** CTA targets by plan + billing — static reads so Next inlines NEXT_PUBLIC_*. */
 export const PLAN_CTA_HREFS: Record<
   PlanId,
   { monthly: string | null; yearly: string | null }

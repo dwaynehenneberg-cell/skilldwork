@@ -6,7 +6,9 @@ import {
   PAID_PLANS,
   planCtaHref,
   formatEur,
+  yearlyEffectiveMonthlyEur,
   yearlyPriceEur,
+  yearlySavingsEur,
   type BillingPeriod,
   type Plan,
 } from "@/lib/pricing";
@@ -35,19 +37,24 @@ function PlanCta({
   className,
   label,
   soonLabel,
+  accent = true,
 }: {
   plan: Plan;
   billing: Billing;
   className?: string;
   label: string;
   soonLabel: string;
+  /** Yellow conversion CTA; set false for secondary actions. */
+  accent?: boolean;
 }) {
   const href = planCtaHref(plan.id, billing);
+  const base =
+    "inline-flex w-full min-h-12 items-center justify-center rounded-full px-6 py-4 text-center font-display text-sm uppercase tracking-wider transition active:scale-[0.98] sm:text-base";
 
   if (!href) {
     return (
       <span
-        className={`inline-flex w-full cursor-not-allowed items-center justify-center rounded-full border border-[var(--card-border)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--muted-text)] ${className ?? ""}`}
+        className={`${base} cursor-not-allowed border border-[var(--card-border)] text-[var(--muted-text)] ${className ?? ""}`}
       >
         {soonLabel}
       </span>
@@ -59,7 +66,11 @@ function PlanCta({
       href={href}
       target="_blank"
       rel="noreferrer"
-      className={`inline-flex w-full items-center justify-center rounded-full bg-[var(--btn-bg)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--btn-text)] transition hover:opacity-85 ${className ?? ""}`}
+      className={`${base} ${
+        accent
+          ? "bg-[var(--workflow-accent)] text-black shadow-md shadow-black/10 hover:brightness-95 dark:shadow-black/40"
+          : "bg-[var(--btn-bg)] text-[var(--btn-text)] hover:opacity-85"
+      } ${className ?? ""}`}
     >
       {label}
     </a>
@@ -78,8 +89,10 @@ function PlanCard({
   const { t } = useSiteI18n();
   const copy = t.plans[plan.id];
   const monthly = plan.monthlyPriceEur!;
-  const price = billing === "yearly" ? yearlyPriceEur(monthly) : monthly;
-  const periodLabel = billing === "yearly" ? t.pricingPage.perYear : t.pricingPage.perMonth;
+  const isYearly = billing === "yearly";
+  const displayPrice = isYearly ? yearlyEffectiveMonthlyEur(monthly) : monthly;
+  const yearlyTotal = yearlyPriceEur(monthly);
+  const savings = yearlySavingsEur(monthly);
 
   return (
     <article
@@ -102,14 +115,16 @@ function PlanCard({
 
       <div className="mb-6">
         <p className="font-display text-4xl tracking-tight text-[var(--text)] sm:text-5xl">
-          {formatEur(price)}
+          {formatEur(displayPrice)}
           <span className="ml-1 font-sans text-sm font-medium text-[var(--muted-text)]">
-            {periodLabel}
+            {t.pricingPage.perMonth}
           </span>
         </p>
-        {billing === "yearly" ? (
+        {isYearly ? (
           <p className="mt-1 text-xs text-[var(--muted-text)]">
-            {formatEur(monthly)} {t.pricingPage.billedYearly}
+            {formatEur(yearlyTotal)} {t.pricingPage.billedYearly}
+            {" · "}
+            {t.pricingPage.yearlySave} {formatEur(savings)}
           </p>
         ) : null}
       </div>
@@ -126,7 +141,7 @@ function PlanCard({
       <PlanCta
         plan={plan}
         billing={billing}
-        label={copy.ctaLabel}
+        label={billing === "yearly" ? copy.ctaYearly : copy.ctaMonthly}
         soonLabel={t.pricingPage.linkSoon}
       />
     </article>
@@ -135,7 +150,7 @@ function PlanCard({
 
 export default function PricingPlans() {
   const { t } = useSiteI18n();
-  const [billing, setBilling] = useState<Billing>("monthly");
+  const [billing, setBilling] = useState<Billing>("yearly");
   const customCopy = t.plans.custom;
 
   return (
@@ -149,6 +164,7 @@ export default function PricingPlans() {
           <button
             type="button"
             onClick={() => setBilling("monthly")}
+            aria-pressed={billing === "monthly"}
             className={`rounded-full px-4 py-2 text-sm font-medium transition ${
               billing === "monthly"
                 ? "bg-[var(--btn-bg)] text-[var(--btn-text)]"
@@ -160,6 +176,7 @@ export default function PricingPlans() {
           <button
             type="button"
             onClick={() => setBilling("yearly")}
+            aria-pressed={billing === "yearly"}
             className={`relative rounded-full px-4 py-2 text-sm font-medium transition ${
               billing === "yearly"
                 ? "bg-[var(--btn-bg)] text-[var(--btn-text)]"
@@ -197,8 +214,11 @@ export default function PricingPlans() {
             <PlanCta
               plan={CUSTOM_PLAN}
               billing={billing}
-              label={customCopy.ctaLabel}
+              label={
+                billing === "yearly" ? customCopy.ctaYearly : customCopy.ctaMonthly
+              }
               soonLabel={t.pricingPage.linkSoon}
+              accent={false}
             />
           </div>
         </aside>
