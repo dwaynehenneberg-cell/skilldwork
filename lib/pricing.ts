@@ -194,14 +194,39 @@ export function featureFor(plan: Plan, label: string): FeatureValue {
   return plan.features.find((f) => f.label === label)?.value ?? false;
 }
 
-const STRIPE_FREELANCER =
+const STRIPE_FREELANCER_MONTHLY =
   process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER ||
   "https://buy.stripe.com/bJe7sNgDxfbd50Gekv6sw00";
 
-/** CTA targets — read statically so Next can inline NEXT_PUBLIC_* at build time. */
-export const PLAN_CTA_HREFS: Record<PlanId, string | null> = {
-  freelancer: STRIPE_FREELANCER,
-  "freelancer-pro": process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_PRO || null,
-  agency: process.env.NEXT_PUBLIC_STRIPE_URL_AGENCY || null,
-  custom: process.env.NEXT_PUBLIC_CALENDLY_URL || null,
+const STRIPE_FREELANCER_YEARLY =
+  process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_YEARLY ||
+  "https://buy.stripe.com/3cI00lcnhe7978O3FR6sw01";
+
+export type BillingPeriod = "monthly" | "yearly";
+
+/** CTA targets by plan + billing — read statically so Next can inline NEXT_PUBLIC_* . */
+export const PLAN_CTA_HREFS: Record<
+  PlanId,
+  { monthly: string | null; yearly: string | null }
+> = {
+  freelancer: {
+    monthly: STRIPE_FREELANCER_MONTHLY,
+    yearly: STRIPE_FREELANCER_YEARLY,
+  },
+  "freelancer-pro": {
+    monthly: process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_PRO || null,
+    yearly: process.env.NEXT_PUBLIC_STRIPE_URL_FREELANCER_PRO_YEARLY || null,
+  },
+  agency: {
+    monthly: process.env.NEXT_PUBLIC_STRIPE_URL_AGENCY || null,
+    yearly: process.env.NEXT_PUBLIC_STRIPE_URL_AGENCY_YEARLY || null,
+  },
+  custom: {
+    monthly: process.env.NEXT_PUBLIC_CALENDLY_URL || null,
+    yearly: process.env.NEXT_PUBLIC_CALENDLY_URL || null,
+  },
 };
+
+export function planCtaHref(planId: PlanId, billing: BillingPeriod): string | null {
+  return PLAN_CTA_HREFS[planId][billing];
+}

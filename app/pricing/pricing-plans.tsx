@@ -4,16 +4,17 @@ import { useState } from "react";
 import {
   CUSTOM_PLAN,
   PAID_PLANS,
-  PLAN_CTA_HREFS,
+  planCtaHref,
   formatEur,
   yearlyPriceEur,
+  type BillingPeriod,
   type Plan,
 } from "@/lib/pricing";
 import { useSiteI18n } from "@/lib/site-i18n";
 import { revealOnLoad, revealOnView } from "../reveal";
 import ScrollReveal from "../scroll-reveal";
 
-type Billing = "monthly" | "yearly";
+type Billing = BillingPeriod;
 
 function CheckIcon() {
   return (
@@ -30,16 +31,18 @@ function CheckIcon() {
 
 function PlanCta({
   plan,
+  billing,
   className,
   label,
   soonLabel,
 }: {
   plan: Plan;
+  billing: Billing;
   className?: string;
   label: string;
   soonLabel: string;
 }) {
-  const href = PLAN_CTA_HREFS[plan.id];
+  const href = planCtaHref(plan.id, billing);
 
   if (!href) {
     return (
@@ -122,6 +125,7 @@ function PlanCard({
 
       <PlanCta
         plan={plan}
+        billing={billing}
         label={copy.ctaLabel}
         soonLabel={t.pricingPage.linkSoon}
       />
@@ -136,9 +140,9 @@ export default function PricingPlans() {
 
   return (
     <div className="space-y-14">
-      <div className={`${revealOnLoad} flex justify-center [animation-delay:150ms]`}>
+      <div className={`${revealOnLoad} flex justify-center pt-3 [animation-delay:150ms]`}>
         <div
-          className="inline-flex items-center rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] p-1 shadow-lg shadow-black/5 dark:shadow-black/40"
+          className="relative inline-flex items-center rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] p-1 shadow-lg shadow-black/5 dark:shadow-black/40"
           role="group"
           aria-label={t.pricingPage.billingLabel}
         >
@@ -163,7 +167,7 @@ export default function PricingPlans() {
             }`}
           >
             {t.pricingPage.yearly}
-            <span className="absolute -right-1 -top-3 rounded-full bg-[var(--workflow-accent)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-black">
+            <span className="pointer-events-none absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-[calc(100%-0.35rem)] whitespace-nowrap rounded-full bg-[var(--workflow-accent)] px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-black shadow-sm">
               {t.pricingPage.monthsFree}
             </span>
           </button>
@@ -192,6 +196,7 @@ export default function PricingPlans() {
           <div className="w-full shrink-0 sm:w-56">
             <PlanCta
               plan={CUSTOM_PLAN}
+              billing={billing}
               label={customCopy.ctaLabel}
               soonLabel={t.pricingPage.linkSoon}
             />
