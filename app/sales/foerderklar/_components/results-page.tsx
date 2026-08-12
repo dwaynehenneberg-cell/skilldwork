@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { matchGrants } from "@/lib/foerderklar/grants";
 import { useI18n } from "@/lib/foerderklar/i18n";
 import { useStore } from "@/lib/foerderklar/store";
-import { ChatPanel } from "./chat-panel";
 import { PortalChrome } from "./chrome";
 
 export default function ResultsPage() {
@@ -14,7 +13,6 @@ export default function ResultsPage() {
   const { state, hydrated, requestRevision, acceptResult, reset } = useStore();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
   const [note, setNote] = useState("");
   const [files, setFiles] = useState<string[]>([]);
 
@@ -73,13 +71,6 @@ export default function ResultsPage() {
             <button
               type="button"
               className="fk-btn fk-btn-ghost"
-              onClick={() => setChatOpen(true)}
-            >
-              {t.results.askQuestion}
-            </button>
-            <button
-              type="button"
-              className="fk-btn fk-btn-ghost"
               onClick={() => {
                 reset();
                 router.push("/sales/foerderklar");
@@ -89,7 +80,6 @@ export default function ResultsPage() {
             </button>
           </div>
         </div>
-        <ChatPanel open={chatOpen} onOpenChange={setChatOpen} />
       </PortalChrome>
     );
   }
@@ -180,14 +170,6 @@ export default function ResultsPage() {
           {t.results.accept}
         </button>
       </div>
-      <button
-        type="button"
-        className="fk-btn fk-btn-ghost mt-2 w-full"
-        onClick={() => setChatOpen(true)}
-      >
-        {t.results.askQuestion}
-      </button>
-      <ChatPanel open={chatOpen} onOpenChange={setChatOpen} />
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center">

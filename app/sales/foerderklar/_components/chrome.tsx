@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ThemeToggle from "@/app/theme-toggle";
 import { DEMO_DOMAIN } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
+import { FloatingContact } from "./floating-contact";
 
 export function LangSwitch() {
   const { locale, setLocale, t } = useI18n();
@@ -89,6 +91,13 @@ export function PortalChrome({
   subtitle: string;
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  // After checkout: portal, workflow, results, apply — not checkout itself.
+  const showFloatingContact =
+    pathname != null &&
+    !pathname.endsWith("/checkout") &&
+    pathname.includes("/sales/foerderklar/");
+
   return (
     <>
       <TopBar compact />
@@ -104,6 +113,7 @@ export function PortalChrome({
         {children}
         <PoweredBy />
       </main>
+      {showFloatingContact ? <FloatingContact /> : null}
     </>
   );
 }
