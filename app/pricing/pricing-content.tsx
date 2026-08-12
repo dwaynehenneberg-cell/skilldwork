@@ -15,17 +15,59 @@ import SiteHeader from "../site-header";
 import { FeatureTip } from "./feature-tip";
 import PricingPlans from "./pricing-plans";
 
+function IncludedCheck() {
+  return (
+    <span
+      aria-label="Included"
+      className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--workflow-accent)] text-[var(--text)]"
+    >
+      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+        <path d="M5 12l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  );
+}
+
+function SupportChannels({ labels }: { labels: { email: string; phone: string; messenger: string } }) {
+  const iconClass = "h-4 w-4";
+  return (
+    <span className="inline-flex items-center gap-2.5 text-[var(--text)]" aria-label={`${labels.email}, ${labels.phone}, ${labels.messenger}`}>
+      <span title={labels.email} aria-hidden>
+        <svg className={iconClass} fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
+          <path d="M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z" strokeLinejoin="round" />
+          <path d="m3.5 7 8.5 6 8.5-6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+      <span title={labels.phone} aria-hidden>
+        <svg className={iconClass} fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
+          <path
+            d="M6.5 3.5h3l1.5 4-2 1.2a12 12 0 0 0 5.3 5.3l1.2-2 4 1.5v3A2 2 0 0 1 17.5 18 13.5 13.5 0 0 1 4 4.5a2 2 0 0 1 2.5-1z"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+      <span title={labels.messenger} aria-hidden>
+        <svg className={iconClass} fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
+          <path
+            d="M12 3.5c-4.7 0-8.5 3.4-8.5 7.6 0 2.4 1.2 4.5 3.1 5.9V20l2.8-1.5c.8.2 1.7.4 2.6.4 4.7 0 8.5-3.4 8.5-7.6S16.7 3.5 12 3.5z"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </span>
+  );
+}
+
 function translateFeatureValue(
   value: FeatureValue,
   map: Record<string, string>,
-  included: string,
+  channelLabels: { email: string; phone: string; messenger: string },
 ): ReactNode {
+  if (value === "channels") {
+    return <SupportChannels labels={channelLabels} />;
+  }
   if (typeof value === "boolean") {
-    return value ? (
-      <span className="font-medium text-[var(--text)]">{included}</span>
-    ) : (
-      <span className="text-[var(--muted-text)]">—</span>
-    );
+    return value ? <IncludedCheck /> : <span className="text-[var(--muted-text)]">—</span>;
   }
   return <span className="font-medium text-[var(--text)]">{map[value] ?? value}</span>;
 }
@@ -122,7 +164,7 @@ export default function PricingContent() {
                         {translateFeatureValue(
                           featureFor(plan, row),
                           t.featureValues,
-                          p.included,
+                          t.pricingPage.supportChannels,
                         )}
                       </td>
                     ))}

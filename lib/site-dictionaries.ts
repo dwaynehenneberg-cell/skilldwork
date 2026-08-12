@@ -135,6 +135,11 @@ const en = {
     mostPopular: "Most popular",
     linkSoon: "Link coming soon",
     beyond: "Beyond Business",
+    supportChannels: {
+      email: "Email",
+      phone: "Phone",
+      messenger: "Messenger",
+    },
     faqs: [
       {
         q: "What is a Sales Page?",
@@ -284,7 +289,7 @@ const en = {
     "Transaction fee": "Transaction fee",
     "Workflow history": "Workflow history",
     Support: "Support",
-    Community: "Community",
+    Community: "LHW Community Access",
   },
   featureTips: {
     "Workflow Builds":
@@ -301,9 +306,9 @@ const en = {
     "Affiliate links": "Reward partners and marketplace promoters who bring new Clients — set incentives so others market your Offers and help you scale acquisition.",
     "Transaction fee": "Percentage of Client payments processed through Skilldwork.",
     "Workflow history": "How long past workflow versions and run history are retained.",
-    Support: "Reach the Skilldwork team by email, phone, or WhatsApp.",
+    Support: "Reach the Skilldwork team by email, phone, or messenger.",
     Community:
-      "Access to the WhatsApp Service Provider Community — Last Humans Working — to exchange with other providers.",
+      "Access to the Last Humans Working community for Service Providers — exchange with peers building digital services.",
   },
   featureValues: {
     Unlimited: "Unlimited",
@@ -311,8 +316,6 @@ const en = {
     "7 days": "7 days",
     "30 days": "30 days",
     "90 days": "90 days",
-    "Email, phone + WhatsApp": "Email, phone + WhatsApp",
-    "Last Humans Working": "Last Humans Working",
   },
   privacy: {
     title: "Privacy",
@@ -587,6 +590,11 @@ const de: DeepString<typeof en> = {
     mostPopular: "Am beliebtesten",
     linkSoon: "Link folgt bald",
     beyond: "Über Business hinaus",
+    supportChannels: {
+      email: "E-Mail",
+      phone: "Telefon",
+      messenger: "Messenger",
+    },
     faqs: [
       {
         q: "Was ist eine Sales Page?",
@@ -728,7 +736,7 @@ const de: DeepString<typeof en> = {
     "Transaction fee": "Transaktionsgebühr",
     "Workflow history": "Workflow-Historie",
     Support: "Support",
-    Community: "Community",
+    Community: "LHW Community Access",
   },
   featureTips: {
     "Workflow Builds":
@@ -748,9 +756,9 @@ const de: DeepString<typeof en> = {
       "Partner und Marketplace-Promoter belohnen, die neue Clients bringen — mit Anreizen skalierst du Kundengewinnung, indem andere deine Offers vermarkten.",
     "Transaction fee": "Prozentsatz der Client-Zahlungen über Skilldwork.",
     "Workflow history": "Wie lange Workflow-Versionen und Run-Historie behalten werden.",
-    Support: "Erreiche das Skilldwork-Team per E-Mail, Telefon oder WhatsApp.",
+    Support: "Erreiche das Skilldwork-Team per E-Mail, Telefon oder Messenger.",
     Community:
-      "Zugang zur WhatsApp Service-Provider-Community — Last Humans Working — zum Austausch mit anderen Providern.",
+      "Zugang zur Last-Humans-Working-Community für Service Provider — Austausch mit anderen, die digitale Services aufbauen.",
   },
   featureValues: {
     Unlimited: "Unbegrenzt",
@@ -758,8 +766,6 @@ const de: DeepString<typeof en> = {
     "7 days": "7 Tage",
     "30 days": "30 Tage",
     "90 days": "90 Tage",
-    "Email, phone + WhatsApp": "E-Mail, Telefon + WhatsApp",
-    "Last Humans Working": "Last Humans Working",
   },
   privacy: {
     title: "Datenschutz",
