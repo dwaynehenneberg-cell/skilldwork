@@ -1,0 +1,181 @@
+"use client";
+
+import { useState } from "react";
+import {
+  CUSTOM_PLAN,
+  PAID_PLANS,
+  PLAN_CTA_HREFS,
+  formatEur,
+  yearlyPriceEur,
+  type Plan,
+} from "@/lib/pricing";
+import { revealOnLoad, revealOnView } from "../reveal";
+import ScrollReveal from "../scroll-reveal";
+
+type Billing = "monthly" | "yearly";
+
+function CheckIcon() {
+  return (
+    <span
+      aria-hidden
+      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--workflow-accent)] text-[var(--text)]"
+    >
+      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+        <path d="M5 12l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  );
+}
+
+function PlanCta({ plan, className }: { plan: Plan; className?: string }) {
+  const href = PLAN_CTA_HREFS[plan.id];
+
+  if (!href) {
+    return (
+      <span
+        className={`inline-flex w-full cursor-not-allowed items-center justify-center rounded-full border border-[var(--card-border)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--muted-text)] ${className ?? ""}`}
+      >
+        Link coming soon
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={`inline-flex w-full items-center justify-center rounded-full bg-[var(--btn-bg)] px-5 py-3.5 font-display text-sm uppercase tracking-wider text-[var(--btn-text)] transition hover:opacity-85 ${className ?? ""}`}
+    >
+      {plan.ctaLabel}
+    </a>
+  );
+}
+
+function PlanCard({
+  plan,
+  billing,
+  delayMs,
+}: {
+  plan: Plan;
+  billing: Billing;
+  delayMs: number;
+}) {
+  const monthly = plan.monthlyPriceEur!;
+  const price = billing === "yearly" ? yearlyPriceEur(monthly) : monthly;
+  const periodLabel = billing === "yearly" ? "/ year" : "/ month";
+
+  return (
+    <article
+      className={`${revealOnLoad} flex h-full flex-col rounded-3xl border bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:p-7 dark:shadow-black/60 ${
+        plan.highlighted
+          ? "border-[var(--text)] ring-1 ring-[var(--text)]"
+          : "border-[var(--card-border)]"
+      }`}
+      style={{ animationDelay: `${delayMs}ms` }}
+    >
+      <div className="mb-5 space-y-2">
+        {plan.highlighted ? (
+          <p className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
+            Most popular
+          </p>
+        ) : null}
+        <h2 className="font-display text-3xl tracking-tight text-[var(--text)]">{plan.name}</h2>
+        <p className="text-sm leading-6 text-[var(--muted-text)]">{plan.description}</p>
+      </div>
+
+      <div className="mb-6">
+        <p className="font-display text-4xl tracking-tight text-[var(--text)] sm:text-5xl">
+          {formatEur(price)}
+          <span className="ml-1 font-sans text-sm font-medium text-[var(--muted-text)]">
+            {periodLabel}
+          </span>
+        </p>
+        {billing === "yearly" ? (
+          <p className="mt-1 text-xs text-[var(--muted-text)]">
+            {formatEur(monthly)} / month billed yearly · 2 months free
+          </p>
+        ) : null}
+      </div>
+
+      <ul className="mb-8 flex flex-1 flex-col gap-3">
+        {plan.highlights.map((line) => (
+          <li key={line} className="flex items-start gap-3">
+            <CheckIcon />
+            <span className="text-sm leading-5 text-[var(--muted-text)]">{line}</span>
+          </li>
+        ))}
+      </ul>
+
+      <PlanCta plan={plan} />
+    </article>
+  );
+}
+
+export default function PricingPlans() {
+  const [billing, setBilling] = useState<Billing>("monthly");
+
+  return (
+    <div className="space-y-14">
+      <div className={`${revealOnLoad} flex justify-center [animation-delay:150ms]`}>
+        <div
+          className="inline-flex items-center rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] p-1 shadow-lg shadow-black/5 dark:shadow-black/40"
+          role="group"
+          aria-label="Billing period"
+        >
+          <button
+            type="button"
+            onClick={() => setBilling("monthly")}
+            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+              billing === "monthly"
+                ? "bg-[var(--btn-bg)] text-[var(--btn-text)]"
+                : "text-[var(--muted-text)] hover:text-[var(--text)]"
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            type="button"
+            onClick={() => setBilling("yearly")}
+            className={`relative rounded-full px-4 py-2 text-sm font-medium transition ${
+              billing === "yearly"
+                ? "bg-[var(--btn-bg)] text-[var(--btn-text)]"
+                : "text-[var(--muted-text)] hover:text-[var(--text)]"
+            }`}
+          >
+            Yearly
+            <span className="absolute -right-1 -top-3 rounded-full bg-[var(--workflow-accent)] px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-black">
+              2 months free
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div className="grid gap-5 lg:grid-cols-3">
+        {PAID_PLANS.map((plan, index) => (
+          <PlanCard key={plan.id} plan={plan} billing={billing} delayMs={200 + index * 80} />
+        ))}
+      </div>
+
+      <ScrollReveal>
+        <aside
+          className={`${revealOnView} flex flex-col gap-6 rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-2xl shadow-black/10 sm:flex-row sm:items-center sm:justify-between sm:p-8 dark:shadow-black/60`}
+        >
+          <div className="max-w-xl space-y-2">
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--muted-text)]">
+              Beyond Agency
+            </p>
+            <h2 className="font-display text-3xl tracking-tight text-[var(--text)]">
+              {CUSTOM_PLAN.name}
+            </h2>
+            <p className="text-sm leading-6 text-[var(--muted-text)]">{CUSTOM_PLAN.description}</p>
+          </div>
+          <div className="w-full shrink-0 sm:w-56">
+            <PlanCta plan={CUSTOM_PLAN} />
+          </div>
+        </aside>
+      </ScrollReveal>
+    </div>
+  );
+}
+

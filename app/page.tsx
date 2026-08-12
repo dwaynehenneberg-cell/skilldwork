@@ -61,12 +61,20 @@ export default function Home() {
       <Mission />
 
       <footer className="px-4 pb-8 text-center sm:px-6">
-        <Link
-          href="/privacy"
-          className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
-        >
-          Privacy
-        </Link>
+        <div className="flex justify-center gap-4">
+          <Link
+            href="/privacy"
+            className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/agb"
+            className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
+          >
+            AGB
+          </Link>
+        </div>
       </footer>
     </main>
   );

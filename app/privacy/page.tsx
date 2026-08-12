@@ -170,6 +170,21 @@ export default function PrivacyPage() {
           Last updated: August 11, 2026
         </p>
       </article>
+
+      <footer className="mx-auto mt-8 flex max-w-3xl justify-center gap-4 pb-4 text-center">
+        <Link
+          href="/agb"
+          className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
+        >
+          AGB
+        </Link>
+        <Link
+          href="/pricing"
+          className="text-xs text-[var(--muted-text)] transition-colors hover:text-[var(--text)]"
+        >
+          Pricing
+        </Link>
+      </footer>
     </main>
   );
 }
