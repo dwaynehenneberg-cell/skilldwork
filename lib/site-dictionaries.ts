@@ -235,10 +235,6 @@ const en = {
           text: "90-day workflow history",
           tip: "How long past workflow versions and run history are retained.",
         },
-        {
-          text: "2.9% transaction fee",
-          tip: "Same as Pro — percentage of Client payments processed through Skilldwork.",
-        },
       ],
     },
     custom: {
@@ -684,10 +680,6 @@ const de: DeepString<typeof en> = {
         {
           text: "90 Tage Workflow-Historie",
           tip: "Wie lange Workflow-Versionen und Run-Historie behalten werden.",
-        },
-        {
-          text: "2,9 % Transaktionsgebühr",
-          tip: "Wie bei Pro — Prozentsatz der Client-Zahlungen über Skilldwork.",
         },
       ],
     },
