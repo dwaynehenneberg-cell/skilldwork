@@ -396,6 +396,7 @@ const en = {
         title: "3. Service description",
         paragraphs: [
           "Skilldwork provides a platform that lets the Customer turn their service into a digital workflow and offer it via a result-based Sales Page. Scope and limits (e.g. active Sales Pages, concurrent Service Runs, seats) follow the selected plan on the Pricing page or an individual agreement (Custom Solution). The Provider owes availability of the platform within the agreed scope, not the commercial success of the Customer’s individual Clients.",
+          "Where the platform lets the Customer choose between different AI/API providers, Skilldwork shows a notice about the respective provider’s privacy terms before the choice is made. The decision as to which provider the Customer uses is the Customer’s own responsibility; Skilldwork merely implements the chosen selection technically and provides notices or recommendations in that regard, without owing its own provider consulting service.",
         ],
       },
       {
@@ -447,6 +448,7 @@ const en = {
         title: "11. Privacy",
         paragraphs: [
           "Information on processing of personal data is set out in the Privacy Policy. Where the Customer processes personal data of their Clients via the platform, they act as an independent controller toward those Clients unless a separate data-processing agreement is concluded.",
+          "Where the Customer involves AI/API providers selected by them via the platform in the processing of personal data, it is the Customer’s responsibility to check, before use, which provider is used, where the data is processed, whether the data is used to train AI models, and which subcontractors (sub-processors) are involved, and to conclude a separate data-processing agreement with that provider where required. Skilldwork provides general notices on this but does not replace the Customer’s own review. (Draft wording — not legal advice; have this reviewed by qualified counsel before publishing.)",
         ],
       },
       {
@@ -846,6 +848,7 @@ const de: DeepString<typeof en> = {
         title: "3. Leistungsbeschreibung",
         paragraphs: [
           "Skilldwork stellt eine Plattform bereit, mit der der Kunde seine Dienstleistung in einen digitalen Workflow überführen und über eine result-basierte Sales Page anbieten kann. Umfang und Limits (z. B. aktive Sales Pages, gleichzeitige Service Runs, Sitze) ergeben sich aus dem gewählten Plan auf der Pricing-Seite bzw. aus einer individuellen Vereinbarung (Custom Solution). Der Anbieter schuldet die Bereitstellung der Plattform im vertraglich vereinbarten Rahmen, nicht den wirtschaftlichen Erfolg einzelner Clients des Kunden.",
+          "Soweit die Plattform dem Kunden die Auswahl zwischen verschiedenen KI-/API-Anbietern ermöglicht, weist Skilldwork vor der Auswahl auf die jeweiligen Datenschutzbestimmungen des gewählten Anbieters hin. Die Entscheidung, welchen Anbieter der Kunde einsetzt, trifft der Kunde eigenverantwortlich; Skilldwork setzt die getroffene Auswahl lediglich technisch um und gibt insoweit Hinweise bzw. Empfehlungen, ohne eine eigene Anbieterberatung zu schulden.",
         ],
       },
       {
@@ -897,6 +900,7 @@ const de: DeepString<typeof en> = {
         title: "11. Datenschutz",
         paragraphs: [
           "Informationen zur Verarbeitung personenbezogener Daten enthält die Datenschutzerklärung. Soweit der Kunde personenbezogene Daten seiner Clients über die Plattform verarbeitet, handelt er als eigener Verantwortlicher gegenüber seinen Clients, sofern nicht gesondert eine Auftragsverarbeitung vereinbart wird.",
+          "Bindet der Kunde über die Plattform von ihm ausgewählte KI-/API-Anbieter in die Verarbeitung personenbezogener Daten ein, obliegt es dem Kunden, vor dem Einsatz zu prüfen, welcher Anbieter zum Einsatz kommt, wo die Daten verarbeitet werden, ob die Daten zum Training von KI-Modellen verwendet werden und welche Subunternehmer (Sub-Prozessoren) beteiligt sind, und erforderlichenfalls mit dem jeweiligen Anbieter eine eigene Auftragsverarbeitungsvereinbarung zu schließen. Skilldwork stellt hierzu allgemeine Hinweise bereit, ersetzt aber keine eigene Prüfung des Kunden. (Textentwurf — keine Rechtsberatung; vor Veröffentlichung anwaltlich prüfen lassen.)",
         ],
       },
       {
