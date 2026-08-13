@@ -1,0 +1,19 @@
+{
+  "name": "skilldwork-outreach",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Outreach-Toolkit fuer Skilldwork: Unternehmen recherchieren, personalisiert anschreiben, Anrufe vorbereiten, Status verfolgen.",
+  "bin": {
+    "outreach": "./bin/outreach.js"
+  },
+  "scripts": {
+    "outreach": "node ./bin/outreach.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.116.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
