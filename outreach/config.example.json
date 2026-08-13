@@ -1,0 +1,70 @@
+{
+  "absender": {
+    "name": "Dwayne Henneberg",
+    "rolle": "Gruender, Skilldwork",
+    "email": "dwayne@skilldwork.com",
+    "telefon": "+49 ...",
+    "website": "https://skilldwork.com",
+    "calendly": "https://calendly.com/dein-name/fit-call"
+  },
+
+  "impressum": {
+    "firma": "Skilldwork",
+    "anschrift": "Strasse Hausnummer, PLZ Ort",
+    "vertreten_durch": "Dwayne Henneberg",
+    "kontakt": "dwayne@skilldwork.com"
+  },
+
+  "angebot": {
+    "einzeiler": "Skilldwork macht aus der Leistung eines Dienstleisters einen digitalen Workflow, der dessen Kunden bedient: eigene Sales Page, Kaufabschluss, Onboarding, Bearbeitung, Korrekturschleifen und Ergebnisuebergabe laufen automatisiert, mit dem Dienstleister nur noch an den Stellen, an denen sein Urteil wirklich gebraucht wird.",
+    "ergebnis_fuer_kunden": [
+      "Wiederkehrende Auftraege laufen ohne manuelle Durchreichung",
+      "Freigewordene Zeit geht zurueck in Akquise statt in Abwicklung",
+      "Kunde kauft ein klar beschriebenes Ergebnis, nicht Stunden"
+    ],
+    "beweis": "Beispiel-Workflow oeffentlich einsehbar: https://skilldwork.com/sales/foerderklar",
+    "call_zweck": "15 Minuten ueber den aktuellen Ablauf beim Gegenueber: welcher Auftragstyp wiederholt sich, welche Schritte kosten jedes Mal Zeit, was davon liesse sich als Workflow abbilden.",
+    "kein_pitch_regel": "Der Call ist ein Gespraech ueber deren Ablauf, keine Produktdemo. Das muss aus der Mail hervorgehen."
+  },
+
+  "zielgruppe": {
+    "beschreibung": "Dienstleister und Freelancer im DACH-Raum mit wiederkehrenden, beschreibbaren Auftraegen, die heute manuell abgewickelt werden.",
+    "passt": [
+      "Leistung wiederholt sich in aehnlicher Form (nicht jedes Projekt voellig neu)",
+      "Ergebnis ist digital uebergebbar (Dokument, Analyse, Konzept, Auswertung, Gutachten)",
+      "1 bis 20 Personen, Inhaber trifft Entscheidungen selbst",
+      "Website zeigt konkrete Leistungen, nicht nur eine Visitenkarte"
+    ],
+    "passt_nicht": [
+      "Reine Vor-Ort-Leistung ohne digitales Ergebnis",
+      "Grosse Organisationen mit Einkaufsprozess",
+      "Reine Produkthaendler ohne eigene Dienstleistung",
+      "Agenturen, die selbst Workflow-Automatisierung verkaufen (Wettbewerb)"
+    ]
+  },
+
+  "limits": {
+    "mails_pro_tag": 30,
+    "anrufe_pro_tag": 15,
+    "min_relevanz_score": 3
+  },
+
+  "sequenz": [
+    { "schritt": "mail1", "kanal": "mail", "tag": 0, "zweck": "Vorstellung + Call-Anfrage" },
+    { "schritt": "anruf1", "kanal": "anruf", "tag": 2, "zweck": "Bezug auf Mail, Termin direkt vereinbaren" },
+    { "schritt": "mail2", "kanal": "mail", "tag": 5, "zweck": "Ein konkreter Impuls zum Ablauf, Call-Anfrage wiederholen" },
+    { "schritt": "anruf2", "kanal": "anruf", "tag": 9, "zweck": "Zweiter Versuch, ggf. anderer Tageszeitpunkt" },
+    { "schritt": "mail3", "kanal": "mail", "tag": 14, "zweck": "Abschluss-Mail, Tuer offen lassen" }
+  ],
+
+  "anrufzeiten": {
+    "hinweis": "Werktags. Fenster, in denen Inhaber typischerweise erreichbar und nicht im Kundentermin sind.",
+    "fenster": ["09:00-11:30", "14:00-16:30"]
+  },
+
+  "claude": {
+    "modell": "claude-opus-5",
+    "effort": "medium",
+    "parallel": 3
+  }
+}

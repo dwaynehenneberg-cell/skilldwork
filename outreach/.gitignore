@@ -1,0 +1,12 @@
+# Eigene Konfiguration mit Absenderdaten
+config.json
+
+# Abhaengigkeiten dieses Teilpakets (getrennt von der Next.js-App)
+node_modules/
+package-lock.json
+
+# Echte Kontaktdaten und Aktivitaetslogs.
+# Die Root-.gitignore ignoriert bereits jedes "data/"-Verzeichnis --
+# dieser Eintrag steht hier nochmal explizit, damit es beim Lesen klar ist.
+data/
+export/
