@@ -58,7 +58,7 @@ export const DEMO_DOMAIN = `skilldwork.com/${PROVIDER_SLUG}`;
  * Paste a YouTube or Loom share URL here after upload.
  * Empty = cover poster only (play UI ready, no embed yet).
  */
-export const SALES_VIDEO_URL = "";
+export const SALES_VIDEO_URL = "https://youtu.be/lenN_NAg-ug";
 
 export function toEmbedUrl(url: string): string | null {
   const trimmed = url.trim();
