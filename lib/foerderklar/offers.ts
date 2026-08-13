@@ -54,48 +54,4 @@ export const PROVIDER_SLUG = "foerderklar";
 export const PROVIDER_PATH = `/${PROVIDER_SLUG}`;
 export const DEMO_DOMAIN = `skilldwork.com/${PROVIDER_SLUG}`;
 
-/**
- * Paste a YouTube or Loom share URL here after upload.
- * Empty = cover poster only (play UI ready, no embed yet).
- */
-export const SALES_VIDEO_URL = "https://youtu.be/lenN_NAg-ug";
-
-export function toEmbedUrl(url: string): string | null {
-  const trimmed = url.trim();
-  if (!trimmed) return null;
-
-  try {
-    const u = new URL(trimmed);
-
-    if (u.hostname.includes("youtu.be")) {
-      const id = u.pathname.replace("/", "");
-      return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null;
-    }
-    if (u.hostname.includes("youtube.com")) {
-      const id = u.searchParams.get("v");
-      if (id) return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-      const shorts = u.pathname.match(/\/shorts\/([^/]+)/);
-      if (shorts?.[1]) {
-        return `https://www.youtube.com/embed/${shorts[1]}?autoplay=1&rel=0`;
-      }
-      const embed = u.pathname.match(/\/embed\/([^/]+)/);
-      if (embed?.[1]) {
-        return `https://www.youtube.com/embed/${embed[1]}?autoplay=1&rel=0`;
-      }
-    }
-    if (u.hostname.includes("loom.com")) {
-      const share = u.pathname.match(/\/share\/([a-zA-Z0-9]+)/);
-      if (share?.[1]) {
-        return `https://www.loom.com/embed/${share[1]}?autoplay=1`;
-      }
-      const embed = u.pathname.match(/\/embed\/([a-zA-Z0-9]+)/);
-      if (embed?.[1]) {
-        return `https://www.loom.com/embed/${embed[1]}?autoplay=1`;
-      }
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
-}
+export const SALES_VIDEO_URL = "/foerderklar/foerderklar-explainer.mp4";

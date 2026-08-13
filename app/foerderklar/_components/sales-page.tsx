@@ -11,7 +11,6 @@ import {
   SALES_VIDEO_URL,
   formatOfferPrice,
   formatRevisions,
-  toEmbedUrl,
   type OfferId,
 } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
@@ -34,8 +33,6 @@ export default function SalesPage() {
   const [tab, setTab] = useState<"about" | "offers">("about");
   const [mediaIndex, setMediaIndex] = useState(0);
   const [videoPlaying, setVideoPlaying] = useState(false);
-
-  const videoEmbed = useMemo(() => toEmbedUrl(SALES_VIDEO_URL), []);
 
   const media = useMemo<MediaItem[]>(
     () => [
@@ -112,13 +109,16 @@ export default function SalesPage() {
 
           <div className="px-5 py-5 sm:px-7">
             <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[var(--card-border)] bg-[var(--text)] sm:aspect-[16/9]">
-              {activeMedia.kind === "video" && videoPlaying && videoEmbed ? (
-                <iframe
-                  title={activeMedia.label}
-                  src={videoEmbed}
-                  className="absolute inset-0 h-full w-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
+              {activeMedia.kind === "video" && videoPlaying ? (
+                <video
+                  src={SALES_VIDEO_URL}
+                  poster={activeMedia.src}
+                  className="absolute inset-0 h-full w-full object-contain"
+                  aria-label={activeMedia.label}
+                  autoPlay
+                  playsInline
+                  preload="auto"
+                  onEnded={() => setVideoPlaying(false)}
                 />
               ) : (
                 <>
@@ -133,9 +133,7 @@ export default function SalesPage() {
                   {activeMedia.kind === "video" && (
                     <button
                       type="button"
-                      onClick={() => {
-                        if (videoEmbed) setVideoPlaying(true);
-                      }}
+                      onClick={() => setVideoPlaying(true)}
                       className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/20 transition hover:bg-black/30"
                       aria-label={t.sales.videoPlay}
                     >
@@ -147,11 +145,6 @@ export default function SalesPage() {
                           <path d="M8 5v14l11-7z" />
                         </svg>
                       </span>
-                      {!videoEmbed && (
-                        <span className="max-w-[16rem] rounded-full bg-black/55 px-3 py-1 text-center text-xs font-medium text-white backdrop-blur-sm">
-                          {t.sales.videoPending}
-                        </span>
-                      )}
                     </button>
                   )}
                 </>
