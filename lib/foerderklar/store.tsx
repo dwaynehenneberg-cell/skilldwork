@@ -82,6 +82,11 @@ const defaults: FoerderklarState = {
   applications: [],
 };
 
+function normalizeOfferId(id: unknown): OfferId {
+  if (id === "apply" || id === "full") return "apply";
+  return "check";
+}
+
 type StoreContextValue = {
   state: FoerderklarState;
   hydrated: boolean;
@@ -112,6 +117,7 @@ function loadState(): FoerderklarState {
     return {
       ...defaults,
       ...parsed,
+      offerId: normalizeOfferId(parsed.offerId),
       onboarding: {
         ...defaultOnboarding,
         ...(parsed.onboarding ?? {}),

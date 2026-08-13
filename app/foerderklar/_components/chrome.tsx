@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import LangSwitch from "@/app/lang-switch";
 import SiteLogo from "@/app/site-logo";
 import ThemeToggle from "@/app/theme-toggle";
-import { DEMO_DOMAIN } from "@/lib/foerderklar/offers";
+import { DEMO_DOMAIN, PROVIDER_PATH } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
 import { FloatingContact } from "./floating-contact";
 
@@ -14,7 +14,7 @@ export function TopBar({ compact }: { compact?: boolean }) {
   return (
     <header className="sticky top-0 z-30 border-b border-[var(--card-border)] bg-[var(--page-bg)]/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/sales/foerderklar" className="flex min-w-0 items-center gap-3">
+        <Link href={PROVIDER_PATH} className="flex min-w-0 items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[var(--text)] text-xs font-bold tracking-wide text-[var(--page-bg)] ring-1 ring-[var(--logo-ring)]">
             FK
           </div>
@@ -62,7 +62,7 @@ export function PortalChrome({
   const showFloatingContact =
     pathname != null &&
     !pathname.endsWith("/checkout") &&
-    pathname.includes("/sales/foerderklar/");
+    pathname.startsWith(`${PROVIDER_PATH}/`);
 
   return (
     <>

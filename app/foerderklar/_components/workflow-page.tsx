@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/foerderklar/i18n";
+import { PROVIDER_PATH } from "@/lib/foerderklar/offers";
 import { useStore } from "@/lib/foerderklar/store";
 import { PortalChrome } from "./chrome";
 
@@ -29,11 +30,11 @@ export default function WorkflowPage() {
   useEffect(() => {
     if (!hydrated) return;
     if (!state.onboardingComplete) {
-      router.replace("/sales/foerderklar/portal");
+      router.replace(`${PROVIDER_PATH}/portal`);
       return;
     }
     if (state.runStatus === "ready" || state.runStatus === "accepted") {
-      router.replace("/sales/foerderklar/results");
+      router.replace(`${PROVIDER_PATH}/results`);
     }
   }, [hydrated, state.onboardingComplete, state.runStatus, router]);
 
@@ -47,7 +48,7 @@ export default function WorkflowPage() {
     timers.push(
       window.setTimeout(() => {
         markReady();
-        router.push("/sales/foerderklar/results");
+        router.push(`${PROVIDER_PATH}/results`);
       }, STEP_KEYS.length * 700 + 400),
     );
     return () => timers.forEach((id) => window.clearTimeout(id));

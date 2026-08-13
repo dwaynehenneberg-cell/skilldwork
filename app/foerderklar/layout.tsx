@@ -6,7 +6,7 @@ import "./foerderklar.css";
 export const metadata: Metadata = {
   title: "FörderKlar — Find funding that fits",
   description:
-    "One-time grant consulting for German SMEs. Funding check from €250 or full application support.",
+    "One-time grant consulting for German SMEs. Funding check from €250 or application support from €1,490.",
 };
 
 export default function FoerderklarLayout({

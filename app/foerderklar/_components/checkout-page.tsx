@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
-import { formatOfferPrice, getOffer } from "@/lib/foerderklar/offers";
+import { formatOfferPrice, getOffer, PROVIDER_PATH } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
 import { useStore } from "@/lib/foerderklar/store";
 import { PortalChrome } from "./chrome";
@@ -13,7 +13,7 @@ export default function CheckoutPage() {
   const { state, completeCheckout } = useStore();
   const offer = getOffer(state.offerId);
   const copy = offerCopy(offer.id);
-  const price = formatOfferPrice(offer, locale, t.sales.customPrice);
+  const price = formatOfferPrice(offer, locale);
   const router = useRouter();
 
   const [email, setEmail] = useState(state.email);
@@ -32,14 +32,14 @@ export default function CheckoutPage() {
     setBusy(true);
     completeCheckout({ email, company, last4 });
     window.setTimeout(() => {
-      router.push("/sales/foerderklar/portal");
+      router.push(`${PROVIDER_PATH}/portal`);
     }, 450);
   }
 
   return (
     <PortalChrome title={t.checkout.title} subtitle={t.brand}>
       <Link
-        href="/sales/foerderklar#offers"
+        href={`${PROVIDER_PATH}#offers`}
         className="mb-5 inline-block text-sm font-semibold text-[var(--workflow-blue)] hover:underline"
       >
         ← {t.checkout.back}

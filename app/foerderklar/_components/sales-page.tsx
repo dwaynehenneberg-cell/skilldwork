@@ -7,8 +7,11 @@ import { useRouter } from "next/navigation";
 import {
   DEMO_DOMAIN,
   OFFERS,
+  PROVIDER_PATH,
+  SALES_VIDEO_URL,
   formatOfferPrice,
   formatRevisions,
+  toEmbedUrl,
   type OfferId,
 } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
@@ -30,6 +33,9 @@ export default function SalesPage() {
   const selected = state.offerId;
   const [tab, setTab] = useState<"about" | "offers">("about");
   const [mediaIndex, setMediaIndex] = useState(0);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  const videoEmbed = useMemo(() => toEmbedUrl(SALES_VIDEO_URL), []);
 
   const media = useMemo<MediaItem[]>(
     () => [
@@ -37,31 +43,31 @@ export default function SalesPage() {
         id: "video",
         kind: "video",
         label: t.sales.mediaVideo,
-        src: "/foerderklar/media-video.svg",
+        src: "/foerderklar/media-video-cover.png",
       },
       {
         id: "sample",
         kind: "image",
         label: t.sales.mediaSample,
-        src: "/foerderklar/media-sample.svg",
+        src: "/foerderklar/media-sample.png",
       },
       {
         id: "process",
         kind: "image",
         label: t.sales.mediaProcess,
-        src: "/foerderklar/media-process.svg",
+        src: "/foerderklar/media-process.png",
       },
       {
         id: "industries",
         kind: "image",
         label: t.sales.mediaIndustries,
-        src: "/foerderklar/media-industries.svg",
+        src: "/foerderklar/media-industries.png",
       },
       {
         id: "deliverable",
         kind: "image",
         label: t.sales.mediaDeliverable,
-        src: "/foerderklar/media-deliverable.svg",
+        src: "/foerderklar/media-deliverable.png",
       },
     ],
     [t],
@@ -71,15 +77,16 @@ export default function SalesPage() {
 
   function goCheckout(id?: OfferId) {
     if (id) selectOffer(id);
-    router.push("/sales/foerderklar/checkout");
+    router.push(`${PROVIDER_PATH}/checkout`);
   }
 
   function priceLabel(offerId: OfferId) {
-    return formatOfferPrice(
-      OFFERS.find((o) => o.id === offerId)!,
-      locale,
-      t.sales.customPrice,
-    );
+    return formatOfferPrice(OFFERS.find((o) => o.id === offerId)!, locale);
+  }
+
+  function selectMedia(index: number) {
+    setMediaIndex(index);
+    setVideoPlaying(false);
   }
 
   return (
@@ -105,22 +112,49 @@ export default function SalesPage() {
 
           <div className="px-5 py-5 sm:px-7">
             <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[var(--card-border)] bg-[var(--text)] sm:aspect-[16/9]">
-              <Image
-                src={activeMedia.src}
-                alt={activeMedia.label}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 720px"
-                priority
-              />
-              {activeMedia.kind === "video" && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-[var(--text)] shadow-lg">
-                    <svg viewBox="0 0 24 24" className="ml-1 h-7 w-7 fill-current">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </div>
+              {activeMedia.kind === "video" && videoPlaying && videoEmbed ? (
+                <iframe
+                  title={activeMedia.label}
+                  src={videoEmbed}
+                  className="absolute inset-0 h-full w-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              ) : (
+                <>
+                  <Image
+                    src={activeMedia.src}
+                    alt={activeMedia.label}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 720px"
+                    priority
+                  />
+                  {activeMedia.kind === "video" && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (videoEmbed) setVideoPlaying(true);
+                      }}
+                      className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/20 transition hover:bg-black/30"
+                      aria-label={t.sales.videoPlay}
+                    >
+                      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-[var(--text)] shadow-lg">
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="ml-1 h-7 w-7 fill-current"
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </span>
+                      {!videoEmbed && (
+                        <span className="max-w-[16rem] rounded-full bg-black/55 px-3 py-1 text-center text-xs font-medium text-white backdrop-blur-sm">
+                          {t.sales.videoPending}
+                        </span>
+                      )}
+                    </button>
+                  )}
+                </>
               )}
             </div>
 
@@ -129,7 +163,7 @@ export default function SalesPage() {
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setMediaIndex(i)}
+                  onClick={() => selectMedia(i)}
                   className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-xl border transition ${
                     i === mediaIndex
                       ? "border-[var(--text)] ring-2 ring-[var(--text)]"
@@ -398,7 +432,7 @@ export default function SalesPage() {
                 onClick={() => goCheckout()}
                 className="fk-btn fk-btn-cta mt-4 w-full text-sm uppercase tracking-wide"
               >
-                {selected === "full" ? t.sales.ctaFull : t.sales.ctaCheck}
+                {selected === "apply" ? t.sales.ctaApply : t.sales.ctaCheck}
               </button>
               <div className="mt-2">
                 <ContactPanel />

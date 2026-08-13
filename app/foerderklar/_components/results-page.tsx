@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { matchGrants } from "@/lib/foerderklar/grants";
+import { PROVIDER_PATH } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
 import { useStore } from "@/lib/foerderklar/store";
 import { PortalChrome } from "./chrome";
@@ -19,11 +20,11 @@ export default function ResultsPage() {
   useEffect(() => {
     if (!hydrated) return;
     if (!state.onboardingComplete) {
-      router.replace("/sales/foerderklar/portal");
+      router.replace(`${PROVIDER_PATH}/portal`);
       return;
     }
     if (state.runStatus === "running") {
-      router.replace("/sales/foerderklar/workflow");
+      router.replace(`${PROVIDER_PATH}/workflow`);
     }
   }, [hydrated, state.onboardingComplete, state.runStatus, router]);
 
@@ -43,7 +44,7 @@ export default function ResultsPage() {
     setOpen(false);
     setNote("");
     setFiles([]);
-    router.push("/sales/foerderklar/workflow");
+    router.push(`${PROVIDER_PATH}/workflow`);
   }
 
   if (!hydrated) {
@@ -73,7 +74,7 @@ export default function ResultsPage() {
               className="fk-btn fk-btn-ghost"
               onClick={() => {
                 reset();
-                router.push("/sales/foerderklar");
+                router.push(PROVIDER_PATH);
               }}
             >
               {t.results.again}
@@ -142,7 +143,7 @@ export default function ResultsPage() {
                   </span>
                 ) : (
                   <Link
-                    href={`/sales/foerderklar/apply/${g.id}`}
+                    href={`${PROVIDER_PATH}/apply/${g.id}`}
                     className="fk-btn fk-btn-dark text-sm"
                   >
                     {t.results.startAction}

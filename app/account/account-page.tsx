@@ -5,11 +5,15 @@ import { useMemo, useState } from "react";
 import ThemeToggle from "@/app/theme-toggle";
 import LangSwitch from "@/app/lang-switch";
 import SiteLogo from "@/app/site-logo";
-import { formatOfferPrice, getOffer } from "@/lib/foerderklar/offers";
+import {
+  formatOfferPrice,
+  getOffer,
+  PROVIDER_PATH,
+} from "@/lib/foerderklar/offers";
 import { I18nProvider, useI18n } from "@/lib/foerderklar/i18n";
 import { StoreProvider, useStore } from "@/lib/foerderklar/store";
-import { ChatPanel } from "@/app/sales/foerderklar/_components/chat-panel";
-import "@/app/sales/foerderklar/foerderklar.css";
+import { ChatPanel } from "@/app/foerderklar/_components/chat-panel";
+import "@/app/foerderklar/foerderklar.css";
 
 type Tab = "orders" | "messages" | "payments" | "profile";
 
@@ -40,7 +44,7 @@ function AccountInner() {
   const isPendingStart =
     hasOrder && state.runStatus === "idle" && state.cardConnected;
 
-  const price = formatOfferPrice(offer, locale, t.sales.customPrice);
+  const price = formatOfferPrice(offer, locale);
   const statusLabel = useMemo(() => {
     if (!hasOrder) return t.account.statuses.idle;
     return t.account.statuses[state.runStatus] ?? state.runStatus;
@@ -48,10 +52,10 @@ function AccountInner() {
 
   const orderHref =
     state.runStatus === "ready" || state.runStatus === "accepted"
-      ? "/sales/foerderklar/results"
+      ? `${PROVIDER_PATH}/results`
       : state.runStatus === "running"
-        ? "/sales/foerderklar/workflow"
-        : "/sales/foerderklar/portal";
+        ? `${PROVIDER_PATH}/workflow`
+        : `${PROVIDER_PATH}/portal`;
 
   return (
     <>
@@ -113,7 +117,7 @@ function AccountInner() {
                 <Empty
                   text={t.account.noOrders}
                   cta={t.account.backToService}
-                  href="/sales/foerderklar"
+                  href={PROVIDER_PATH}
                 />
               ) : (
                 <div className="space-y-6">
@@ -158,7 +162,7 @@ function AccountInner() {
                         }
                         price={price}
                         status={statusLabel}
-                        href="/sales/foerderklar/results"
+                        href={`${PROVIDER_PATH}/results`}
                         cta={t.account.openService}
                         apps={state.applications.length}
                         appsLabel={t.results.startActionDone}
@@ -219,7 +223,7 @@ function AccountInner() {
 
         <div className="mt-6 text-center">
           <Link
-            href="/sales/foerderklar"
+            href={PROVIDER_PATH}
             className="text-sm font-semibold text-[var(--workflow-blue)] hover:underline"
           >
             ← {t.account.backToService}

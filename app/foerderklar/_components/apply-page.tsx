@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { matchGrants } from "@/lib/foerderklar/grants";
+import { PROVIDER_PATH } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
 import { useStore } from "@/lib/foerderklar/store";
 import { PortalChrome } from "./chrome";
@@ -30,7 +31,7 @@ export default function ApplyPage({ grantId }: { grantId: string }) {
   useEffect(() => {
     if (!hydrated) return;
     if (!state.onboardingComplete || state.runStatus === "idle") {
-      router.replace("/sales/foerderklar/results");
+      router.replace(`${PROVIDER_PATH}/results`);
     }
   }, [hydrated, state.onboardingComplete, state.runStatus, router]);
 
@@ -64,7 +65,7 @@ export default function ApplyPage({ grantId }: { grantId: string }) {
       <PortalChrome title={t.apply.title} subtitle={t.apply.subtitle}>
         <p className="text-sm text-[var(--muted-text)]">{t.apply.back}</p>
         <Link
-          href="/sales/foerderklar/results"
+          href={`${PROVIDER_PATH}/results`}
           className="fk-btn fk-btn-dark mt-4 inline-flex"
         >
           {t.apply.back}
@@ -84,7 +85,7 @@ export default function ApplyPage({ grantId }: { grantId: string }) {
             {existing && !done ? t.apply.already : t.apply.successBody}
           </p>
           <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-            <Link href="/sales/foerderklar/results" className="fk-btn fk-btn-dark">
+            <Link href={`${PROVIDER_PATH}/results`} className="fk-btn fk-btn-dark">
               {t.apply.back}
             </Link>
             <Link href="/account" className="fk-btn fk-btn-ghost">

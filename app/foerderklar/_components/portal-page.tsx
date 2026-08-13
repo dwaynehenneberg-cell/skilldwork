@@ -3,7 +3,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { STATES } from "@/lib/foerderklar/grants";
-import { formatOfferPrice, getOffer } from "@/lib/foerderklar/offers";
+import { formatOfferPrice, getOffer, PROVIDER_PATH } from "@/lib/foerderklar/offers";
 import { useI18n } from "@/lib/foerderklar/i18n";
 import { useStore, type OnboardingData } from "@/lib/foerderklar/store";
 import { PortalChrome } from "./chrome";
@@ -14,7 +14,7 @@ export default function PortalPage() {
   const router = useRouter();
   const offer = getOffer(state.offerId);
   const copy = offerCopy(offer.id);
-  const price = formatOfferPrice(offer, locale, t.sales.customPrice);
+  const price = formatOfferPrice(offer, locale);
 
   const [form, setForm] = useState<OnboardingData>(state.onboarding);
 
@@ -24,7 +24,7 @@ export default function PortalPage() {
 
   useEffect(() => {
     if (!hydrated) return;
-    if (!state.cardConnected) router.replace("/sales/foerderklar/checkout");
+    if (!state.cardConnected) router.replace(`${PROVIDER_PATH}/checkout`);
   }, [hydrated, state.cardConnected, router]);
 
   function set<K extends keyof OnboardingData>(key: K, value: OnboardingData[K]) {
@@ -36,7 +36,7 @@ export default function PortalPage() {
     if (!form.companyName.trim()) return;
     saveOnboarding(form);
     startRun();
-    router.push("/sales/foerderklar/workflow");
+    router.push(`${PROVIDER_PATH}/workflow`);
   }
 
   if (!hydrated) {
